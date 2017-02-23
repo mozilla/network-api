@@ -1,2 +1,6 @@
+# Core
+Django==1.10.3
+gunicorn==19.6.0
+
 # Testing
 flake8==2.5.4
