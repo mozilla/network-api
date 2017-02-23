@@ -20,7 +20,7 @@ Any changes you make in the `app` directory will automatically be reflected in t
 
 As this is a Python/Django project, we also support additional commands that might be of use. To run a command, simply run:
 ```bash
-docker-compose run web "<command>"
+docker-compose run web sh -c "<command>"
 ```
 where, `<command>` (don't forget about the surrounding quotes) should be replaced by any one of the following:
 
@@ -32,3 +32,4 @@ where, `<command>` (don't forget about the surrounding quotes) should be replace
 | 4. | python manage.py migrate | Apply migrations to the database. |
 | 5. | python manage.py shell | Open up a Python interactive shell. |
 | 6. | python manage.py createsuperuser | Create a super user for the Django administrative interface. |
+| 7. | python manage.py collectstatic | Create a folder containing all the static content that needs to be served for use by the API and the admin interface. |

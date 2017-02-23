@@ -87,3 +87,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Mac Garbage
+**/.DS_Store
+
+# Static files from python manage.py collectstatic
+app/staticfiles/
