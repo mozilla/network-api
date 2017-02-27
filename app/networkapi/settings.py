@@ -10,23 +10,41 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import os
+import environ
+
+app = environ.Path(__file__) - 1
+root = app - 1
+# We set defaults for values that aren't security related
+# to the least permissive setting. For security related values,
+# we rely on it being explicitly set (no default values) so that
+# we error out first.
+env = environ.Env(
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    CORS_WHITELIST=(tuple, ()),
+    CORS_REGEX_WHITELIST=(tuple, ()),
+    XSS_PROTECTION=bool,
+    CONTENT_TYPE_NO_SNIFF=bool,
+    SET_HSTS=bool,
+    SSL_REDIRECT=bool,
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = root()
+
+APP_DIR = app()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3kn&1hu+vz&p%mw&pkwaj3pvyj^fbg#09yqo(0c-ymy32#71^)'
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 # Application definition
 
@@ -36,15 +54,22 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'gunicorn',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -74,11 +99,10 @@ WSGI_APPLICATION = 'networkapi.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db("DATABASE_URL"),
 }
+
+DATABASES['default']['ATOMIC_REQUESTS'] = True
 
 
 # Password validation
@@ -86,18 +110,26 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth'
+                '.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth'
+                '.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth'
+                '.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth'
+                '.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+# Location of root django.contrib.admin URL, use {% url 'admin:index' %}
+ADMIN_URL = r'^admin/'
 
 
 # Internationalization
@@ -118,3 +150,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = (
+    app('static'),
+)
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_ROOT = root('staticfiles')
+
+
+# Rest Framework Settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+    ],
+}
+
+
+# CORS
+CORS_ALLOW_CREDENTIALS = False
+
+if '*' in env('CORS_WHITELIST'):
+    CORS_ORIGIN_ALLOW_ALL = True
+else:
+    CORS_ORIGIN_WHITELIST = env('CORS_WHITELIST')
+    CORS_ORIGIN_REGEX_WHITELIST = env('CORS_REGEX_WHITELIST')
+
+
+# Security
+SECURE_BROWSER_XSS_FILTER = env('XSS_PROTECTION')
+SECURE_CONTENT_TYPE_NOSNIFF = env('CONTENT_TYPE_NO_SNIFF')
+SECURE_HSTS_INCLUDE_SUBDOMAINS = env('SET_HSTS')
+SECURE_HSTS_SECONDS = 60 * 60 * 24 * 31 * 6
+SECURE_SSL_REDIRECT = env('SSL_REDIRECT')
+# Heroku goes into an infinite redirect loop without this.
+# See https://docs.djangoproject.com/en/1.10/ref/settings/#secure-ssl-redirect
+if env('SSL_REDIRECT') is True:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+X_FRAME_OPTIONS = env('X_FRAME_OPTIONS')
