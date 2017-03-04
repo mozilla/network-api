@@ -93,3 +93,6 @@ ENV/
 
 # Static files from python manage.py collectstatic
 app/staticfiles/
+
+# Storage for user generated files
+app/media/

@@ -1,10 +1,11 @@
 from django.db import models
 
+
 class Team(models.Model):
     name = models.CharField(max_length=300)
 
     def __str__(self):
-        return str(self.name);
+        return str(self.name)
 
 
 class Link(models.Model):
@@ -12,7 +13,7 @@ class Link(models.Model):
     name = models.CharField(max_length=300)
 
     def __str__(self):
-        return str(self.url);
+        return str(self.url)
 
 
 class Person(models.Model):
@@ -22,7 +23,10 @@ class Person(models.Model):
     name = models.CharField(max_length=300)
     role = models.CharField(max_length=300)
     location = models.CharField(max_length=300)
-    image = models.URLField(max_length=4096)
+    image = models.ImageField(
+        max_length=2048,
+        upload_to='images/people',
+    )
     teams = models.ManyToManyField(
         Team,
         related_name='people',
