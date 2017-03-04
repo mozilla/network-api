@@ -181,7 +181,7 @@ if USE_S3:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
-    AWS_LOCATION = env('AWS_STORAGE_ROOT')
+    AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
