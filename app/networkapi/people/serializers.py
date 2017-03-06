@@ -41,5 +41,7 @@ class PersonSerializer(serializers.ModelSerializer):
             'name',
             'role',
             'location',
-            'image'
+            'image',
+            'teams',
+            'links',
         )
