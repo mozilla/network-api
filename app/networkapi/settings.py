@@ -20,6 +20,7 @@ root = app - 1
 # we error out first.
 env = environ.Env(
     DEBUG=(bool, False),
+    USE_S3=(bool, True),
     ALLOWED_HOSTS=(list, []),
     CORS_WHITELIST=(tuple, ()),
     CORS_REGEX_WHITELIST=(tuple, ()),
@@ -59,6 +60,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'gunicorn',
     'corsheaders',
+    'storages',
+    'networkapi.people',
 ]
 
 MIDDLEWARE = [
@@ -166,6 +169,23 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ],
 }
+
+
+# Storage for user generated files
+USE_S3 = env('USE_S3')
+
+if USE_S3:
+    # Use S3 to store user files if the corresponding environment var is set
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+    AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
+else:
+    # Otherwise use the default filesystem storage
+    MEDIA_ROOT = root('media/')
+    MEDIA_URL = '/media/'
 
 
 # CORS

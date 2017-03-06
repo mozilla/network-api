@@ -12,6 +12,14 @@ django-environ==0.4.1
 # Static Files
 whitenoise==3.3.0
 
+# User Uploaded Files
+django-storages==1.5.2
+boto3==1.4.4
+python-slugify==1.2.1
+
+# Required for ImageField
+Pillow==4.0.0
+
 # CORS
 django-cors-headers==2.0.2
 
