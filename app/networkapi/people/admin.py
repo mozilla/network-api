@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from networkapi.people.models import Person, Link, Team
+
+admin.site.register(Person)
+admin.site.register(Link)
+admin.site.register(Team)
