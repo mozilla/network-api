@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'networkapi.people',
+    'networkapi.offerings'
 ]
 
 MIDDLEWARE = [
