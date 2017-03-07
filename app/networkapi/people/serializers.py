@@ -35,6 +35,7 @@ class PersonSerializer(serializers.ModelSerializer):
     """
     teams = TeamSerializer(many=True)
     links = LinkSerializer(many=True)
+
     class Meta:
         model = Person
         fields = (
