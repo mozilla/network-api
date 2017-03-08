@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import datetime, timezone
 from slugify import slugify
+from adminsortable.models import SortableMixin
 import os
 
 
@@ -32,7 +33,7 @@ class Link(models.Model):
         return str(self.url)
 
 
-class Person(models.Model):
+class Person(SortableMixin):
     """
     A member of the Network
     """
@@ -51,9 +52,15 @@ class Person(models.Model):
         Link,
         related_name='people',
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        db_index=True,
+    )
 
     class Meta:
         verbose_name_plural = 'people'
+        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)

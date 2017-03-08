@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'corsheaders',
     'storages',
+    'adminsortable',
     'networkapi.people',
 ]
 
@@ -82,7 +83,9 @@ ROOT_URLCONF = 'networkapi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            app('templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,6 +94,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'adminsortable_tags': 'networkapi.people.templatetags'
+                                      '.people_adminsortable_tags_custom'
+            }
         },
     },
 ]
