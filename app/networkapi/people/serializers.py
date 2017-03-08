@@ -6,12 +6,24 @@ from networkapi.people.models import (
     Team,
 )
 
+class LinkSerializer(serializers.ModelSerializer):
+    """
+    Serializes a Link Model
+    """
+    class Meta:
+        model = Link
+        fields = (
+            'url',
+            'name',
+        )
+
+
 class PersonSerializer(serializers.ModelSerializer):
     """
     Serializes a Person with Links and Teams included
     """
     teams = serializers.StringRelatedField(many=True)
-    links = serializers.StringRelatedField(many=True)
+    links = LinkSerializer(many=True)
 
     class Meta:
         model = Person
