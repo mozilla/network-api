@@ -1,0 +1,14 @@
+{% extends "adminsortable/change_list.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <link rel="stylesheet" href="{% static 'people/css/admin.sortable.custom.css' %}" />
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+
+    <script src="{% static 'people/js/admin.sortable.custom.js' %}"></script>
+{% endblock %}
