@@ -4,7 +4,6 @@ from adminsortable.admin import SortableAdmin
 from networkapi.people.models import (
     Person,
     Link,
-    Team,
     InternetHealthIssue,
     Affiliation,
 )
@@ -17,6 +16,5 @@ class PersonAdmin(SortableAdmin):
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Link)
-admin.site.register(Team)
 admin.site.register(InternetHealthIssue)
 admin.site.register(Affiliation)
