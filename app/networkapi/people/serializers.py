@@ -3,6 +3,9 @@ from rest_framework import serializers
 from networkapi.people.models import (
     Person,
     Link,
+    Team,
+    Affiliation,
+    InternetHealthIssue,
 )
 
 
@@ -23,6 +26,8 @@ class PersonSerializer(serializers.ModelSerializer):
     Serializes a Person with Links and Teams included
     """
     teams = serializers.StringRelatedField(many=True)
+    affiliations = serializers.StringRelatedField(many=True)
+    internet_health_issues = serializers.StringRelatedField(many=True)
     links = LinkSerializer(many=True)
 
     class Meta:
@@ -34,4 +39,9 @@ class PersonSerializer(serializers.ModelSerializer):
             'image',
             'teams',
             'links',
+            'bio',
+            'quote',
+            'affiliations',
+            'internet_health_issues',
+            'partnership_logo'
         )
