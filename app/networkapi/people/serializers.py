@@ -3,8 +3,8 @@ from rest_framework import serializers
 from networkapi.people.models import (
     Person,
     Link,
-    Team,
 )
+
 
 class LinkSerializer(serializers.ModelSerializer):
     """
