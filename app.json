@@ -24,7 +24,7 @@
         "required": true
     },
     "CORS_REGEX_WHITELIST": {
-        "required": true
+        "required": false
     },
     "XSS_PROTECTION": {
         "required": true
