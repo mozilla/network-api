@@ -20,9 +20,10 @@ class LinkSerializer(serializers.ModelSerializer):
 
 class PersonSerializer(serializers.ModelSerializer):
     """
-    Serializes a Person with Links and Teams included
+    Serializes a Person, including all many-to-many relations
     """
-    teams = serializers.StringRelatedField(many=True)
+    affiliations = serializers.StringRelatedField(many=True)
+    internet_health_issues = serializers.StringRelatedField(many=True)
     links = LinkSerializer(many=True)
 
     class Meta:
@@ -32,6 +33,10 @@ class PersonSerializer(serializers.ModelSerializer):
             'role',
             'location',
             'image',
-            'teams',
             'links',
+            'bio',
+            'quote',
+            'affiliations',
+            'internet_health_issues',
+            'partnership_logo'
         )

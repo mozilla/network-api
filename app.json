@@ -7,6 +7,9 @@
   "scripts": {
     "postdeploy": "python app/manage.py migrate"
   },
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
   "env": {
     "DEBUG": {
         "required": true
@@ -17,14 +20,8 @@
     "ALLOWED_HOSTS": {
         "required": true
     },
-    "DATABASE_URL": {
-        "required": true
-    },
     "CORS_WHITELIST": {
         "required": true
-    },
-    "CORS_REGEX_WHITELIST": {
-        "required": false
     },
     "XSS_PROTECTION": {
         "required": true

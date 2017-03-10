@@ -18,11 +18,17 @@ def person_image_path(instance, filename):
     )
 
 
-class Team(models.Model):
-    name = models.CharField(max_length=300)
-
-    def __str__(self):
-        return str(self.name)
+def person_partnership_logo_path(instance, filename):
+    return 'images/people/{name}_partnership_{timestamp}{ext}'.format(
+        name=slugify(instance.name, max_length=300),
+        timestamp=str(
+            int((
+                datetime.now(tz=timezone.utc) -
+                datetime(1970, 1, 1, tzinfo=timezone.utc)
+            ).total_seconds())
+        ),
+        ext=os.path.splitext(filename)[1]
+    )
 
 
 class Link(models.Model):
@@ -33,6 +39,20 @@ class Link(models.Model):
         return str(self.url)
 
 
+class InternetHealthIssue(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Affiliation(models.Model):
+    name = models.CharField(max_length=300)
+
+    def __str__(self):
+        return str(self.name)
+
+
 class Person(SortableMixin):
     """
     A member of the Network
@@ -40,17 +60,35 @@ class Person(SortableMixin):
     name = models.CharField(max_length=300)
     role = models.CharField(max_length=300)
     location = models.CharField(max_length=300)
+    quote = models.TextField(
+        max_length=1000,
+        default=''
+    )
+    bio = models.TextField(
+        max_length=5000,
+        default='',
+    )
     image = models.ImageField(
         max_length=2048,
         upload_to=person_image_path,
+        default='images/shared/default.png',
     )
-    teams = models.ManyToManyField(
-        Team,
+    partnership_logo = models.ImageField(
+        max_length=2048,
+        upload_to=person_partnership_logo_path,
+        default='images/shared/default.png',
+    )
+    affiliations = models.ManyToManyField(
+        Affiliation,
         related_name='people',
     )
     links = models.ManyToManyField(
         Link,
         related_name='people',
+    )
+    internet_health_issues = models.ManyToManyField(
+        InternetHealthIssue,
+        related_name='people'
     )
     order = models.PositiveIntegerField(
         default=0,
