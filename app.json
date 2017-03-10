@@ -23,9 +23,6 @@
     "CORS_WHITELIST": {
         "required": true
     },
-    "CORS_REGEX_WHITELIST": {
-        "required": false
-    },
     "XSS_PROTECTION": {
         "required": true
     },
