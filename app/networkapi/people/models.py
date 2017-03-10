@@ -17,6 +17,7 @@ def person_image_path(instance, filename):
         ext=os.path.splitext(filename)[1]
     )
 
+
 def person_partnership_logo_path(instance, filename):
     return 'images/people/{name}_partnership_{timestamp}{ext}'.format(
         name=slugify(instance.name, max_length=300),
@@ -49,7 +50,7 @@ class InternetHealthIssue(models.Model):
     name = models.CharField(max_length=50)
 
     def __str__(self):
-        return str(self.name);
+        return str(self.name)
 
 
 class Affiliation(models.Model):
