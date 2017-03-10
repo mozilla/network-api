@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
 from networkapi.people.models import Person
