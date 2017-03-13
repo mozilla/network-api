@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-cd app
 
-mkdir -p /app/media/images/shared
+mkdir -p media/images/shared
 
-cp /app/staticfiles/shared/images/default.png /app/media/images/shared
+cp networkapi/static/shared/images/default.png media/images/shared
