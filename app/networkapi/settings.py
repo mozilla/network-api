@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'storages',
     'adminsortable',
     'networkapi.people',
+    'networkapi.offerings'
 ]
 
 MIDDLEWARE = [
