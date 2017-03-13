@@ -86,6 +86,7 @@ class Person(SortableMixin):
     links = models.ManyToManyField(
         Link,
         related_name='people',
+        blank=True,
     )
     internet_health_issues = models.ManyToManyField(
         InternetHealthIssue,
