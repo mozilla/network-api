@@ -62,7 +62,8 @@ class Person(SortableMixin):
     location = models.CharField(max_length=300)
     quote = models.TextField(
         max_length=1000,
-        default=''
+        null=True,
+        blank=True,
     )
     bio = models.TextField(
         max_length=5000,
@@ -85,6 +86,7 @@ class Person(SortableMixin):
     links = models.ManyToManyField(
         Link,
         related_name='people',
+        blank=True,
     )
     internet_health_issues = models.ManyToManyField(
         InternetHealthIssue,
@@ -95,6 +97,7 @@ class Person(SortableMixin):
         editable=False,
         db_index=True,
     )
+    featured = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'people'
