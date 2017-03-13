@@ -11,19 +11,6 @@ from networkapi.people.forms import PersonAdminForm
 
 
 class PersonAdmin(SortableAdmin):
-    fields = (
-        'name',
-        'role',
-        'location',
-        'bio',
-        'image',
-        'partnership_logo',
-        'affiliations',
-        'links',
-        'internet_health_issues',
-        'featured',
-        'quote',
-    )
     form = PersonAdminForm
     sortable_change_list_template = (
         'people/adminsortable_change_list_custom.html'
