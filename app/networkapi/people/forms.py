@@ -17,18 +17,29 @@ class PersonAdminForm(forms.ModelForm):
             )
         return quote
 
+    def clean_bio(self):
+        cleaned_data = self.cleaned_data
+        bio = cleaned_data.get('bio')
+
+        if cleaned_data.get('featured') is True and not bio:
+            raise ValidationError(
+                Field.default_error_messages['required'],
+                code='required',
+            )
+        return bio
+
     class Meta:
         model = Person
         fields = (
             'name',
             'role',
             'location',
-            'bio',
             'image',
             'partnership_logo',
             'affiliations',
             'links',
             'internet_health_issues',
             'featured',
+            'bio',
             'quote',
         )
