@@ -1,7 +1,25 @@
 from rest_framework import serializers
 
-# from networkapi.opportunities.model import Opportunity
+from networkapi.opportunities.models import Opportunity
 
 
 class OpportunitySerializer(serializers.ModelSerializer):
-    pass
+    """
+    Serializes an Opportunity Model
+    """
+    link = serializers.SerializerMethodField('get_link_info')
+
+    def get_link_info(self, opportunity):
+        return {
+            'text': opportunity.link_text,
+            'url': opportunity.link_url,
+        }
+
+    class Meta:
+        model = Opportunity
+        fields = (
+            'name',
+            'header',
+            'description',
+            'link',
+        )

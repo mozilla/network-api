@@ -1,12 +1,22 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 
-# networkapi.opportunities.models import Opportunity
-# networkapi.opportunities.serializers import OpportunitySerializer
+from networkapi.opportunities.models import Opportunity
+from networkapi.opportunities.serializers import OpportunitySerializer
 
 
 class OpportunityListView(ListAPIView):
-    pass
+    """
+    A view that permits a GET to allow listing of Opportunities
+    in the database
+    """
+    queryset = Opportunity.objects.all()
+    serializer_class = OpportunitySerializer
+    pagination_class = None
 
 
 class OpportunityView(RetrieveAPIView):
-    pass
+    """
+    A view that permits a GET request for an Opportunity in the database
+    """
+    queryset = Opportunity.objects.all()
+    serializer_class = OpportunitySerializer

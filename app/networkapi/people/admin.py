@@ -12,7 +12,7 @@ from networkapi.people.forms import PersonAdminForm
 class PersonAdmin(SortableAdmin):
     form = PersonAdminForm
     sortable_change_list_template = (
-        'people/adminsortable_change_list_custom.html'
+        'shared/adminsortable_change_list_custom.html'
     )
 
     class Media:
