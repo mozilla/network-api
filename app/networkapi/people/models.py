@@ -62,11 +62,13 @@ class Person(SortableMixin):
         null=True,
         blank=True,
     )
-    image = models.ImageField(
+    # We use FileField instead of ImageField since Django does not support
+    # svgs for the ImageField
+    image = models.FileField(
         max_length=2048,
         upload_to=person_image_path,
     )
-    partnership_logo = models.ImageField(
+    partnership_logo = models.FileField(
         max_length=2048,
         upload_to=person_partnership_logo_path,
         null=True,
