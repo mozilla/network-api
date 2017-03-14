@@ -25,6 +25,7 @@ class PersonSerializer(serializers.ModelSerializer):
             'location',
             'image',
             'links',
+            'featured',
             'bio',
             'quote',
             'affiliations',
