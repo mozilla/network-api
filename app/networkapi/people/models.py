@@ -31,14 +31,6 @@ def person_partnership_logo_path(instance, filename):
     )
 
 
-class Link(models.Model):
-    url = models.CharField(max_length=4096)
-    name = models.CharField(max_length=300)
-
-    def __str__(self):
-        return str(self.url)
-
-
 class InternetHealthIssue(models.Model):
     name = models.CharField(max_length=50)
 
@@ -84,9 +76,14 @@ class Person(SortableMixin):
         Affiliation,
         related_name='people',
     )
-    links = models.ManyToManyField(
-        Link,
-        related_name='people',
+    twitter_url = models.URLField(
+        max_length=500,
+        null=True,
+        blank=True,
+    )
+    linkedin_url = models.URLField(
+        max_length=500,
+        null=True,
         blank=True,
     )
     internet_health_issues = models.ManyToManyField(
