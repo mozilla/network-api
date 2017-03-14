@@ -1,21 +1,6 @@
 from rest_framework import serializers
 
-from networkapi.people.models import (
-    Person,
-    Link,
-)
-
-
-class LinkSerializer(serializers.ModelSerializer):
-    """
-    Serializes a Link Model
-    """
-    class Meta:
-        model = Link
-        fields = (
-            'url',
-            'name',
-        )
+from networkapi.people.models import Person
 
 
 class PersonSerializer(serializers.ModelSerializer):
@@ -24,7 +9,13 @@ class PersonSerializer(serializers.ModelSerializer):
     """
     affiliations = serializers.StringRelatedField(many=True)
     internet_health_issues = serializers.StringRelatedField(many=True)
-    links = LinkSerializer(many=True)
+    links = serializers.SerializerMethodField()
+
+    def get_links(self, instance):
+        return {
+            'twitter': instance.twitter_url,
+            'linkedIn': instance.linkedin_url,
+        }
 
     class Meta:
         model = Person
