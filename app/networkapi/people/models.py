@@ -67,7 +67,8 @@ class Person(SortableMixin):
     )
     bio = models.TextField(
         max_length=5000,
-        default='',
+        null=True,
+        blank=True,
     )
     image = models.ImageField(
         max_length=2048,
