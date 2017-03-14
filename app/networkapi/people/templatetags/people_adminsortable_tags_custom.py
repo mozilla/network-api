@@ -46,6 +46,6 @@ def render_object_rep(
 ):
     context.update({'object': obj, 'forloop': forloop})
     tmpl = template.loader.get_template(
-        'shared/adminsortable_objects_custom.html'
+        'people/adminsortable_objects_custom.html'
     )
     return tmpl.render(context)

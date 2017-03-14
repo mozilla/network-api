@@ -7,9 +7,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
     """
     Serializes an Opportunity Model
     """
-    link = serializers.SerializerMethodField('get_link_info')
+    link = serializers.SerializerMethodField()
 
-    def get_link_info(self, opportunity):
+    def get_link(self, opportunity):
         return {
             'text': opportunity.link_text,
             'url': opportunity.link_url,
