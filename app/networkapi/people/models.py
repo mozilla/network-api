@@ -73,12 +73,12 @@ class Person(SortableMixin):
     image = models.ImageField(
         max_length=2048,
         upload_to=person_image_path,
-        default='images/shared/default.png',
     )
     partnership_logo = models.ImageField(
         max_length=2048,
         upload_to=person_partnership_logo_path,
-        default='images/shared/default.png',
+        null=True,
+        blank=True,
     )
     affiliations = models.ManyToManyField(
         Affiliation,
