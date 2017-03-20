@@ -9,8 +9,16 @@ from networkapi.people.models import (
 from networkapi.people.forms import PersonAdminForm
 
 
+class AffiliationAdmin(admin.TabularInline):
+    model = Affiliation
+    extra = 1
+
+
 class PersonAdmin(SortableAdmin):
     form = PersonAdminForm
+    inlines = [
+        AffiliationAdmin,
+    ]
     sortable_change_list_template = (
         'people/adminsortable_change_list_custom.html'
     )
@@ -21,4 +29,3 @@ class PersonAdmin(SortableAdmin):
 
 admin.site.register(Person, PersonAdmin)
 admin.site.register(InternetHealthIssue)
-admin.site.register(Affiliation)

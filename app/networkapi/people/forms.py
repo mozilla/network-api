@@ -36,7 +36,6 @@ class PersonAdminForm(forms.ModelForm):
             'location',
             'image',
             'partnership_logo',
-            'affiliations',
             'twitter_url',
             'linkedin_url',
             'internet_health_issues',
