@@ -38,13 +38,6 @@ class InternetHealthIssue(models.Model):
         return str(self.name)
 
 
-class Affiliation(models.Model):
-    name = models.CharField(max_length=300)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class Person(SortableMixin):
     """
     A member of the Network
@@ -74,10 +67,6 @@ class Person(SortableMixin):
         null=True,
         blank=True,
     )
-    affiliations = models.ManyToManyField(
-        Affiliation,
-        related_name='people',
-    )
     twitter_url = models.URLField(
         max_length=500,
         null=True,
@@ -102,6 +91,18 @@ class Person(SortableMixin):
     class Meta:
         verbose_name_plural = 'people'
         ordering = ('order',)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class Affiliation(models.Model):
+    name = models.CharField(max_length=300)
+    person = models.ForeignKey(
+        Person,
+        related_name='affiliations',
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return str(self.name)
