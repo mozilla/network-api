@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'adminsortable',
     'networkapi.people',
     'networkapi.opportunities',
+    'networkapi.news',
 ]
 
 MIDDLEWARE = [
