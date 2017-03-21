@@ -1,33 +1,25 @@
 from django.db import models
-from datetime import datetime, timezone
-from slugify import slugify
 from adminsortable.models import SortableMixin
-import os
+
+from networkapi.utility.images import get_image_upload_path
 
 
-def person_image_path(instance, filename):
-    return 'images/people/{name}_{timestamp}{ext}'.format(
-        name=slugify(instance.name, max_length=300),
-        timestamp=str(
-            int((
-                datetime.now(tz=timezone.utc) -
-                datetime(1970, 1, 1, tzinfo=timezone.utc)
-            ).total_seconds())
-        ),
-        ext=os.path.splitext(filename)[1]
+def get_people_image_upload_path(instance, filename):
+    return get_image_upload_path(
+        app_name='people',
+        prop_name='name',
+        instance=instance,
+        current_filename=filename
     )
 
 
-def person_partnership_logo_path(instance, filename):
-    return 'images/people/{name}_partnership_{timestamp}{ext}'.format(
-        name=slugify(instance.name, max_length=300),
-        timestamp=str(
-            int((
-                datetime.now(tz=timezone.utc) -
-                datetime(1970, 1, 1, tzinfo=timezone.utc)
-            ).total_seconds())
-        ),
-        ext=os.path.splitext(filename)[1]
+def get_people_partnership_logo_upload_path(instance, filename):
+    return get_image_upload_path(
+        app_name='people',
+        prop_name='name',
+        suffix='_partnership',
+        instance=instance,
+        current_filename=filename
     )
 
 
@@ -59,11 +51,11 @@ class Person(SortableMixin):
     # svgs for the ImageField
     image = models.FileField(
         max_length=2048,
-        upload_to=person_image_path,
+        upload_to=get_people_image_upload_path
     )
     partnership_logo = models.FileField(
         max_length=2048,
-        upload_to=person_partnership_logo_path,
+        upload_to=get_people_partnership_logo_upload_path,
         null=True,
         blank=True,
     )
