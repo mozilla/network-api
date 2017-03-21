@@ -20,9 +20,8 @@ def opportunity_image_path(instance, filename):
 
 class Opportunity(SortableMixin):
     name = models.CharField(max_length=300)
-    header = models.TextField(max_length=5000)
     description = models.TextField(max_length=5000)
-    link_text = models.CharField(max_length=300)
+    link_label = models.CharField(max_length=300)
     link_url = models.URLField(max_length=2048)
     image = models.FileField(
         max_length=2048,
@@ -33,6 +32,7 @@ class Opportunity(SortableMixin):
         editable=False,
         db_index=True,
     )
+    featured = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'opportunities'
