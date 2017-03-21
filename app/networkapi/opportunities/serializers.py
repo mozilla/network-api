@@ -11,7 +11,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
 
     def get_link(self, opportunity):
         return {
-            'text': opportunity.link_text,
+            'label': opportunity.link_label,
             'url': opportunity.link_url,
         }
 
