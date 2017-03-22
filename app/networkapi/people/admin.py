@@ -20,7 +20,7 @@ class PersonAdmin(SortableAdmin):
         AffiliationAdmin,
     ]
     sortable_change_list_template = (
-        'people/adminsortable_change_list_custom.html'
+        'shared/adminsortable_change_list_custom.html'
     )
 
     class Media:
