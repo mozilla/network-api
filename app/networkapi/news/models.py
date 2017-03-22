@@ -43,3 +43,6 @@ class News(models.Model):
         related_name='news',
     )
     featured = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = 'news'
