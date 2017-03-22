@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='opportunity',
             name='image',
-            field=models.FileField(default='', max_length=2048, upload_to=networkapi.opportunities.models.opportunity_image_path),
+            field=models.FileField(default='', max_length=2048, upload_to=networkapi.opportunities.models.get_opportunities_image_upload_path),
             preserve_default=False,
         ),
         migrations.AddField(

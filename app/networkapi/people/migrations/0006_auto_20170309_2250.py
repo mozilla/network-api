@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='person',
             name='partnership_logo',
-            field=models.ImageField(default='images/shared/default.png', max_length=2048, upload_to=networkapi.people.models.person_partnership_logo_path),
+            field=models.ImageField(default='images/shared/default.png', max_length=2048, upload_to=networkapi.people.models.get_people_partnership_logo_upload_path),
         ),
         migrations.AddField(
             model_name='person',
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='image',
-            field=models.ImageField(default='images/shared/default.png', max_length=2048, upload_to=networkapi.people.models.person_image_path),
+            field=models.ImageField(default='images/shared/default.png', max_length=2048, upload_to=networkapi.people.models.get_people_image_upload_path),
         ),
         migrations.AddField(
             model_name='person',

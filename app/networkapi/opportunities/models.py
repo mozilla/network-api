@@ -1,20 +1,15 @@
 from django.db import models
-from datetime import datetime, timezone
-from slugify import slugify
 from adminsortable.models import SortableMixin
-import os
+
+from networkapi.utility.images import get_image_upload_path
 
 
-def opportunity_image_path(instance, filename):
-    return 'images/opportunity/{name}_{timestamp}{ext}'.format(
-        name=slugify(instance.name, max_length=300),
-        timestamp=str(
-            int((
-                datetime.now(tz=timezone.utc) -
-                datetime(1970, 1, 1, tzinfo=timezone.utc)
-            ).total_seconds())
-        ),
-        ext=os.path.splitext(filename)[1]
+def get_opportunities_image_upload_path(instance, filename):
+    return get_image_upload_path(
+        app_name='opportunities',
+        prop_name='name',
+        instance=instance,
+        current_filename=filename
     )
 
 
@@ -25,7 +20,7 @@ class Opportunity(SortableMixin):
     link_url = models.URLField(max_length=2048)
     image = models.FileField(
         max_length=2048,
-        upload_to=opportunity_image_path,
+        upload_to=get_opportunities_image_upload_path,
     )
     order = models.PositiveIntegerField(
         default=0,

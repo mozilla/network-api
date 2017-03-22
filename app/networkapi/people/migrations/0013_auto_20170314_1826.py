@@ -16,6 +16,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='partnership_logo',
-            field=models.ImageField(blank=True, max_length=2048, null=True, upload_to=networkapi.people.models.person_partnership_logo_path),
+            field=models.ImageField(blank=True, max_length=2048, null=True, upload_to=networkapi.people.models.get_people_partnership_logo_upload_path),
         ),
     ]
