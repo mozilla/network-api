@@ -19,7 +19,8 @@ class OpportunitySerializer(serializers.ModelSerializer):
         model = Opportunity
         fields = (
             'name',
-            'header',
             'description',
             'link',
+            'featured',
+            'image'
         )
