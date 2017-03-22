@@ -18,6 +18,9 @@ class Topic(models.Model):
     """
     name = models.CharField(max_length=300)
 
+    def __str__(self):
+        return str(self.name)
+
 
 class News(models.Model):
     """
@@ -38,11 +41,17 @@ class News(models.Model):
         null=True,
         blank=True,
     )
-    topic = models.ManyToManyField(
+    topic = models.ForeignKey(
         Topic,
         related_name='news',
+        null=True,
+        on_delete=models.SET_NULL,
     )
     featured = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'news'
+        ordering = ('-date',)
+
+    def __str__(self):
+        return str(self.headline)

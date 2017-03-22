@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^people/', include('networkapi.people.urls')),
     url(r'^opportunities/', include('networkapi.opportunities.urls')),
+    url(r'^news/', include('networkapi.news.urls')),
 ]
 
 if settings.USE_S3 is not True:
