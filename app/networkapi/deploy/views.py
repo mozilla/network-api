@@ -1,12 +1,23 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import (
+    api_view,
+    authentication_classes,
+    permission_classes,
+)
 from rest_framework import authentication, permissions
 from rest_framework.response import Response
 from django.conf import settings
 
 import requests
 
+
 def get_jenkins_url(jenkins_url, env, staging_job, token):
-    return '{}/view/{}/job/{}/build?token={}&cause=Django+Admin+Trigger'.format(jenkins_url, env, staging_job, token)
+    url = '{}/view/{}/job/{}/build?token={}&cause=Django+Admin+Trigger'
+    return url.format(
+        jenkins_url,
+        env,
+        staging_job,
+        token
+    )
 
 staging_job_url = get_jenkins_url(
     settings.JENKINS_URL,
@@ -21,6 +32,7 @@ production_job_url = get_jenkins_url(
     settings.JENKINS_PRODUCTION_JOB,
     settings.JENKINS_TOKEN
 )
+
 
 @api_view(['GET'])
 @authentication_classes([authentication.TokenAuthentication])
