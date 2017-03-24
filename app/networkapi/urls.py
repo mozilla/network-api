@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    url(r'^admin/deploy/', include('networkapi.deploy.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^people/', include('networkapi.people.urls')),
     url(r'^opportunities/', include('networkapi.opportunities.urls')),

@@ -30,3 +30,4 @@ env:
     - SET_HSTS=False
     - SSL_REDIRECT=False
     - X_FRAME_OPTIONS=DENY
+    - USE_JENKINS=False
