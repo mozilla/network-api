@@ -19,19 +19,20 @@ def get_jenkins_url(jenkins_url, env, staging_job, token):
         token
     )
 
-staging_job_url = get_jenkins_url(
-    settings.JENKINS_URL,
-    'STAGING',
-    settings.JENKINS_STAGING_JOB,
-    settings.JENKINS_TOKEN
-)
+if settings.USE_JENKINS:
+    staging_job_url = get_jenkins_url(
+        settings.JENKINS_URL,
+        'STAGING',
+        settings.JENKINS_STAGING_JOB,
+        settings.JENKINS_TOKEN
+    )
 
-production_job_url = get_jenkins_url(
-    settings.JENKINS_URL,
-    'PROD',
-    settings.JENKINS_PRODUCTION_JOB,
-    settings.JENKINS_TOKEN
-)
+    production_job_url = get_jenkins_url(
+        settings.JENKINS_URL,
+        'PROD',
+        settings.JENKINS_PRODUCTION_JOB,
+        settings.JENKINS_TOKEN
+    )
 
 
 @api_view(['GET'])
@@ -41,6 +42,9 @@ def deployView(request, env, format=None):
     """
     Trigger a Jenkins deployment
     """
+
+    if not settings.USE_JENKINS:
+        return Response("Disabled", 400)
 
     if not request.user.has_perm('app.can_reboot_server'):
         return Response("Unauthorized", 401)

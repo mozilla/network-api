@@ -28,7 +28,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
-    USE_JENKINS=bool,
+    USE_JENKINS=(bool, False),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
