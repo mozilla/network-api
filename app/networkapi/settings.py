@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'networkapi.people',
     'networkapi.opportunities',
     'networkapi.news',
+    'networkapi.deploy',
 ]
 
 MIDDLEWARE = [
@@ -206,6 +207,12 @@ else:
     CORS_ORIGIN_WHITELIST = env('CORS_WHITELIST')
     CORS_ORIGIN_REGEX_WHITELIST = env('CORS_REGEX_WHITELIST')
 
+# Jenkins
+if env('USE_JENKINS'):
+    JENKINS_URL = env('JENKINS_URL')
+    JENKINS_TOKEN = env('JENKINS_TOKEN')
+    JENKINS_STAGING_JOB = env('JENKINS_STAGING_JOB')
+    JENKINS_PRODUCTION_JOB = env('JENKINS_PRODUCTION_JOB')
 
 # Security
 SECURE_BROWSER_XSS_FILTER = env('XSS_PROTECTION')
