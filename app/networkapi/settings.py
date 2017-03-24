@@ -28,6 +28,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    JENKINS_URL=bool,
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -208,9 +209,7 @@ else:
     CORS_ORIGIN_REGEX_WHITELIST = env('CORS_REGEX_WHITELIST')
 
 # Jenkins
-USE_JENKINS = env('USE_JENKINS')
-
-if USE_JENKINS is True:
+if USE_JENKINS:
     JENKINS_URL = env('JENKINS_URL')
     JENKINS_TOKEN = env('JENKINS_TOKEN')
     JENKINS_STAGING_JOB = env('JENKINS_STAGING_JOB')
