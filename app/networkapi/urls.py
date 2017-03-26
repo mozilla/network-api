@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+import mezzanine
 from mezzanine.core.views import direct_to_template
 from mezzanine.conf import settings
 
@@ -28,7 +29,8 @@ urlpatterns = [
     url(r'^rest/people/', include('networkapi.people.urls')),
     url(r'^rest/opportunities/', include('networkapi.opportunities.urls')),
     url(r'^rest/news/', include('networkapi.news.urls')),
-    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    # url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url("^$", mezzanine.pages.views.page, {"slug": "/"}, name="home"),
     url("^", include("mezzanine.urls")),
 ]
 
