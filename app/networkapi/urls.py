@@ -18,12 +18,22 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+from mezzanine.core.views import direct_to_template
+from mezzanine.conf import settings
+
+admin.autodiscover()
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^people/', include('networkapi.people.urls')),
-    url(r'^opportunities/', include('networkapi.opportunities.urls')),
-    url(r'^news/', include('networkapi.news.urls')),
+    url("^admin/", include(admin.site.urls)),
+    url(r'^rest/people/', include('networkapi.people.urls')),
+    url(r'^rest/opportunities/', include('networkapi.opportunities.urls')),
+    url(r'^rest/news/', include('networkapi.news.urls')),
+    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url("^", include("mezzanine.urls")),
 ]
+
+handler404 = "mezzanine.core.views.page_not_found"
+handler500 = "mezzanine.core.views.server_error"
 
 if settings.USE_S3 is not True:
     urlpatterns += static(
