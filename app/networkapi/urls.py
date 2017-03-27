@@ -24,9 +24,9 @@ admin.autodiscover()
 
 urlpatterns = [
     url("^admin/", include(admin.site.urls)),
-    url(r'^rest/people/', include('networkapi.people.urls')),
-    url(r'^rest/opportunities/', include('networkapi.opportunities.urls')),
-    url(r'^rest/news/', include('networkapi.news.urls')),
+    url(r'^api/people/', include('networkapi.people.urls')),
+    url(r'^api/opportunities/', include('networkapi.opportunities.urls')),
+    url(r'^api/news/', include('networkapi.news.urls')),
     # url("^$", direct_to_template, {"template": "index.html"}, name="home"),
     url("^$", mezzanine.pages.views.page, {"slug": "/"}, name="home"),
     url("^", include("mezzanine.urls")),
