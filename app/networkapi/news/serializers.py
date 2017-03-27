@@ -14,7 +14,6 @@ class NewsSerializer(serializers.ModelSerializer):
         fields = (
             'headline',
             'outlet',
-            'topic',
             'date',
             'link',
             'author',

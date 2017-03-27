@@ -34,16 +34,26 @@ class Person(SortableMixin):
     """
     A member of the Network
     """
-    name = models.CharField(max_length=300)
-    role = models.CharField(max_length=300)
+    name = models.CharField(
+        max_length=300,
+        help_text='Person\'s Full Name',
+    )
+    role = models.CharField(
+        max_length=300,
+        help_text='Role within the Mozilla Network',
+    )
     location = models.CharField(max_length=300)
     quote = models.TextField(
         max_length=1000,
+        help_text='Quote about the awesomeness/impact of the network, '
+                  'internet health or one of the issues',
         null=True,
         blank=True,
     )
     bio = models.TextField(
         max_length=5000,
+        help_text='3 bullet-point biography of the person. Bullet-points '
+                  'should use a \'-\' and each point should be on a new line',
         null=True,
         blank=True,
     )
@@ -51,34 +61,43 @@ class Person(SortableMixin):
     # svgs for the ImageField
     image = models.FileField(
         max_length=2048,
+        help_text='Profile image of the person',
         upload_to=get_people_image_upload_path
     )
     partnership_logo = models.FileField(
         max_length=2048,
+        help_text='Affiliated Organization\'s logo',
         upload_to=get_people_partnership_logo_upload_path,
         null=True,
         blank=True,
     )
     twitter_url = models.URLField(
         max_length=500,
+        help_text='Link to twitter account',
         null=True,
         blank=True,
     )
     linkedin_url = models.URLField(
         max_length=500,
+        help_text='Link to LinkedIn account',
         null=True,
         blank=True,
     )
     internet_health_issues = models.ManyToManyField(
         InternetHealthIssue,
-        related_name='people'
+        related_name='people',
+        help_text='Which Internet Health Issues does the person most align '
+                  'with?',
     )
     order = models.PositiveIntegerField(
         default=0,
         editable=False,
         db_index=True,
     )
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(
+        help_text='Do you want to feature this person?',
+        default=False,
+    )
 
     class Meta:
         verbose_name_plural = 'people'
@@ -89,7 +108,10 @@ class Person(SortableMixin):
 
 
 class Affiliation(models.Model):
-    name = models.CharField(max_length=300)
+    name = models.CharField(
+        max_length=300,
+        help_text='Organization\'s name',
+    )
     person = models.ForeignKey(
         Person,
         related_name='affiliations',

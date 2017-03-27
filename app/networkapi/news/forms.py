@@ -7,8 +7,11 @@ from networkapi.news.models import News
 
 class NewsAdminForm(forms.ModelForm):
     date = forms.DateField(
-        widget=SelectDateWidget,
+        widget=SelectDateWidget(
+            years=range(date.today().year + 3, date.today().year - 8, -1),
+        ),
         initial=date.today(),
+        help_text='Publish date of the media',
     )
 
     class Meta:
@@ -16,11 +19,9 @@ class NewsAdminForm(forms.ModelForm):
         fields = (
             'headline',
             'outlet',
-            'topic',
             'date',
             'link',
             'author',
             'glyph',
-            'topic',
             'featured',
         )
