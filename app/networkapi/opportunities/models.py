@@ -1,5 +1,4 @@
 from django.db import models
-from adminsortable.models import SortableMixin
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -13,7 +12,7 @@ def get_opportunities_image_upload_path(instance, filename):
     )
 
 
-class Opportunity(SortableMixin):
+class Opportunity(models.Model):
     name = models.CharField(
         max_length=300,
         help_text='Title of the opportunity',
@@ -36,11 +35,6 @@ class Opportunity(SortableMixin):
         help_text='Image representing this opportunity',
         upload_to=get_opportunities_image_upload_path,
     )
-    order = models.PositiveIntegerField(
-        default=0,
-        editable=False,
-        db_index=True,
-    )
     featured = models.BooleanField(
         help_text='Do you want to feature this opportunity?',
         default=False,
@@ -48,7 +42,6 @@ class Opportunity(SortableMixin):
 
     class Meta:
         verbose_name_plural = 'opportunities'
-        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)

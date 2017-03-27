@@ -72,7 +72,6 @@ INSTALLED_APPS = [
     'gunicorn',
     'corsheaders',
     'storages',
-    'adminsortable',
     'networkapi.people',
     'networkapi.opportunities',
     'networkapi.news',
@@ -139,11 +138,7 @@ TEMPLATES = [
             ],
             "builtins": [
                 "mezzanine.template.loader_tags",
-            ],
-            'libraries': {
-                'adminsortable_tags': 'networkapi.people.templatetags'
-                                      '.people_adminsortable_tags_custom'
-            }
+            ]
         },
     },
 ]
