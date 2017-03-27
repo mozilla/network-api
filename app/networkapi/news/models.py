@@ -12,42 +12,42 @@ def get_news_glyph_upload_path(instance, filename):
     )
 
 
-class Topic(models.Model):
-    """
-    News Topics/Categories
-    """
-    name = models.CharField(max_length=300)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class News(models.Model):
     """
-    Medium blog posts and articles
+    Medium blog posts, articles and other media
     """
-    headline = models.CharField(max_length=300)
-    outlet = models.CharField(max_length=300)
-    date = models.DateField()
-    link = models.URLField(max_length=500)
+    headline = models.CharField(
+        max_length=300,
+        help_text='Title of the article, post or media clip',
+    )
+    outlet = models.CharField(
+        max_length=300,
+        help_text='Source of the article or media clip',
+    )
+    date = models.DateField(
+        help_text='Publish date of the media',
+    )
+    link = models.URLField(
+        max_length=500,
+        help_text='URL link to the article/media clip',
+    )
     author = models.CharField(
         max_length=300,
+        help_text='Name of the author of this news clip',
         blank=True,
         null=True,
     )
     glyph = models.FileField(
         max_length=2048,
+        help_text='Image associated with the article',
         upload_to=get_news_glyph_upload_path,
         null=True,
         blank=True,
     )
-    topic = models.ForeignKey(
-        Topic,
-        related_name='news',
-        null=True,
-        on_delete=models.SET_NULL,
+    featured = models.BooleanField(
+        help_text='Do you want to feature this news piece?',
+        default=False,
     )
-    featured = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'news'

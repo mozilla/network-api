@@ -14,12 +14,26 @@ def get_opportunities_image_upload_path(instance, filename):
 
 
 class Opportunity(SortableMixin):
-    name = models.CharField(max_length=300)
-    description = models.TextField(max_length=5000)
-    link_label = models.CharField(max_length=300)
-    link_url = models.URLField(max_length=2048)
+    name = models.CharField(
+        max_length=300,
+        help_text='Title of the opportunity',
+    )
+    description = models.TextField(
+        max_length=5000,
+        help_text='Description of the opportunity',
+    )
+    link_label = models.CharField(
+        max_length=300,
+        help_text='Text to show that links to this opportunity\'s '
+                  'details page',
+    )
+    link_url = models.URLField(
+        max_length=2048,
+        help_text='Link to this opportunity\'s details page',
+    )
     image = models.FileField(
         max_length=2048,
+        help_text='Image representing this opportunity',
         upload_to=get_opportunities_image_upload_path,
     )
     order = models.PositiveIntegerField(
@@ -27,7 +41,10 @@ class Opportunity(SortableMixin):
         editable=False,
         db_index=True,
     )
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(
+        help_text='Do you want to feature this opportunity?',
+        default=False,
+    )
 
     class Meta:
         verbose_name_plural = 'opportunities'
