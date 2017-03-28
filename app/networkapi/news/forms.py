@@ -21,6 +21,7 @@ class NewsAdminForm(forms.ModelForm):
             'outlet',
             'date',
             'link',
+            'excerpt',
             'author',
             'glyph',
             'featured',
