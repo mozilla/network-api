@@ -16,6 +16,7 @@ class NewsSerializer(serializers.ModelSerializer):
             'outlet',
             'date',
             'link',
+            'excerpt',
             'author',
             'glyph',
             'topic',

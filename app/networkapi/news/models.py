@@ -31,6 +31,12 @@ class News(models.Model):
         max_length=500,
         help_text='URL link to the article/media clip',
     )
+    excerpt = models.TextField(
+        max_length=1000,
+        help_text='A small extract from the article',
+        blank=True,
+        null=True,
+    )
     author = models.CharField(
         max_length=300,
         help_text='Name of the author of this news clip',
