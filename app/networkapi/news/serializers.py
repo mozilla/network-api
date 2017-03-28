@@ -19,6 +19,5 @@ class NewsSerializer(serializers.ModelSerializer):
             'excerpt',
             'author',
             'glyph',
-            'topic',
             'featured',
         )
