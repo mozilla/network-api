@@ -7,8 +7,6 @@ class NewsSerializer(serializers.ModelSerializer):
     """
     Serializes a News object
     """
-    topic = serializers.StringRelatedField()
-
     class Meta:
         model = News
         fields = (
