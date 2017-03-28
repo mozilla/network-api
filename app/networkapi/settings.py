@@ -28,6 +28,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    USE_JENKINS=(bool, False),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -65,6 +66,7 @@ INSTALLED_APPS = [
     'networkapi.people',
     'networkapi.opportunities',
     'networkapi.news',
+    'networkapi.deploy',
 ]
 
 MIDDLEWARE = [
@@ -206,6 +208,14 @@ else:
     CORS_ORIGIN_WHITELIST = env('CORS_WHITELIST')
     CORS_ORIGIN_REGEX_WHITELIST = env('CORS_REGEX_WHITELIST')
 
+# Jenkins
+USE_JENKINS = env('USE_JENKINS')
+
+if USE_JENKINS:
+    JENKINS_URL = env('JENKINS_URL')
+    JENKINS_TOKEN = env('JENKINS_TOKEN')
+    JENKINS_STAGING_JOB = env('JENKINS_STAGING_JOB')
+    JENKINS_PRODUCTION_JOB = env('JENKINS_PRODUCTION_JOB')
 
 # Security
 SECURE_BROWSER_XSS_FILTER = env('XSS_PROTECTION')
