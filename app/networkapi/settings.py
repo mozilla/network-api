@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 '''
 
 import environ
-import os
 
 app = environ.Path(__file__) - 1
 root = app - 1
@@ -37,16 +36,13 @@ BASE_DIR = root()
 APP_DIR = app()
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 SITE_ID = 1
 
@@ -110,15 +106,6 @@ OPTIONAL_APPS = (
 )
 
 ROOT_URLCONF = 'networkapi.urls'
-
-#########
-# PATHS #
-#########
-
-# Full filesystem path to the project.
-PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
-PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
-PROJECT_ROOT = BASE_DIR = os.path.dirname(PROJECT_APP_PATH)
 
 TEMPLATES = [
     {

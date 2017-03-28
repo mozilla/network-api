@@ -27,7 +27,6 @@ urlpatterns = [
     url(r'^api/people/', include('networkapi.people.urls')),
     url(r'^api/opportunities/', include('networkapi.opportunities.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
-    # url("^$", direct_to_template, {"template": "index.html"}, name="home"),
     url("^$", mezzanine.pages.views.page, {"slug": "/"}, name="home"),
     url("^", include("mezzanine.urls")),
 ]
