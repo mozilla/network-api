@@ -1,7 +1,10 @@
 # Core
-Django==1.10.3
+Django==1.10.6
 gunicorn==19.6.0
 djangorestframework==3.5.4
+
+# Mezzanine CMS
+Mezzanine==4.2.3
 
 # Database Adapter
 psycopg2==2.6.2
@@ -19,9 +22,6 @@ python-slugify==1.2.1
 
 # Required for ImageField
 Pillow==4.0.0
-
-# Admin sort models
-django-admin-sortable==2.0.21
 
 # CORS
 django-cors-headers==2.0.2

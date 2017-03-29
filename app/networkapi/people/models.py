@@ -1,5 +1,4 @@
 from django.db import models
-from adminsortable.models import SortableMixin
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -30,7 +29,7 @@ class InternetHealthIssue(models.Model):
         return str(self.name)
 
 
-class Person(SortableMixin):
+class Person(models.Model):
     """
     A member of the Network
     """
@@ -89,11 +88,6 @@ class Person(SortableMixin):
         help_text='Which Internet Health Issues does the person most align '
                   'with?',
     )
-    order = models.PositiveIntegerField(
-        default=0,
-        editable=False,
-        db_index=True,
-    )
     featured = models.BooleanField(
         help_text='Do you want to feature this person?',
         default=False,
@@ -101,7 +95,6 @@ class Person(SortableMixin):
 
     class Meta:
         verbose_name_plural = 'people'
-        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)
