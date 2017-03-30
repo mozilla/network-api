@@ -14,7 +14,7 @@ class FeatureListView(ListAPIView):
     """
     now = timezone.now()
     queryset = Feature.objects.filter(
-        Q(publish_after__lt=now) | Q(expires__isnull=True),
+        Q(publish_after__lt=now) | Q(publish_after__isnull=True),
         Q(expires__gt=now) | Q(expires__isnull=True),
     )
     serializer_class = FeatureSerializer
@@ -27,7 +27,7 @@ class FeatureView(RetrieveAPIView):
     """
     now = timezone.now()
     queryset = Feature.objects.filter(
-        Q(publish_after__lt=now) | Q(expires__isnull=True),
+        Q(publish_after__lt=now) | Q(publish_after__isnull=True),
         Q(expires__gt=now) | Q(expires__isnull=True),
     )
     serializer_class = FeatureSerializer
