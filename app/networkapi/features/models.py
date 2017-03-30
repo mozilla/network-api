@@ -43,7 +43,6 @@ class Feature(models.Model):
     publish_after = models.DateTimeField(
         help_text='Publish this feature after this date and time (UTC)',
         default=timezone.now,
-        null=True,
     )
     expires = models.DateTimeField(
         help_text='Unpublish this feature after this date and time (UTC). '
