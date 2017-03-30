@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 from networkapi.utility.images import get_image_upload_path
@@ -91,6 +92,18 @@ class Person(models.Model):
     featured = models.BooleanField(
         help_text='Do you want to feature this person?',
         default=False,
+    )
+    publish_after = models.DateTimeField(
+        help_text='Publish this person after this date and time (UTC)',
+        default=timezone.now,
+        null=True,
+    )
+    expires = models.DateTimeField(
+        help_text='Unpublish this person after this date and time (UTC). '
+                  'Leave blank to never unpublish',
+        default=None,
+        null=True,
+        blank=True,
     )
 
     class Meta:

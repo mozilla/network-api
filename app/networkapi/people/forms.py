@@ -42,4 +42,6 @@ class PersonAdminForm(forms.ModelForm):
             'featured',
             'bio',
             'quote',
+            'publish_after',
+            'expires'
         )
