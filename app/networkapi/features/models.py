@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 
 from django.db import models
@@ -40,6 +41,18 @@ class Feature(models.Model):
     featured = models.BooleanField(
         help_text='Do you want to feature this feature?',
         default=False,
+    )
+    publish_after = models.DateTimeField(
+        help_text='Publish this feature after this date and time (UTC)', 
+        default=timezone.now,
+        null=True,
+    )
+    expires = models.DateTimeField(
+        help_text='Unpublish this feature after this date and time (UTC). '
+                  'Leave blank to never unpublish',
+        default=None,
+        null=True,
+        blank=True,
     )
 
     class Meta:
