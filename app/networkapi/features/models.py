@@ -1,8 +1,6 @@
 from django.utils import timezone
 from django.db import models
 
-from django.db import models
-
 from networkapi.utility.images import get_image_upload_path
 
 
@@ -43,7 +41,7 @@ class Feature(models.Model):
         default=False,
     )
     publish_after = models.DateTimeField(
-        help_text='Publish this feature after this date and time (UTC)', 
+        help_text='Publish this feature after this date and time (UTC)',
         default=timezone.now,
         null=True,
     )
