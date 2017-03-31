@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
+# This script is run post-compile by the python buildpack.
+# It removes filebrowser-safe, which has poor compatibility with Cloud based media storage.
+
 cd app
 
 pip uninstall filebrowser-safe --yes
 
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --clear
