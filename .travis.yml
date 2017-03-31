@@ -31,3 +31,4 @@ env:
     - SSL_REDIRECT=False
     - X_FRAME_OPTIONS=DENY
     - ALLOWED_HOSTS=localhost
+    - CSRF_TRUSTED_ORIGINS=localhost
