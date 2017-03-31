@@ -1,1 +1,2 @@
-web: sh scripts/heroku_startup.sh
+release: python app/manage.py migrate
+web: cd app && gunicorn networkapi.wsgi:application
