@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+cd app
+
+pip uninstall filebrowser-safe --yes
+
+python manage.py collectstatic --noinput
