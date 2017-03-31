@@ -71,6 +71,7 @@ INSTALLED_APPS = [
     'networkapi.people',
     'networkapi.opportunities',
     'networkapi.news',
+    'networkapi.landingpage',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -169,6 +170,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
 
+# Remove these classes from the admin interface
+ADMIN_REMOVAL = [
+    'mezzanine.pages.models.RichTextPage',
+    'mezzanine.pages.models.Link',
+    'mezzanine.forms.models.Form',
+    'mezzanine.generic.models.ThreadedComment',
+    # 'mezzanine.galleries.models.gallery',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
