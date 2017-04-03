@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'networkapi.people',
-    'networkapi.opportunities',
+    'networkapi.features',
     'networkapi.news',
 ]
 
