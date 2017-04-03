@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from adminsortable.models import SortableMixin
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -13,7 +14,7 @@ def get_features_image_upload_path(instance, filename):
     )
 
 
-class Feature(models.Model):
+class Feature(SortableMixin):
     name = models.CharField(
         max_length=300,
         help_text='Title of the feature',
@@ -51,9 +52,15 @@ class Feature(models.Model):
         null=True,
         blank=True,
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        db_index=True,
+    )
 
     class Meta:
         verbose_name_plural = 'features'
+        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)

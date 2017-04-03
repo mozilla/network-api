@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'gunicorn',
     'corsheaders',
     'storages',
+    'adminsortable',
     'networkapi.people',
     'networkapi.features',
     'networkapi.news',
@@ -119,6 +120,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'mezzanine.conf.context_processors.settings',
@@ -126,7 +128,11 @@ TEMPLATES = [
             ],
             'builtins': [
                 'mezzanine.template.loader_tags',
-            ]
+            ],
+            'libraries': {
+                'features_adminsortable_tags': 'networkapi.features.templatetags'
+                                               '.features_adminsortable_tags_custom'
+            }
         },
     },
 ]
