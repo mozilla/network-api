@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.db.models import Q
+from adminsortable.models import SortableMixin
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -26,7 +27,7 @@ class FeatureQuerySet(models.query.QuerySet):
         )
 
 
-class Feature(models.Model):
+class Feature(SortableMixin):
     name = models.CharField(
         max_length=300,
         help_text='Title of the feature',
@@ -65,11 +66,17 @@ class Feature(models.Model):
         null=True,
         blank=True,
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        db_index=True,
+    )
 
     objects = FeatureQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'features'
+        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)
