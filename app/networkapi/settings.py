@@ -228,7 +228,7 @@ if USE_S3:
     AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
     DEFAULT_S3_PATH = 'network'
     MEDIA_ROOT = ''
-    MEDIA_URL = ''
+    MEDIA_URL = 'https://' + env('AWS_S3_CUSTOM_DOMAIN') + '/'
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
