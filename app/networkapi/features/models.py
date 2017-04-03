@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.db import models
+from django.db.models import Q
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -12,6 +13,17 @@ def get_features_image_upload_path(instance, filename):
         current_filename=filename
     )
 
+
+class FeatureQuerySet(models.query.QuerySet):
+    """
+    A QuerySet for features that filters for published features.
+    """
+    def published(self):
+        now = timezone.now()
+        return self.filter(
+            Q(expires__gt=now) | Q(expires__isnull=True),
+            publish_after__lt=now,
+        )
 
 class Feature(models.Model):
     name = models.CharField(
@@ -51,6 +63,8 @@ class Feature(models.Model):
         null=True,
         blank=True,
     )
+
+    objects = FeatureQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'features'
