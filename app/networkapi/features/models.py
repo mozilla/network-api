@@ -25,6 +25,7 @@ class FeatureQuerySet(models.query.QuerySet):
             publish_after__lt=now,
         )
 
+
 class Feature(models.Model):
     name = models.CharField(
         max_length=300,

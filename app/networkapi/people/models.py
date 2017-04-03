@@ -26,7 +26,7 @@ def get_people_partnership_logo_upload_path(instance, filename):
 
 class PeopleQuerySet(models.query.QuerySet):
     """
-    A QuerySet for people that filters for published people records 
+    A QuerySet for people that filters for published people records
     """
     def published(self):
         now = timezone.now()
@@ -107,7 +107,8 @@ class Person(models.Model):
         default=False,
     )
     publish_after = models.DateTimeField(
-        help_text='Make this person\'s profile visible only after this date and time (UTC)',
+        help_text='Make this person\'s profile visible only after '
+                  'this date and time (UTC)',
         default=timezone.now,
         null=True,
     )
