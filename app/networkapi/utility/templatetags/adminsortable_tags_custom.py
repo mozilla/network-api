@@ -46,6 +46,8 @@ def render_object_rep(
 ):
     context.update({'object': obj, 'forloop': forloop})
     tmpl = template.loader.get_template(
-        'features/adminsortable_objects_custom.html'
+        '{app_name}/adminsortable_objects_custom.html'.format(
+            app_name=context.get('opts').app_label
+        )
     )
     return tmpl.render(context)
