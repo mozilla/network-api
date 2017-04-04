@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.db import models
 from django.db.models import Q
+from adminsortable.models import SortableMixin
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -43,7 +44,7 @@ class InternetHealthIssue(models.Model):
         return str(self.name)
 
 
-class Person(models.Model):
+class Person(SortableMixin):
     """
     A member of the Network
     """
@@ -117,11 +118,17 @@ class Person(models.Model):
         null=True,
         blank=True,
     )
+    order = models.PositiveIntegerField(
+        default=0,
+        editable=False,
+        db_index=True,
+    )
 
     objects = PeopleQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'people'
+        ordering = ('order',)
 
     def __str__(self):
         return str(self.name)
