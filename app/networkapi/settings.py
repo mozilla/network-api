@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'networkapi.people',
     'networkapi.features',
     'networkapi.news',
+    'networkapi.utility',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -130,8 +131,8 @@ TEMPLATES = [
                 'mezzanine.template.loader_tags',
             ],
             'libraries': {
-                'features_adminsortable_tags': 'networkapi.features.templatetags'
-                                               '.features_adminsortable_tags_custom'
+                'adminsortable_tags':
+                    'networkapi.utility.templatetags.adminsortable_tags_custom'
             }
         },
     },
