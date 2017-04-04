@@ -109,7 +109,6 @@ class Person(models.Model):
     publish_after = models.DateTimeField(
         help_text='Make this person\'s profile visible only after '
                   'this date and time (UTC)',
-        default=timezone.now,
         null=True,
     )
     expires = models.DateTimeField(

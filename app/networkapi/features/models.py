@@ -54,12 +54,12 @@ class Feature(models.Model):
         default=False,
     )
     publish_after = models.DateTimeField(
-        help_text='Publish this feature after this date and time (UTC)',
-        default=timezone.now,
+        help_text='Make this feature visible only after this date '
+                  'and time (UTC)',
+        null=True,
     )
     expires = models.DateTimeField(
-        help_text='Unpublish this feature after this date and time (UTC). '
-                  'Leave blank to never unpublish',
+        help_text='Hide this feature after this date and time (UTC)',
         default=None,
         null=True,
         blank=True,
