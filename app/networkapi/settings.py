@@ -28,6 +28,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    FILEBROWSER_DIRECTORY=(str, ''),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -228,6 +229,8 @@ if USE_S3:
     AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
     MEDIA_URL = 'https://' + env('AWS_S3_CUSTOM_DOMAIN') + '/'
     MEDIA_ROOT = ''
+    FILEBROWSER_DIRECTORY = env('FILEBROWSER_DIRECTORY')
+
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
