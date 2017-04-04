@@ -10,7 +10,7 @@ class NewsAdminForm(forms.ModelForm):
         widget=SelectDateWidget(
             years=range(date.today().year + 3, date.today().year - 8, -1),
         ),
-        initial=date.today(),
+        initial=lambda: date.today(),
         help_text='Publish date of the media',
     )
 

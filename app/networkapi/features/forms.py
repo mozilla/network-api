@@ -8,7 +8,7 @@ from networkapi.features.models import Feature
 class FeatureAdminForm(forms.ModelForm):
     publish_after = forms.SplitDateTimeField(
         widget=AdminSplitDateTime,
-        initial=timezone.now(),
+        initial=lambda: timezone.now(),
         help_text='Publish date of the media',
     )
 

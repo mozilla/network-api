@@ -10,7 +10,7 @@ from networkapi.people.models import Person
 class PersonAdminForm(forms.ModelForm):
     publish_after = forms.SplitDateTimeField(
         widget=AdminSplitDateTime,
-        initial=timezone.now(),
+        initial=lambda: timezone.now(),
         help_text='Make this person\'s profile visible only after '
                   'this date and time (UTC)',
     )
