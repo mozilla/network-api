@@ -40,7 +40,7 @@ APP_DIR = app()
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = FILEBROWSER_DEBUG = env('DEBUG')
 
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
+    'networkapi.filebrowser_s3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -134,7 +135,8 @@ TEMPLATES = [
             ],
             'libraries': {
                 'adminsortable_tags':
-                    'networkapi.utility.templatetags.adminsortable_tags_custom'
+                    'networkapi.utility.templatetags.adminsortable_tags_custom',
+                's3thumbnails': 'networkapi.filebrowser_s3.templatetags.s3thumbnails'
             }
         },
     },
@@ -228,7 +230,7 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'networkapi.utility.storage.S3MediaStorage'
+    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
