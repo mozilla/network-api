@@ -171,7 +171,6 @@ def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
         image = image.save(thumb_path, filetype, quality=quality, **image_info)
         # Push a remote copy of the thumbnail if MEDIA_URL is
         # absolute.
-        print('saving to s3')
         if "://" in settings.MEDIA_URL:
             with open(thumb_path, "rb") as f:
                 default_storage.save(unquote(thumb_url), File(f))
@@ -179,7 +178,6 @@ def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
         # If an error occurred, a corrupted image may have been saved,
         # so remove it, otherwise the check for it existing will just
         # return the corrupted image next time it's requested.
-        print('oops', Exception)
         try:
             os.remove(thumb_path)
         except Exception:
