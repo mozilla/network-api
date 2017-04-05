@@ -9,7 +9,7 @@ class FeatureAdminForm(forms.ModelForm):
     publish_after = forms.SplitDateTimeField(
         widget=AdminSplitDateTime,
         initial=lambda: timezone.now(),
-        help_text='Publish date of the media',
+        help_text='Make this feature visible only after this date and time (UTC)',
     )
 
     class Meta:

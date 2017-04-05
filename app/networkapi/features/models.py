@@ -54,7 +54,7 @@ class Feature(models.Model):
         default=False,
     )
     publish_after = models.DateTimeField(
-        help_text='Make this feature visible only after this date '
+        help_text='Make this feature visible only after this date and time (UTC)'
                   'and time (UTC)',
         null=True,
     )
