@@ -1,4 +1,5 @@
 from django.contrib import admin
+from adminsortable.admin import SortableAdmin
 
 from networkapi.people.models import (
     Person,
@@ -13,11 +14,14 @@ class AffiliationAdmin(admin.TabularInline):
     extra = 1
 
 
-class PersonAdmin(admin.ModelAdmin):
+class PersonAdmin(SortableAdmin):
     form = PersonAdminForm
     inlines = [
         AffiliationAdmin,
     ]
+    sortable_change_list_template = (
+        'shared/adminsortable_change_list_custom.html',
+    )
 
     class Media:
         js = ('/static/people/js/admin.js',)
