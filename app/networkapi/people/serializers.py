@@ -30,5 +30,5 @@ class PersonSerializer(serializers.ModelSerializer):
             'quote',
             'affiliations',
             'internet_health_issues',
-            'partnership_logo'
+            'partnership_logo',
         )

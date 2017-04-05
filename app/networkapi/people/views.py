@@ -9,9 +9,8 @@ class PeopleListView(ListAPIView):
     A view that permits a GET to allow listing all the People
     in the database
     """
-    queryset = Person.objects.all()
+    queryset = Person.objects.published()
     serializer_class = PersonSerializer
-    pagination_class = None
 
 
 class PersonView(RetrieveAPIView):
@@ -19,5 +18,5 @@ class PersonView(RetrieveAPIView):
     A view that permits a GET to allow listing a person
     in the database
     """
-    queryset = Person.objects.all()
+    queryset = Person.objects.published()
     serializer_class = PersonSerializer

@@ -1,4 +1,6 @@
+from django.utils import timezone
 from django.db import models
+from django.db.models import Q
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -20,6 +22,18 @@ def get_people_partnership_logo_upload_path(instance, filename):
         instance=instance,
         current_filename=filename
     )
+
+
+class PeopleQuerySet(models.query.QuerySet):
+    """
+    A QuerySet for people that filters for published people records
+    """
+    def published(self):
+        now = timezone.now()
+        return self.filter(
+            Q(expires__gt=now) | Q(expires__isnull=True),
+            publish_after__lt=now
+        )
 
 
 class InternetHealthIssue(models.Model):
@@ -92,6 +106,19 @@ class Person(models.Model):
         help_text='Do you want to feature this person?',
         default=False,
     )
+    publish_after = models.DateTimeField(
+        help_text='Make this person\'s profile visible only after '
+                  'this date and time (UTC)',
+        null=True,
+    )
+    expires = models.DateTimeField(
+        help_text='Hide this person\'s profile after this date and time (UTC)',
+        default=None,
+        null=True,
+        blank=True,
+    )
+
+    objects = PeopleQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'people'

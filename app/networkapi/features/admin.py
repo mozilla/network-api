@@ -1,5 +1,11 @@
 from django.contrib import admin
 
 from networkapi.features.models import Feature
+from networkapi.features.forms import FeatureAdminForm
 
-admin.site.register(Feature)
+
+class FeatureAdmin(admin.ModelAdmin):
+    form = FeatureAdminForm
+
+
+admin.site.register(Feature, FeatureAdmin)
