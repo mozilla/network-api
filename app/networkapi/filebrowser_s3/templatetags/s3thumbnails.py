@@ -12,6 +12,7 @@ from mezzanine import template
 
 register = template.Library()
 
+
 @register.simple_tag(name='thumbnail')
 def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
               top=.5, padding=False, padding_color="#fff"):

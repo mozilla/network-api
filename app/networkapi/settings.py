@@ -134,9 +134,11 @@ TEMPLATES = [
                 'mezzanine.template.loader_tags',
             ],
             'libraries': {
-                'adminsortable_tags':
-                    'networkapi.utility.templatetags.adminsortable_tags_custom',
-                's3thumbnails': 'networkapi.filebrowser_s3.templatetags.s3thumbnails'
+                'adminsortable_tags': 'networkapi.utility.templatetags'
+                                      '.adminsortable_tags_custom',
+                's3thumbnails': 'networkapi.filebrowser_s3'
+                                '.templatetags.s3thumbnails'
+
             }
         },
     },
