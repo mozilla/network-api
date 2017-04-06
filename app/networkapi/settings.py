@@ -20,6 +20,7 @@ root = app - 1
 # we error out first.
 env = environ.Env(
     DEBUG=(bool, False),
+    FILEBROWSER_DEBUG=(bool, False),
     USE_S3=(bool, True),
     ALLOWED_HOSTS=(list, []),
     CORS_WHITELIST=(tuple, ()),
@@ -42,6 +43,8 @@ SECRET_KEY = env('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = FILEBROWSER_DEBUG = env('DEBUG')
 
+if env('FILEBROWSER_DEBUG') or DEBUG != env('FILEBROWSER_DEBUG'):
+    FILEBROWSER_DEBUG = env('FILEBROWSER_DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
