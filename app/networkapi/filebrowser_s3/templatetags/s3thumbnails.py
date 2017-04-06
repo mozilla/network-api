@@ -13,6 +13,8 @@ from mezzanine import template
 register = template.Library()
 
 
+# This templatetag is a modified version of:
+# https://github.com/stephenmcd/mezzanine/blob/d4daf78986e4ac5cec089ad49bd216557e98f4fc/mezzanine/core/templatetags/mezzanine_tags.py#L273-L438
 @register.simple_tag(name='thumbnail')
 def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
               top=.5, padding=False, padding_color="#fff"):
@@ -69,6 +71,9 @@ def thumbnail(image_url, width, height, upscale=True, quality=95, left=.5,
     if image_url_path:
         thumb_url = "%s/%s" % (image_url_path, thumb_url)
 
+    # The original tag returned image_url, but when you're using S3
+    # you want to return the remote url. Here, we construct it
+    # and it's returned in place of image_url.
     remote_url = "%s%s/%s" % (
         settings.MEDIA_URL,
         settings.AWS_LOCATION,
