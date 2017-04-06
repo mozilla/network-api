@@ -52,5 +52,5 @@ class PersonAdminForm(forms.ModelForm):
             'bio',
             'quote',
             'publish_after',
-            'expires'
+            'expires',
         )
