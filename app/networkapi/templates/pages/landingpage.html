@@ -1,101 +1,117 @@
-{% extends "custombase.html" %}
-
-{% load static %}
-{% load mezzanine_tags keyword_tags %}
-
-{% block meta_title %}
-    {{ page.meta_title }}
-{% endblock %}
-
-{% block meta_keywords %}{% metablock %}
-{% keywords_for page as keywords %}
-{% for keyword in keywords %}
-    {% if not forloop.first %}, {% endif %}
-    {{ keyword }}
-{% endfor %}
-{% endmetablock %}{% endblock %}
-
-{% block meta_description %}{% metablock %}
-{{ page.description }}
-{% endmetablock %}{% endblock %}
-
-{% block extra_head %}
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,700" rel="stylesheet">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static "css/mofo-bootstrap.css" %} ">
-    <link rel="stylesheet" href="{% static "css/landingpage.css" %} ">
-{% endblock %}
-
-{% block header %}
-    <header class="container">
-        <div class="row">
-            <div class="col-1">
-                <img src="{% static "img/menu.jpg" %}">
-            </div>
-            <div class="col-1 logo">
-                <div class="row"><img src="{% static "img/logo-mozilla.svg" %}"></div>
-                <div class="row"><span class="text-block text-block-500">Network</span></div>
-            </div>
-            <div class="col-8 header-title">
-                <span class="intro">{{ page.title }}</span>
-            </div>
-            <div class="col-1">
-                <button class="btn btn-warning">join us</button>
-            </div>
-    </header>
-{% endblock %}
-
-{% block title %}
-    <h1 class="title">{% editable page.landingpage.header %}{{ page.landingpage.header }}{% endeditable %}</h1>
-{% endblock %}
-
-{% block main %}
-    <div class="main-content row">
-        <div class="col-sm">
-            {% editable page.landingpage.content %}
-            {{ page.landingpage.content | safe }}
-            {% endeditable %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="TODO">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="TODO">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="TODO">
+    <meta property="og:image" content="TODO">
+    <meta property="og:title" content="TODO">
+    <meta property="og:description" content="TODO">
+    <link rel="stylesheet" href="https://network.mofoprod.net/_css/main.compiled.css">
+    <link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arvo">
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://network.mofoprod.net/_images/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="196x196" href="https://network.mofoprod.net/_images/favicons/favicon-196x196.png">
+    <link rel="shortcut icon" href="https://network.mofoprod.net/_images/favicons/favicon.ico">
+    <title>Mozilla Network</title>
+  </head>
+  <body id="view-opportunity">
+    <div id="primary-nav"></div>
+    <div class="wrapper">
+      <div class="sticky-top">
+        <div class="wrapper-join-us">
+          <div class="container">
+            <div class="join-us" id="join-us"></div>
+          </div>
         </div>
-
-        <div class="col-sm">
-            <div class="call-out">
-                {% editable page.landingpage.signup.header page.landingpage.signup.description %}
-                <h4>{{ page.landingpage.signup.header }}</h4>
-                <div class="call-out-description">
-                    {{ page.landingpage.signup.description | safe }}
+        <div class="wrapper-burger">
+          <div class="container">
+            <div class="row">
+              <div class="col p-4">
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                  <div class="d-flex align-items-center">
+                    <button id="burger"></button><a class="logo text-hide" href="/">Mozilla Network</a>
+                  </div>
+                  <div class="center-nav-title hidden-xs-down">
+                    <p>{{ page.meta_title }}</p>
+                  </div><a class="btn btn-normal" href="/join">Join Us</a>
                 </div>
-                {% endeditable %}
-                <input name="email" type="text" placeholder="EMAIL ADDRESS">
-                <label>
-                    <input type="checkbox" name="consent">
-                    <small>
-                        Sign up to receive email about The Internet Health Report and Mozilla. I'm OK with Mozilla handling my info as explained in this <a href="/privacy">Privacy Notice</a>.
-                    </small>
-                </label>
-                <button name="signup" class="btn btn-warning">SIGN UP</button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+      <div id="hero">
+        <div class="container">
+        </div>
+      </div>
+      <div class="container">
+        <div class="row py-5">
+          <div class="col">
+            <h1 class="h1-white">{{ page.landingpage.header }}</h1>
+            <div>{{ page.landingpage.content | safe }}</div>
+          </div>
+        </div>
+        <div class="row py-5">
+          <div class="col-md-6"></div>
+          <div class="col-md-6 sign-up-box">
+            <div class="p-4">
+              <h2 class="h3-cta-black">{{ page.landingpage.signup.header }}</h2>
+              <p class="body-black">{{ page.landingpage.signup.description | safe }}</p>
+              <div class="d-flex"><a class="btn btn-normal flex-1" href="/join">Sign Up</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="mofo-footer">
+        <div class="container">
+          <ul class="list-unstyled footer-links row justify-content-center">
+            <li class="col-auto"><a class="footer-link-twitter" href="https://twitter.com/mozilla">Twitter</a></li>
+            <li class="col-auto"><a class="footer-link-facebook" href="https://www.facebook.com/mozilla">Facebook</a></li>
+            <li class="col-auto"><a class="footer-link-cc-license" href="https://creativecommons.org/licenses/by/4.0">License</a></li>
+            <li class="col-auto"><a class="footer-link-legal" href="https://mozilla.org/en-US/about/legal/">Legal</a></li>
+            <li class="col-auto"><a class="footer-link-privacy" href="https://mozilla.org/en-US/privacy/websites/">Privacy</a></li>
+            <li class="col-auto"><a class="footer-link-donate" href="https://donate.mozilla.org">Donate</a></li>
+          </ul>
+          <div class="org-info mozilla">
+            <div class="logo-container"><a class="logo" href="https://mozilla.org"></a></div>
+            <p>Mozilla is a global non-profit dedicated to putting you in control of your online experience and shaping the future of the web for the public good. Visit us at <a href="https://mozilla.org">mozilla.org</a>.</p>
+          </div>
+        </div>
+      </footer>
     </div>
-{% endblock %}
-
-{% block footer %}
-<footer class="container">
-    <ul class="icons row">
-        {% for link in page.landingpage.get_footer_links %}
-        <li class="col nowrap"><span class="fa fa-{{ link.iconclass }}"></span><a href="{{ link.link }}">{{ link.linktext }}</a></li>
-        {% endfor %}
-    </ul>
-    <div class="moz-notice">
-        <div class="logo">
-            <img src="{% static "img/logo-mozilla.svg" %}">
-        </div>
-        <div class="sep">
-            <div class="sep"></div>
-        </div>
-        <div>
-            Mozilla is a global non-profit dedicated to putting you in control of your online experience and shaping the future of the web for the public good. Visit us at <a href="https://mozilla.org">mozilla.org</a>.
-        </div>
-    </ul>
-</footer>
-{% endblock %}
+  </body>
+</html>
+<script src="https://network.mofoprod.net/_js/main.compiled.js"></script>
+<script src="https://cdn.optimizely.com/js/206878104.js"></script>
+<script>
+  (function () {
+    var _dntStatus = navigator.doNotTrack || navigator.msDoNotTrack;
+    var fxMatch = navigator.userAgent.match(/Firefox\/(\d+)/);
+    var ie10Match = navigator.userAgent.match(/MSIE 10/i);
+    var w8Match = navigator.appVersion.match(/Windows NT 6.2/);
+  
+    if (fxMatch && Number(fxMatch[1]) < 32) {
+      _dntStatus = 'Unspecified';
+    } else if (ie10Match && w8Match) {
+      _dntStatus = 'Unspecified';
+    } else {
+      _dntStatus = { '0': 'Disabled', '1': 'Enabled' }[_dntStatus] || 'Unspecified';
+    }
+  
+    if (_dntStatus !== 'Enabled'){
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  
+      ga('create', 'UA-87658599-6', 'auto');
+      ga('send', 'pageview');
+    }
+  })();
+</script>
