@@ -28,8 +28,7 @@ class LandingPageAdmin(PageAdmin):
         }),
         ("Meta data", {
             "fields": ["_meta_title", "slug",
-               ("description", "gen_description")
-            ],
+                       ("description", "gen_description")],
             "classes": ("collapse-closed",)
         }),
     )
