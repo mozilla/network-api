@@ -2,6 +2,7 @@ from django.db import models
 from mezzanine.pages.models import Page
 from mezzanine.core.fields import RichTextField
 
+
 class Signup(models.Model):
     header = models.CharField(max_length=500)
     description = RichTextField("description")
