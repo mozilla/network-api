@@ -30,6 +30,7 @@ env = environ.Env(
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
     FILEBROWSER_DIRECTORY=(str, ''),
+    ASSET_DOMAIN=(str, '')
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -139,13 +140,17 @@ TEMPLATES = [
             'libraries': {
                 'adminsortable_tags': 'networkapi.utility.templatetags'
                                       '.adminsortable_tags_custom',
+                'settings_value': 'networkapi.utility.templatetags'
+                                '.settings_value',
                 's3thumbnails': 'networkapi.filebrowser_s3'
                                 '.templatetags.s3thumbnails'
-
             }
         },
     },
 ]
+
+# network asset domain used in templates
+ASSET_DOMAIN = env('ASSET_DOMAIN')
 
 WSGI_APPLICATION = 'networkapi.wsgi.application'
 
@@ -280,3 +285,4 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
+

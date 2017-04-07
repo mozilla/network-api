@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+  {% load settings_value %}
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,13 +12,13 @@
     <meta property="og:image" content="TODO">
     <meta property="og:title" content="TODO">
     <meta property="og:description" content="TODO">
-    <link rel="stylesheet" href="https://network.mofoprod.net/_css/main.compiled.css">
+    <link rel="stylesheet" href="https://{% settings_value "ASSET_DOMAIN" %}/_css/main.compiled.css">
     <link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arvo">
-    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://network.mofoprod.net/_images/favicons/apple-touch-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="196x196" href="https://network.mofoprod.net/_images/favicons/favicon-196x196.png">
-    <link rel="shortcut icon" href="https://network.mofoprod.net/_images/favicons/favicon.ico">
+    <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://{% settings_value "ASSET_DOMAIN" %}/_images/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="196x196" href="https://{% settings_value "ASSET_DOMAIN" %}/_images/favicons/favicon-196x196.png">
+    <link rel="shortcut icon" href="https://{% settings_value "ASSET_DOMAIN" %}/_images/favicons/favicon.ico">
     <title>Mozilla Network</title>
   </head>
   <body id="view-opportunity">
@@ -39,7 +40,7 @@
                   </div>
                   <div class="center-nav-title hidden-xs-down">
                     <p>{{ page.meta_title }}</p>
-                  </div><a class="btn btn-normal" href="/join">Join Us</a>
+                  </div><a class="btn btn-normal" href="/sign-up">Sign Up</a>
                 </div>
               </div>
             </div>
@@ -87,7 +88,7 @@
     </div>
   </body>
 </html>
-<script src="https://network.mofoprod.net/_js/main.compiled.js"></script>
+<script src="https://{% settings_value "ASSET_DOMAIN" %}/_js/main.compiled.js"></script>
 <script src="https://cdn.optimizely.com/js/206878104.js"></script>
 <script>
   (function () {
