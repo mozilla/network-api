@@ -9,7 +9,7 @@ class NewsListView(ListAPIView):
     A view that permits a GET to allow listing of News articles
     in the database
     """
-    queryset = News.objects.all()
+    queryset = News.objects.published()
     serializer_class = NewsSerializer
     pagination_class = None
 
@@ -18,5 +18,5 @@ class NewsView(RetrieveAPIView):
     """
     A view that permits a GET request for a News article in the database
     """
-    queryset = News.objects.all()
+    queryset = News.objects.published()
     serializer_class = NewsSerializer

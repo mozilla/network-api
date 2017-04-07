@@ -1,4 +1,6 @@
+from django.utils import timezone
 from django.db import models
+from django.db.models import Q
 
 from networkapi.utility.images import get_image_upload_path
 
@@ -10,6 +12,18 @@ def get_news_glyph_upload_path(instance, filename):
         instance=instance,
         current_filename=filename
     )
+
+
+class NewsQuerySet(models.query.QuerySet):
+    """
+    A QuerySet for news that filters for published records
+    """
+    def published(self):
+        now = timezone.now()
+        return self.filter(
+            Q(expires__gt=now) | Q(expires__isnull=True),
+            publish_after__lt=now,
+        )
 
 
 class News(models.Model):
@@ -54,6 +68,19 @@ class News(models.Model):
         help_text='Do you want to feature this news piece?',
         default=False,
     )
+    publish_after = models.DateTimeField(
+        help_text='Make this news visible only '
+                  'after this date and time (UTC)',
+        null=True,
+    )
+    expires = models.DateTimeField(
+        help_text='Hide this news after this date and time (UTC)',
+        default=None,
+        null=True,
+        blank=True
+    )
+
+    objects = NewsQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'news'

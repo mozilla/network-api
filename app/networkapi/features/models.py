@@ -56,8 +56,7 @@ class Feature(SortableMixin):
     )
     publish_after = models.DateTimeField(
         help_text='Make this feature visible only '
-                  'after this date and time (UTC)'
-                  'and time (UTC)',
+                  'after this date and time (UTC)',
         null=True,
     )
     expires = models.DateTimeField(
