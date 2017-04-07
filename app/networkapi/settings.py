@@ -20,6 +20,7 @@ root = app - 1
 # we error out first.
 env = environ.Env(
     DEBUG=(bool, False),
+    FILEBROWSER_DEBUG=(bool, False),
     USE_S3=(bool, True),
     ALLOWED_HOSTS=(list, []),
     CORS_WHITELIST=(tuple, ()),
@@ -28,6 +29,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    FILEBROWSER_DIRECTORY=(str, ''),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -39,8 +41,10 @@ APP_DIR = app()
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = FILEBROWSER_DEBUG = env('DEBUG')
 
+if env('FILEBROWSER_DEBUG') or DEBUG != env('FILEBROWSER_DEBUG'):
+    FILEBROWSER_DEBUG = env('FILEBROWSER_DEBUG')
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
@@ -74,6 +78,8 @@ INSTALLED_APPS = [
     'networkapi.features',
     'networkapi.news',
     'networkapi.utility',
+    'networkapi.landingpage',
+    'networkapi.filebrowser_s3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -131,8 +137,11 @@ TEMPLATES = [
                 'mezzanine.template.loader_tags',
             ],
             'libraries': {
-                'adminsortable_tags':
-                    'networkapi.utility.templatetags.adminsortable_tags_custom'
+                'adminsortable_tags': 'networkapi.utility.templatetags'
+                                      '.adminsortable_tags_custom',
+                's3thumbnails': 'networkapi.filebrowser_s3'
+                                '.templatetags.s3thumbnails'
+
             }
         },
     },
@@ -177,6 +186,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Location of root django.contrib.admin URL, use {% url 'admin:index' %}
 ADMIN_URL = r'^admin/'
 
+# Remove these classes from the admin interface
+ADMIN_REMOVAL = [
+    'mezzanine.pages.models.RichTextPage',
+    'mezzanine.pages.models.Link',
+    'mezzanine.forms.models.Form',
+    'mezzanine.generic.models.ThreadedComment',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -219,12 +235,17 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
+
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
     AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
+    MEDIA_URL = 'https://' + env('AWS_S3_CUSTOM_DOMAIN') + '/'
+    MEDIA_ROOT = ''
+    FILEBROWSER_DIRECTORY = env('FILEBROWSER_DIRECTORY')
+
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
