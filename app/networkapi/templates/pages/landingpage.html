@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-  {% load settings_value %}
+<html>{% load settings_value %}
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,16 +54,13 @@
         <div class="row py-5">
           <div class="col">
             <h1 class="h1-white">{{ page.landingpage.header }}</h1>
-            <div>{{ page.landingpage.content | safe }}</div>
           </div>
         </div>
         <div class="row py-5">
-          <div class="col-md-6"></div>
-          <div class="col-md-6 sign-up-box">
-            <div class="p-4">
-              <h2 class="h3-cta-black">{{ page.landingpage.signup.header }}</h2>
-              <p class="body-black">{{ page.landingpage.signup.description | safe }}</p>
-              <div class="d-flex"><a class="btn btn-normal flex-1" href="/join">Sign Up</a></div>
+          <div class="col-md-6 mb-3">{{ page.landingpage.content | safe }}</div>
+          <div class="col-md-5 push-md-1">
+            <div class="row">
+              <div class="join-us half-width col" data-cta-header="{{ page.landingpage.signup.header }}" data-cta-description="{{ page.landingpage.signup.description | safe }}"></div>
             </div>
           </div>
         </div>
