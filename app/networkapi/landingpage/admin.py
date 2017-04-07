@@ -3,7 +3,6 @@ from mezzanine.pages.admin import PageAdmin
 from networkapi.landingpage.models import (
     LandingPage,
     Signup,
-    FooterLink,
 )
 
 
@@ -36,4 +35,3 @@ class LandingPageAdmin(PageAdmin):
 
 admin.site.register(LandingPage, LandingPageAdmin)
 admin.site.register(Signup)
-admin.site.register(FooterLink)
