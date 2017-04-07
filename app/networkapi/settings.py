@@ -141,7 +141,7 @@ TEMPLATES = [
                 'adminsortable_tags': 'networkapi.utility.templatetags'
                                       '.adminsortable_tags_custom',
                 'settings_value': 'networkapi.utility.templatetags'
-                                '.settings_value',
+                                  '.settings_value',
                 's3thumbnails': 'networkapi.filebrowser_s3'
                                 '.templatetags.s3thumbnails'
             }
@@ -277,6 +277,7 @@ SECURE_SSL_REDIRECT = env('SSL_REDIRECT')
 # See https://docs.djangoproject.com/en/1.10/ref/settings/#secure-ssl-redirect
 if env('SSL_REDIRECT') is True:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 X_FRAME_OPTIONS = env('X_FRAME_OPTIONS')
 
 try:
@@ -285,4 +286,3 @@ except ImportError:
     pass
 else:
     set_dynamic_settings(globals())
-
