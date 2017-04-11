@@ -80,7 +80,7 @@ INSTALLED_APPS = [
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
-    'networkapi.filebrowser_s3',
+    'filebrowser_s3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -142,7 +142,7 @@ TEMPLATES = [
                                       '.adminsortable_tags_custom',
                 'settings_value': 'networkapi.utility.templatetags'
                                   '.settings_value',
-                's3thumbnails': 'networkapi.filebrowser_s3'
+                's3thumbnails': 'filebrowser_s3'
                                 '.templatetags.s3thumbnails'
             }
         },
@@ -240,7 +240,7 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
+    DEFAULT_FILE_STORAGE = 'filebrowser_s3.storage.S3MediaStorage'
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
