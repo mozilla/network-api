@@ -142,8 +142,6 @@ TEMPLATES = [
                                       '.adminsortable_tags_custom',
                 'settings_value': 'networkapi.utility.templatetags'
                                   '.settings_value',
-                's3thumbnails': 'filebrowser_s3'
-                                '.templatetags.s3thumbnails'
             }
         },
     },
