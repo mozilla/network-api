@@ -8,15 +8,27 @@ The only requirement to run this API is Docker and its dependencies (which you c
 
 ## Setup
 
+Before you can run the site, you'll need to run the migrations and create a superuser. These commands are run within the container:
+
+```bash
+docker-compose run web sh -c "python manage.py migrate"
+docker-compose run web sh -c "python manage.py createsuperuser"
+```
+
 To build and run the API, simply run:
 ```bash
 docker-compose up
 ```
 You should now be able to access the API on `localhost:5000`.
 
+To log in to the admin UI, visit:
+http://localhost:5000/admin
+
 Any changes you make in the `app` directory will automatically be reflected in the docker container.
 
 **Note:** If you change anything involved the build (for e.g. change the requirements), you will need to run `docker-compose up --build` so that it will re-build your container with the changes.
+
+
 
 As this is a Python/Django project, we also support additional commands that might be of use. To run a command, simply run:
 ```bash
