@@ -36,4 +36,4 @@ where, `<command>` (don't forget about the surrounding quotes) should be replace
 
 ## Our deployment diagram
 
-![./screenshot.184.png]()
+![screenshot.184.png]()
