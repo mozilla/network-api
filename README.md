@@ -36,4 +36,4 @@ where, `<command>` (don't forget about the surrounding quotes) should be replace
 
 ## Our deployment diagram
 
-![deployment diagram](screenshot.184.png)
+![https://www.lucidchart.com/documents/edit/72261654-23d0-491c-b67e-c026abbafcd3](screenshot.184.png)
