@@ -28,8 +28,6 @@ Any changes you make in the `app` directory will automatically be reflected in t
 
 **Note:** If you change anything involved the build (for e.g. change the requirements), you will need to run `docker-compose up --build` so that it will re-build your container with the changes.
 
-
-
 As this is a Python/Django project, we also support additional commands that might be of use. To run a command, simply run:
 ```bash
 docker-compose run web sh -c "<command>"
