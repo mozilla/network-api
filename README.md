@@ -33,3 +33,7 @@ where, `<command>` (don't forget about the surrounding quotes) should be replace
 | 5. | python manage.py shell | Open up a Python interactive shell. |
 | 6. | python manage.py createsuperuser | Create a super user for the Django administrative interface. |
 | 7. | python manage.py collectstatic | Create a folder containing all the static content that needs to be served for use by the API and the admin interface. |
+
+## Our deployment diagram
+
+![./deployment-diagram.png]()
