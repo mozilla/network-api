@@ -13,7 +13,7 @@
     <meta property="og:description" content="TODO">
     <link rel="stylesheet" href="https://{% settings_value "ASSET_DOMAIN" %}/_css/main.compiled.css">
     <link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css">
-    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Nunito+Sans:400,600,300i">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arvo">
     <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="https://{% settings_value "ASSET_DOMAIN" %}/_images/favicons/apple-touch-icon-180x180.png">
     <link rel="icon" type="image/png" sizes="196x196" href="https://{% settings_value "ASSET_DOMAIN" %}/_images/favicons/favicon-196x196.png">
@@ -23,6 +23,7 @@
   <body id="view-opportunity">
     <div id="primary-nav"></div>
     <div class="wrapper">
+      <div id="member-notice">Welcome to our member preview. We look forward to your <a href="https://mzl.la/2ohCL8O">feedback</a>.</div>
       <div class="sticky-top">
         <div class="wrapper-join-us">
           <div class="container">
@@ -51,14 +52,14 @@
         </div>
       </div>
       <div class="container">
-        <div class="row py-5">
-          <div class="col">
+        <div class="row py-5 justify-content-center">
+          <div class="col-lg-11">
             <h1 class="h1-white">{{ page.landingpage.header }}</h1>
           </div>
         </div>
-        <div class="row py-5">
-          <div class="col-md-6 mb-3">{{ page.landingpage.content | safe }}</div>
-          <div class="col-md-5 push-md-1">
+        <div class="row py-5 justify-content-around">
+          <div class="col-md-6 col-lg-5 mb-3">{{ page.landingpage.content | safe }}</div>
+          <div class="col-md-5 col-lg-5">
             <div class="row">
               <div class="join-us half-width col" data-cta-header="{{ page.landingpage.signup.header }}" data-cta-description="{{ page.landingpage.signup.description | safe }}"></div>
             </div>
