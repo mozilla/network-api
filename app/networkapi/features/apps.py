@@ -6,4 +6,4 @@ class FeaturesConfig(AppConfig):
     verbose_name = 'features'
 
     def ready(self):
-        from networkapi.features import signals
+        from networkapi.features import signals  # noqa

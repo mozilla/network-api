@@ -6,4 +6,4 @@ class NewsConfig(AppConfig):
     verbose_name = 'news'
 
     def ready(self):
-        from networkapi.news import signals
+        from networkapi.news import signals  # noqa

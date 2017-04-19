@@ -6,4 +6,4 @@ class PeopleConfig(AppConfig):
     verbose_name = 'people'
 
     def ready(self):
-        from networkapi.people import signals
+        from networkapi.people import signals  # noqa

@@ -1,5 +1,6 @@
 from threading import Timer
 
+
 def debounce(wait):
     """
     A Decorator for debouncing a function's execution
