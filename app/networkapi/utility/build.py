@@ -1,6 +1,6 @@
-from networkapi.utility.debounce import debounce
+from networkapi.utility.decorators import debounce_and_throttle
 
 
-@debounce(10)
+@debounce_and_throttle(5, 15)
 def build_static_site(sender, instance, **kwargs):
     print("Calling post_save_callback for {sender}".format(sender=sender))
