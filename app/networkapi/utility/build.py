@@ -7,7 +7,10 @@ from networkapi.utility.decorators import debounce_and_throttle
 logger = logging.getLogger(__name__)
 
 
-@debounce_and_throttle(settings.BUILD_DEBOUNCE_SECONDS, settings.BUILD_THROTTLE_SECONDS)
+@debounce_and_throttle(
+    settings.BUILD_DEBOUNCE_SECONDS,
+    settings.BUILD_THROTTLE_SECONDS
+)
 def build_static_site(sender, instance, **kwargs):
     if settings.BUILD_TRIGGER_URL is None:
         return
