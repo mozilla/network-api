@@ -19,8 +19,8 @@ root = app - 1
 # we rely on it being explicitly set (no default values) so that
 # we error out first.
 env = environ.Env(
-    DEBUG=(bool, False),
-    FILEBROWSER_DEBUG=(bool, False),
+    DEBUG=(bool, True),
+    FILEBROWSER_DEBUG=(bool, True),
     USE_S3=(bool, True),
     ALLOWED_HOSTS=(list, []),
     CORS_WHITELIST=(tuple, ()),
@@ -30,7 +30,7 @@ env = environ.Env(
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
     FILEBROWSER_DIRECTORY=(str, ''),
-    ASSET_DOMAIN=(str, '')
+    ASSET_DOMAIN=(str, ''),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -42,7 +42,7 @@ APP_DIR = app()
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = FILEBROWSER_DEBUG = env('DEBUG')
+DEBUG = FILEBROWSER_DEBUG = True
 
 if env('FILEBROWSER_DEBUG') or DEBUG != env('FILEBROWSER_DEBUG'):
     FILEBROWSER_DEBUG = env('FILEBROWSER_DEBUG')
@@ -55,6 +55,9 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+
+    'filebrowser_s3',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,24 +66,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.redirects',
+
     'mezzanine.boot',
     'mezzanine.conf',
     'mezzanine.core',
     'mezzanine.generic',
     'mezzanine.pages',
     'mezzanine.forms',
+
     'whitenoise.runserver_nostatic',
     'rest_framework',
     'gunicorn',
     'corsheaders',
     'storages',
     'adminsortable',
+
     'networkapi.people',
     'networkapi.features',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
-    'networkapi.filebrowser_s3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -141,9 +146,7 @@ TEMPLATES = [
                 'adminsortable_tags': 'networkapi.utility.templatetags'
                                       '.adminsortable_tags_custom',
                 'settings_value': 'networkapi.utility.templatetags'
-                                  '.settings_value',
-                's3thumbnails': 'networkapi.filebrowser_s3'
-                                '.templatetags.s3thumbnails'
+                                  '.settings_value'
             }
         },
     },
@@ -246,16 +249,17 @@ if USE_S3:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
-    AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
-    MEDIA_URL = 'https://' + env('AWS_S3_CUSTOM_DOMAIN') + '/'
+    AWS_STORAGE_ROOT = env('AWS_STORAGE_ROOT', default=None)
+
+    MEDIA_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN + '/'
     MEDIA_ROOT = ''
+
     FILEBROWSER_DIRECTORY = env('FILEBROWSER_DIRECTORY')
 
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
     MEDIA_URL = '/media/'
-
 
 # CORS
 CORS_ALLOW_CREDENTIALS = False
