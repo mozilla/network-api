@@ -11,6 +11,15 @@ def debounce_and_throttle(debounce_seconds, throttle_seconds):
     def decorator(fn):
         def debounced_and_throttled(*args, **kwargs):
             def call_fn():
+                now = timezone.now()
+                try:
+                    time_delta = now - debounced_and_throttled.last_called
+                    if time_delta.seconds < throttle_seconds:
+                        return
+                except(AttributeError):
+                    pass
+
+                debounced_and_throttled.last_called = timezone.now()
                 fn(*args, **kwargs)
 
             try:
@@ -18,16 +27,6 @@ def debounce_and_throttle(debounce_seconds, throttle_seconds):
             except(AttributeError):
                 pass
 
-            now = timezone.now()
-
-            try:
-                time_delta = now - debounced_and_throttled.last_called
-                if time_delta.seconds < throttle_seconds:
-                    return
-            except(AttributeError):
-                pass
-
-            debounced_and_throttled.last_called = now
             debounced_and_throttled.t = Timer(debounce_seconds, call_fn)
             debounced_and_throttled.t.start()
 
