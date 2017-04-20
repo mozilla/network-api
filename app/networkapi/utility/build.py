@@ -12,8 +12,9 @@ logger = logging.getLogger(__name__)
     settings.BUILD_THROTTLE_SECONDS
 )
 def build_static_site(sender, instance, **kwargs):
-    if settings.BUILD_TRIGGER_URL is None:
-        return
+    if not settings.BUILD_TRIGGER_URL:
+        return logger.warn('settings.BUILD_TRIGGER_URL '
+                           'must be set to trigger builds')
 
     build_request = requests.post(settings.BUILD_TRIGGER_URL)
 
