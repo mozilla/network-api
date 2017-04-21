@@ -18,7 +18,7 @@ def debounce_and_throttle(debounce_seconds, throttle_seconds):
                 now = timezone.now()
                 if hasattr(debounced_and_throttled, 'last_called'):
                     time_delta = now - debounced_and_throttled.last_called
-                
+
                     if time_delta.seconds < throttle_seconds:
                         logger.info(
                             'Can\'t build for {} more seconds'
