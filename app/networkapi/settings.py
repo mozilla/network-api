@@ -42,7 +42,7 @@ APP_DIR = app()
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = FILEBROWSER_DEBUG = True
+DEBUG = FILEBROWSER_DEBUG = env('DEBUG')
 
 if env('FILEBROWSER_DEBUG') or DEBUG != env('FILEBROWSER_DEBUG'):
     FILEBROWSER_DEBUG = env('FILEBROWSER_DEBUG')
