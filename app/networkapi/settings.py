@@ -30,7 +30,7 @@ env = environ.Env(
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
     FILEBROWSER_DIRECTORY=(str, ''),
-    ASSET_DOMAIN=(str, '')
+    ASSET_DOMAIN=(str, ''),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -55,6 +55,9 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+
+    'filebrowser_s3',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -63,24 +66,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.redirects',
+
     'mezzanine.boot',
     'mezzanine.conf',
     'mezzanine.core',
     'mezzanine.generic',
     'mezzanine.pages',
     'mezzanine.forms',
+
     'whitenoise.runserver_nostatic',
     'rest_framework',
     'gunicorn',
     'corsheaders',
     'storages',
     'adminsortable',
+
     'networkapi.people',
     'networkapi.features',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
-    'networkapi.filebrowser_s3',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -141,9 +146,7 @@ TEMPLATES = [
                 'adminsortable_tags': 'networkapi.utility.templatetags'
                                       '.adminsortable_tags_custom',
                 'settings_value': 'networkapi.utility.templatetags'
-                                  '.settings_value',
-                's3thumbnails': 'networkapi.filebrowser_s3'
-                                '.templatetags.s3thumbnails'
+                                  '.settings_value'
             }
         },
     },
@@ -240,22 +243,22 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
+    DEFAULT_FILE_STORAGE = 'filebrowser_s3.storage.S3MediaStorage'
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
-    AWS_LOCATION = env('AWS_STORAGE_ROOT', default=None)
-    MEDIA_URL = 'https://' + env('AWS_S3_CUSTOM_DOMAIN') + '/'
+
+    MEDIA_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN + '/'
     MEDIA_ROOT = ''
+
     FILEBROWSER_DIRECTORY = env('FILEBROWSER_DIRECTORY')
 
 else:
     # Otherwise use the default filesystem storage
     MEDIA_ROOT = root('media/')
     MEDIA_URL = '/media/'
-
 
 # CORS
 CORS_ALLOW_CREDENTIALS = False
