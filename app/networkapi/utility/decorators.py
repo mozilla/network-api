@@ -16,23 +16,21 @@ def debounce_and_throttle(debounce_seconds, throttle_seconds):
         def debounced_and_throttled(*args, **kwargs):
             def call_fn():
                 now = timezone.now()
-                try:
+                if hasattr(debounced_and_throttled, 'last_called'):
                     time_delta = now - debounced_and_throttled.last_called
+                
                     if time_delta.seconds < throttle_seconds:
-                        return logger.info(
+                        logger.info(
                             'Can\'t build for {} more seconds'
                             .format(throttle_seconds - time_delta.seconds)
                         )
-                except(AttributeError):
-                    pass
+                        return
 
-                debounced_and_throttled.last_called = timezone.now()
+                debounced_and_throttled.last_called = now
                 fn(*args, **kwargs)
 
-            try:
+            if hasattr(debounced_and_throttled, 't'):
                 debounced_and_throttled.t.cancel()
-            except(AttributeError):
-                pass
 
             logger.info(
                 'debouncing a build for {} seconds from now'
