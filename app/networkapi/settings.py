@@ -29,6 +29,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    AWS_LOCATION=(str, ''),
     FILEBROWSER_DIRECTORY=(str, ''),
     ASSET_DOMAIN=(str, ''),
 )
@@ -56,7 +57,7 @@ SITE_ID = 1
 
 INSTALLED_APPS = [
 
-    'filebrowser_s3',
+    'networkapi.filebrowser_s3',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -249,6 +250,7 @@ if USE_S3:
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+    AWS_LOCATION = env('AWS_LOCATION')
 
     MEDIA_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN + '/'
     MEDIA_ROOT = ''
