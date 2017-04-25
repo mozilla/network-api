@@ -29,6 +29,7 @@ env = environ.Env(
     CONTENT_TYPE_NO_SNIFF=bool,
     SET_HSTS=bool,
     SSL_REDIRECT=bool,
+    AWS_LOCATION=(str, ''),
     FILEBROWSER_DIRECTORY=(str, ''),
     ASSET_DOMAIN=(str, ''),
 )
@@ -56,7 +57,7 @@ SITE_ID = 1
 
 INSTALLED_APPS = [
 
-    'filebrowser_s3',
+    'networkapi.filebrowser_s3',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -243,12 +244,13 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'filebrowser_s3.storage.S3MediaStorage'
+    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN')
+    AWS_LOCATION = env('AWS_LOCATION')
 
     MEDIA_URL = 'https://' + AWS_S3_CUSTOM_DOMAIN + '/'
     MEDIA_ROOT = ''
