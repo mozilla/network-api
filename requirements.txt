@@ -5,7 +5,7 @@ djangorestframework==3.5.4
 
 # Mezzanine CMS
 Mezzanine==4.2.3
-filebrowser_s3==0.1.17
+filebrowser_s3==0.1.18
 
 # Database Adapter
 psycopg2==2.6.2
