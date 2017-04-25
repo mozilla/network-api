@@ -244,7 +244,7 @@ USE_S3 = env('USE_S3')
 
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
-    DEFAULT_FILE_STORAGE = 'filebrowser_s3.storage.S3MediaStorage'
+    DEFAULT_FILE_STORAGE = 'networkapi.filebrowser_s3.storage.S3MediaStorage'
 
     AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
