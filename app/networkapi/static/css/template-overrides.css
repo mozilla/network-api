@@ -1,0 +1,15 @@
+.social-login {
+	font-size: 1rem;
+	text-align: center;
+}
+.social-login p {
+	margin: 1em;
+}
+
+.social-login  p + p {
+	margin-top: 2em;
+}
+
+.login #content-main {
+	margin-top: 0;
+}
