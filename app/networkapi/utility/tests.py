@@ -18,10 +18,10 @@ class DebounceThrottleTestCase(TestCase):
         self.times_called = 0
 
         test_fn(self)
-        
+
         # Not called yet
         self.assertEqual(self.times_called, 0)
-        
+
         sleep(2)
 
         # Was called after debounce timeout
