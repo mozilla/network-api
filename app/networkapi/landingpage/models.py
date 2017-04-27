@@ -4,30 +4,40 @@ from mezzanine.core.fields import RichTextField
 
 
 class Signup(models.Model):
-    header = models.CharField(max_length=500)
-    description = RichTextField("description")
+    title = models.CharField(
+        max_length=100,
+        help_text="Identify this component for other editors",
+        )
+
+    header = models.CharField(
+        max_length=500,
+        help_text="Signup heading that will display on page"
+        )
+
+    description = RichTextField(
+        "description",
+        help_text="Body of signup component"
+        )
 
     def __str__(self):
-        return str(self.header)
+        return str(self.title)
+
+    class Meta:
+        verbose_name_plural = 'signup widgets'
+        verbose_name = 'signup widget'
 
 
 class LandingPage(Page):
-    LABELS = (
-        ('read', 'Read and contribute'),
-        ('write', 'Create and inspire'),
-    )
-
-    label = models.CharField(
-        max_length=12,
-        choices=LABELS,
-        default='read',
-    )
 
     # featured-image = s3boto3 stuffs
 
-    featured = models.BooleanField(default=False)
+    # featured = models.BooleanField(default=False)
 
-    header = models.CharField(max_length=500)
+    header = models.CharField(
+        max_length=500,
+        help_text="Page title, appears above content",
+        )
+
     content = RichTextField("Main body content")
 
     signup = models.ForeignKey(
@@ -35,7 +45,12 @@ class LandingPage(Page):
         related_name='page',
         null=True,
         on_delete=models.SET_NULL,
+        help_text="Choose an existing or create a new mailing list signup form"
     )
 
     def __str__(self):
         return str(self.title)
+
+    class Meta:
+        verbose_name = 'Custom Page'
+        verbose_name_plural = 'Custom Pages'
