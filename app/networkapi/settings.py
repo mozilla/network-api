@@ -147,10 +147,10 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': list(filter(None, [
-                'social_django.context_processors.backends' \
-                    if SOCIAL_SIGNIN else None,
-                'social_django.context_processors.login_redirect' \
-                    if SOCIAL_SIGNIN else None,
+                'social_django.context_processors.backends'
+                if SOCIAL_SIGNIN else None,
+                'social_django.context_processors.login_redirect'
+                if SOCIAL_SIGNIN else None,
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.static',
