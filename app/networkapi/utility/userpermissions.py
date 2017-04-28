@@ -1,7 +1,6 @@
 from django.contrib.sites.models import Site
 from mezzanine.core.models import SitePermission
 
-DEBUG = False
 
 def ismoz(email):
     """
@@ -51,7 +50,7 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     known-to-be mozilla account.
     """
 
-    if user.email and ismoz(user.email) and user.is_staff == False:
+    if user.email and ismoz(user.email) and user.is_staff is False:
         user.is_staff = True
         user.save()
         add_user_to_main_site(user)
