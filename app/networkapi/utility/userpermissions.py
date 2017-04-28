@@ -31,6 +31,11 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     print(', '.join("%s: %s" % item for item in attrs.items()))
 
     if user.email and ismoz(user.email):
-        if user.is_superuser is False:
-            user.is_superuser = True
-            user.save()
+        user.is_staff = True
+
+        # For some reason just is_staff is not enough to get
+        # access to the admin view right now, and the 
+        # is_superuser flag needs to also be set to True...
+        user.is_superuser = True
+
+        user.save()
