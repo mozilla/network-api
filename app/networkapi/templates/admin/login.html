@@ -27,14 +27,16 @@
 
 
 <form action="{{ app_path }}" method="post" id="login-form">
-	<div class="social-login">
-		<p>
-			Log in using <a href="{% url "social:begin" "google-oauth2" %}?next=/admin">Google Authentication</a>.
-		</p>
-		<p>
-			Or log in with a username and password:
-		</p>
-	</div>
+    {% if social %}
+    <div class="social-login">
+        <p>
+        Log in using <a href="{% url "social:begin" "google-oauth2" %}?next=/admin">Google Authentication</a>.
+        </p>
+        <p>
+        Or log in with a username and password:
+        </p>
+    </div>
+    {% endif %}
     {% csrf_token %}
     <div id="content-main">
         <div class="form-row">
