@@ -27,7 +27,6 @@ urlpatterns = list(filter(None, [
     url(r'^soc/', include('social_django.urls', namespace='social'))
     if settings.SOCIAL_SIGNIN else '',
     url(r'^api/people/', include('networkapi.people.urls')),
-    url(r'^api/features/', include('networkapi.features.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
     url(r'^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
     url(r'^', include('mezzanine.urls')),
