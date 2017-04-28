@@ -34,6 +34,10 @@ env = environ.Env(
     ASSET_DOMAIN=(str, ''),
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=(str, None),
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=(str, None),
+    BUILD_TRIGGER_URL=(str, ''),
+    BUILD_THROTTLE_SECONDS=(int, 900),
+    BUILD_DEBOUNCE_SECONDS=(int, 300),
+    DJANGO_LOG_LEVEL=(str, 'INFO')
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -316,6 +320,37 @@ if env('SSL_REDIRECT') is True:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 X_FRAME_OPTIONS = env('X_FRAME_OPTIONS')
+
+# Jenkins Build trigger URL
+BUILD_TRIGGER_URL = env('BUILD_TRIGGER_URL')
+BUILD_THROTTLE_SECONDS = env('BUILD_THROTTLE_SECONDS')
+BUILD_DEBOUNCE_SECONDS = env('BUILD_DEBOUNCE_SECONDS')
+
+DJANGO_LOG_LEVEL = env('DJANGO_LOG_LEVEL')
+
+# LOGGING
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[%(asctime)s] [%(levelname)s] %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'networkapi': {
+            'handlers': ['console'],
+            'level': DJANGO_LOG_LEVEL,
+            'propagate': True,
+        }
+    },
+}
 
 try:
     from mezzanine.utils.conf import set_dynamic_settings
