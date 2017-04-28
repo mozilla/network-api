@@ -45,7 +45,7 @@ class LandingPage(Page):
         related_name='page',
         null=True,
         on_delete=models.SET_NULL,
-        help_text="Choose an existing or create a new mailing list signup form",
+        help_text="Choose existing or create new mailing list signup form",
     )
 
     def __str__(self):
