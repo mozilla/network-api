@@ -1,4 +1,5 @@
 from django.contrib.sites.models import Site
+from django.contrib.auth.models import Group
 from mezzanine.core.models import SitePermission
 
 
@@ -43,6 +44,18 @@ def add_user_to_main_site(user):
     permissions.sites.add(main_site)
 
 
+def assign_group_policy(user, name):
+    """
+    add a specific group policy to a user's list of group policies.
+    """
+    try:
+        group = Group.objects.get(name=name)
+        user.groups.add(group)
+        user.save()
+    except:
+        pass
+
+
 def set_user_permissions(backend, user, response, *args, **kwargs):
     """
     This is a social-auth pipeline function for automatically
@@ -53,4 +66,7 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     if user.email and ismoz(user.email) and user.is_staff is False:
         user.is_staff = True
         user.save()
+
         add_user_to_main_site(user)
+
+        assign_group_policy(user, "staff")
