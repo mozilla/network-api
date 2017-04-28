@@ -32,6 +32,8 @@ env = environ.Env(
     AWS_LOCATION=(str, ''),
     FILEBROWSER_DIRECTORY=(str, ''),
     ASSET_DOMAIN=(str, ''),
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=(str, None),
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=(str, None),
     BUILD_TRIGGER_URL=(str, ''),
     BUILD_THROTTLE_SECONDS=(int, 900),
     BUILD_DEBOUNCE_SECONDS=(int, 300),
@@ -57,11 +59,18 @@ CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
 
 SITE_ID = 1
 
+# Use social authentication if there are key/secret values defined
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+SOCIAL_SIGNIN = SOCIAL_AUTH_GOOGLE_OAUTH2_KEY is not None and \
+                    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET is not None
+
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS = list(filter(None, [
 
     'filebrowser_s3',
+    'social_django' if SOCIAL_SIGNIN else None,
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -91,7 +100,7 @@ INSTALLED_APPS = [
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
-]
+]))
 
 MIDDLEWARE_CLASSES = [
     'mezzanine.core.middleware.UpdateCacheMiddleware',
@@ -117,6 +126,25 @@ MIDDLEWARE_CLASSES = [
     'mezzanine.core.middleware.FetchFromCacheMiddleware',
 ]
 
+if SOCIAL_SIGNIN:
+    AUTHENTICATION_BACKENDS = [
+        'social_core.backends.google.GoogleOAuth2',
+        'django.contrib.auth.backends.ModelBackend',
+    ]
+
+    # See http://python-social-auth.readthedocs.io/en/latest/pipeline.html
+    SOCIAL_AUTH_PIPELINE = (
+        'social_core.pipeline.social_auth.social_details',
+        'social_core.pipeline.social_auth.social_uid',
+        'social_core.pipeline.social_auth.auth_allowed',
+        'social_core.pipeline.social_auth.social_user',
+        'social_core.pipeline.user.get_username',
+        'social_core.pipeline.user.create_user',
+        'social_core.pipeline.social_auth.associate_user',
+        'social_core.pipeline.social_auth.load_extra_data',
+        'social_core.pipeline.user.user_details',
+    )
+
 PACKAGE_NAME_FILEBROWSER = 'filebrowser_safe'
 PACKAGE_NAME_GRAPPELLI = 'grappelli_safe'
 
@@ -135,7 +163,11 @@ TEMPLATES = [
         ],
         'APP_DIRS': True,
         'OPTIONS': {
-            'context_processors': [
+            'context_processors': list(filter(None, [
+                'social_django.context_processors.backends'
+                if SOCIAL_SIGNIN else None,
+                'social_django.context_processors.login_redirect'
+                if SOCIAL_SIGNIN else None,
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.template.context_processors.static',
@@ -143,7 +175,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'mezzanine.conf.context_processors.settings',
                 'mezzanine.pages.context_processors.page',
-            ],
+            ])),
             'builtins': [
                 'mezzanine.template.loader_tags',
             ],

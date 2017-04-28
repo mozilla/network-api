@@ -22,14 +22,16 @@ from mezzanine.conf import settings
 
 admin.autodiscover()
 
-urlpatterns = [
-    url('^admin/', include(admin.site.urls)),
+urlpatterns = list(filter(None, [
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^soc/', include('social_django.urls', namespace='social'))
+    if settings.SOCIAL_SIGNIN else '',
     url(r'^api/people/', include('networkapi.people.urls')),
     url(r'^api/features/', include('networkapi.features.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
-    url('^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
-    url('^', include('mezzanine.urls')),
-]
+    url(r'^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
+    url(r'^', include('mezzanine.urls')),
+]))
 
 handler404 = 'mezzanine.core.views.page_not_found'
 handler500 = 'mezzanine.core.views.server_error'
