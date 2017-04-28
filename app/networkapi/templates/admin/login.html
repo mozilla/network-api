@@ -27,7 +27,7 @@
 
 
 <form action="{{ app_path }}" method="post" id="login-form">
-    {% if social %}
+    {% if backends %}
     <div class="social-login">
         <p>
         Log in <a href="{% url "social:begin" "google-oauth2" %}?next=/admin">with Google</a>.
