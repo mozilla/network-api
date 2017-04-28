@@ -238,6 +238,15 @@ ADMIN_REMOVAL = [
     'mezzanine.generic.models.ThreadedComment',
 ]
 
+ADMIN_MENU_ORDER = (
+    ('Content', ('pages.Page',
+                 ('Media Library', 'media-library'))),
+    ('Data', ('people.Person', 'news.News', 'people.InternetHealthIssue',)),
+    ('Components', ('landingpage.Signup',)),
+    ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
+    ('Users', ('auth.User', 'auth.Group')),
+)
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

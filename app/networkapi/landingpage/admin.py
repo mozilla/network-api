@@ -11,8 +11,6 @@ class LandingPageAdmin(PageAdmin):
         (None, {
             'fields': [
                 'title',
-                'label',
-                'featured',
                 'header',
                 'content',
                 'signup',
