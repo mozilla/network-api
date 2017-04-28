@@ -43,6 +43,7 @@ class LandingPage(Page):
     signup = models.ForeignKey(
         Signup,
         related_name='page',
+        blank=True,
         null=True,
         on_delete=models.SET_NULL,
         help_text="Choose existing or create new mailing list signup form",
