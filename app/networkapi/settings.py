@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'adminsortable',
 
     'networkapi.people',
+    'networkapi.features',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',

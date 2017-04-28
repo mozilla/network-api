@@ -44,12 +44,6 @@ where, `<command>` (don't forget about the surrounding quotes) should be replace
 | 6. | python manage.py createsuperuser | Create a super user for the Django administrative interface. |
 | 7. | python manage.py collectstatic | Create a folder containing all the static content that needs to be served for use by the API and the admin interface. |
 
-## Reset dev environment
-
-If you ~~really mess things up~~ want to start fresh, delete your local database within docker and try again.
-
-`docker-compose down --rmi local` and `docker-compose up`. You'll need to `migrate` and `createsuperuser` again, using the above instructions.
-
 ## Our deployment diagram
 
 [![](screenshot.184.png)](https://www.lucidchart.com/documents/edit/72261654-23d0-491c-b67e-c026abbafcd3)
