@@ -69,4 +69,4 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
 
         add_user_to_main_site(user)
 
-        assign_group_policy(user, "staff");
+        assign_group_policy(user, "staff")
