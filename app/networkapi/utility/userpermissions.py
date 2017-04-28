@@ -23,11 +23,11 @@ def ismoz(email):
 def set_user_permissions(backend, user, response, *args, **kwargs):
     """
     This is a social-auth pipeline function for automatically
-    setting is_staff permissions when a user logs in from a 
+    setting is_staff permissions when a user logs in from a
     known-to-be mozilla account.
     """
 
     if user.email and ismoz(user.email):
-        if user.is_staff == False:
+        if user.is_staff is False:
             user.is_staff = True
             user.save()
