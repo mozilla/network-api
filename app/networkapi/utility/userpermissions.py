@@ -1,3 +1,8 @@
+from django.contrib.sites.models import Site
+from mezzanine.core.models import SitePermission
+
+DEBUG = False
+
 def ismoz(email):
     """
     This function determines whether a particular email address is a
@@ -20,6 +25,25 @@ def ismoz(email):
     return False
 
 
+def add_user_to_main_site(user):
+    """
+    make sure a user has permissions to look at the main site.
+    """
+
+    sites = Site.objects.all()
+    main_site = sites[0]
+
+    permissions = False
+
+    try:
+        siteperms = SitePermission.objects.filter(user=user)
+        permissions = siteperms[0]
+    except:
+        permissions = SitePermission.objects.create(user=user)
+
+    permissions.sites.add(main_site)
+
+
 def set_user_permissions(backend, user, response, *args, **kwargs):
     """
     This is a social-auth pipeline function for automatically
@@ -27,15 +51,7 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     known-to-be mozilla account.
     """
 
-    attrs = vars(user)
-    print(', '.join("%s: %s" % item for item in attrs.items()))
-
-    if user.email and ismoz(user.email):
+    if user.email and ismoz(user.email) and user.is_staff == False:
         user.is_staff = True
-
-        # For some reason just is_staff is not enough to get
-        # access to the admin view right now, and the 
-        # is_superuser flag needs to also be set to True...
-        user.is_superuser = True
-
         user.save()
+        add_user_to_main_site(user)
