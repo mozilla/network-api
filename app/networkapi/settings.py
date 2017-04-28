@@ -203,12 +203,12 @@ ADMIN_REMOVAL = [
 ]
 
 ADMIN_MENU_ORDER = (
-    ('Content', ('pages.Page', 'blog.BlogPost', 'generic.ThreadedComment',
+    ('Content', ('pages.Page',
                  ('Media Library', 'media-library'))),
-    ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
-    ('Users', ('auth.User', 'auth.Group')),
     ('Data', ('people.Person', 'news.News', 'people.InternetHealthIssue',)),
     ('Components', ('landingpage.Signup',)),
+    ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
+    ('Users', ('auth.User', 'auth.Group')),
 )
 
 # Internationalization

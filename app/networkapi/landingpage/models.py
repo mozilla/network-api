@@ -7,17 +7,17 @@ class Signup(models.Model):
     title = models.CharField(
         max_length=100,
         help_text="Identify this component for other editors",
-        )
+    )
 
     header = models.CharField(
         max_length=500,
         help_text="Signup heading that will display on page"
-        )
+    )
 
     description = RichTextField(
         "description",
         help_text="Body of signup component"
-        )
+    )
 
     def __str__(self):
         return str(self.title)
@@ -36,7 +36,7 @@ class LandingPage(Page):
     header = models.CharField(
         max_length=500,
         help_text="Page title, appears above content",
-        )
+    )
 
     content = RichTextField("Main body content")
 
@@ -45,7 +45,7 @@ class LandingPage(Page):
         related_name='page',
         null=True,
         on_delete=models.SET_NULL,
-        help_text="Choose an existing or create a new mailing list signup form"
+        help_text="Choose an existing or create a new mailing list signup form",
     )
 
     def __str__(self):
