@@ -127,7 +127,7 @@ if SOCIAL_SIGNIN:
         'social_core.backends.google.GoogleOAuth2',
         'django.contrib.auth.backends.ModelBackend',
     ]
-    
+
     # See http://python-social-auth.readthedocs.io/en/latest/pipeline.html
     SOCIAL_AUTH_PIPELINE = (
         'social_core.pipeline.social_auth.social_details',
