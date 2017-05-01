@@ -59,8 +59,8 @@ class News(models.Model):
     )
     glyph = models.FileField(
         max_length=2048,
-        help_text='Image associated with the article source. Unsure of what to use? ' +
-        'Leave blank and ask a designer',
+        help_text='Image associated with the article source. ' +
+        'Unsure of what to use? Leave blank and ask a designer',
         upload_to=get_news_glyph_upload_path,
         null=True,
         blank=True,
