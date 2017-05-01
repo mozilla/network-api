@@ -59,13 +59,14 @@ class News(models.Model):
     )
     glyph = models.FileField(
         max_length=2048,
-        help_text='Image associated with the article',
+        help_text='Image associated with the article source. Unsure of what to use? ' +
+        'Leave blank and ask a designer',
         upload_to=get_news_glyph_upload_path,
         null=True,
         blank=True,
     )
     featured = models.BooleanField(
-        help_text='Do you want to feature this news piece?',
+        help_text='Do you want to feature this news piece on the homepage?',
         default=False,
     )
     publish_after = models.DateTimeField(
@@ -83,6 +84,9 @@ class News(models.Model):
     objects = NewsQuerySet.as_manager()
 
     class Meta:
+        """Meta settings for news model"""
+
+        verbose_name = 'news article'
         verbose_name_plural = 'news'
         ordering = ('-date',)
 
