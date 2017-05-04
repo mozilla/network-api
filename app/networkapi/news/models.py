@@ -104,7 +104,6 @@ class News(models.Model):
         blank=True,
     )
 
-
     objects = NewsQuerySet.as_manager()
 
     class Meta:
