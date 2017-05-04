@@ -97,6 +97,12 @@ class Person(SortableMixin):
         null=True,
         blank=True,
     )
+    interview_url = models.URLField(
+        max_length=500,
+        help_text='Link to interview for featured people',
+        null=True,
+        blank=True
+    )
     internet_health_issues = models.ManyToManyField(
         InternetHealthIssue,
         related_name='people',

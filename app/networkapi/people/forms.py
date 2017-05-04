@@ -41,14 +41,15 @@ class PersonAdminForm(forms.ModelForm):
         model = Person
         fields = (
             'name',
+            'featured',
             'role',
             'location',
             'image',
             'partnership_logo',
             'twitter_url',
             'linkedin_url',
+            'interview_url',
             'internet_health_issues',
-            'featured',
             'bio',
             'quote',
             'publish_after',
