@@ -12,6 +12,8 @@ from networkapi.people.forms import PersonAdminForm
 class AffiliationAdmin(admin.TabularInline):
     model = Affiliation
     extra = 1
+    verbose_name_plural = """Affiliations  (e.g. companies, nonprofits, universities, projects and
+    other organizations this person is actively involved with)"""
 
 
 class PersonAdmin(SortableAdmin):
