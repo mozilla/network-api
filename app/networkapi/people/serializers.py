@@ -15,6 +15,7 @@ class PersonSerializer(serializers.ModelSerializer):
         return {
             'twitter': instance.twitter_url,
             'linkedIn': instance.linkedin_url,
+            'interview': instance.interview_url,
         }
 
     class Meta:

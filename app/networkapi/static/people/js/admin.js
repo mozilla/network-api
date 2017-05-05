@@ -1,12 +1,12 @@
 function run($) {
-  if(!$("#id_featured").is(':checked')) {
-    $(".field-quote").hide();
-    $(".field-bio").hide();
-  }
+  var fieldsTiedToFeaturedCards = ".quote, .bio, .interview_url";
 
-  $("#id_featured").click(function() {
-    $(".field-quote").toggle(this.checked);
-    $(".field-bio").toggle(this.checked);
+  $(".featured").on('click', function() {
+    if(!$("#id_featured").is(':checked')) {
+      $(fieldsTiedToFeaturedCards).hide();
+    } else {
+      $(fieldsTiedToFeaturedCards).show();
+    }
   });
 }
 
