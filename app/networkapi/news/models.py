@@ -14,6 +14,15 @@ def get_news_glyph_upload_path(instance, filename):
     )
 
 
+def get_thumbnail_upload_path(instance, filename):
+    return get_image_upload_path(
+        app_name='news',
+        prop_name='thumbnail',
+        instance=instance,
+        current_filename=filename
+    )
+
+
 class NewsQuerySet(models.query.QuerySet):
     """
     A QuerySet for news that filters for published records
@@ -78,7 +87,21 @@ class News(models.Model):
         help_text='Hide this news after this date and time (UTC)',
         default=None,
         null=True,
-        blank=True
+        blank=True,
+    )
+    is_video = models.BooleanField(
+        help_text='Is this news piece a video?',
+        default=False,
+        null=False,
+        blank=False,
+    )
+    thumbnail = models.FileField(
+        max_length=2048,
+        help_text='Thumbnail image associated with the news piece. ' +
+        'Unsure of what to use? Leave blank and ask a designer',
+        upload_to=get_thumbnail_upload_path,
+        null=True,
+        blank=True,
     )
 
     objects = NewsQuerySet.as_manager()

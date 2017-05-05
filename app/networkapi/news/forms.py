@@ -33,7 +33,13 @@ class NewsAdminForm(forms.ModelForm):
             'excerpt',
             'author',
             'glyph',
+            'thumbnail',
+            'is_video',
             'featured',
             'publish_after',
             'expires',
         )
+        labels = {
+            'is_video': 'Is Video?',
+            'featured': 'Featured?'
+        }
