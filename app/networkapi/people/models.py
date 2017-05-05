@@ -86,19 +86,19 @@ class Person(SortableMixin):
         blank=True,
     )
     twitter_url = models.URLField(
-        max_length=500,
+        max_length=2048,
         help_text='Link to twitter account',
         null=True,
         blank=True,
     )
     linkedin_url = models.URLField(
-        max_length=500,
+        max_length=2048,
         help_text='Link to LinkedIn account',
         null=True,
         blank=True,
     )
     interview_url = models.URLField(
-        max_length=500,
+        max_length=2048,
         help_text='Link to interview for featured people',
         null=True,
         blank=True
