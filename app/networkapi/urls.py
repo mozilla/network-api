@@ -29,8 +29,10 @@ urlpatterns = list(filter(None, [
     url(r'^api/people/', include('networkapi.people.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
     url(r'^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
+    url(r'^', include('pulseapi.urls')),
     url(r'^', include('mezzanine.urls')),
 ]))
+
 
 handler404 = 'mezzanine.core.views.page_not_found'
 handler500 = 'mezzanine.core.views.server_error'
