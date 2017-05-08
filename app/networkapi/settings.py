@@ -126,10 +126,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 if SOCIAL_SIGNIN:
-    SOCIAL_AUTH_LOGIN_REDIRECT_URL = env(
-        'SOCIAL_AUTH_LOGIN_REDIRECT_URL',
-        'http://example.org/please/set/SOCIAL_AUTH_LOGIN_REDIRECT_URL'
-    )
+    SOCIAL_AUTH_LOGIN_REDIRECT_URL = env('SOCIAL_AUTH_LOGIN_REDIRECT_URL', None)
 
     AUTHENTICATION_BACKENDS = [
         'social_core.backends.google.GoogleOAuth2',
