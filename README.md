@@ -11,8 +11,8 @@ The only requirement to run this API is Docker and its dependencies (which you c
 Before you can run the site, you'll need to run the migrations and create a superuser. These commands are run within the container:
 
 ```bash
-docker-compose run web sh -c "python manage.py migrate"
-docker-compose run web sh -c "python manage.py createsuperuser"
+docker-compose run --rm web sh -c "python manage.py migrate"
+docker-compose run --rm web sh -c "python manage.py createsuperuser"
 ```
 
 To build and run the API, simply run:
@@ -30,7 +30,7 @@ Any changes you make in the `app` directory will automatically be reflected in t
 
 As this is a Python/Django project, we also support additional commands that might be of use. To run a command, simply run:
 ```bash
-docker-compose run web sh -c "<command>"
+docker-compose run --rm web sh -c "<command>"
 ```
 where, `<command>` (don't forget about the surrounding quotes) should be replaced by any one of the following:
 
