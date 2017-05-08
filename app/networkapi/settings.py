@@ -128,9 +128,9 @@ MIDDLEWARE_CLASSES = [
 if SOCIAL_SIGNIN:
     SOCIAL_AUTH_LOGIN_REDIRECT_URL = env(
         'SOCIAL_AUTH_LOGIN_REDIRECT_URL',
-        'Please set SOCIAL_AUTH_LOGIN_REDIRECT_URL to your fully qualified callback URL'
+        'Please set SOCIAL_AUTH_LOGIN_REDIRECT_URL to a full callback URL'
     )
-    
+
     AUTHENTICATION_BACKENDS = [
         'social_core.backends.google.GoogleOAuth2',
         'django.contrib.auth.backends.ModelBackend',
