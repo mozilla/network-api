@@ -128,7 +128,7 @@ MIDDLEWARE_CLASSES = [
 if SOCIAL_SIGNIN:
     SOCIAL_AUTH_LOGIN_REDIRECT_URL = env(
         'SOCIAL_AUTH_LOGIN_REDIRECT_URL',
-        'Please set SOCIAL_AUTH_LOGIN_REDIRECT_URL to a full callback URL'
+        'http://example.org/please/set/SOCIAL_AUTH_LOGIN_REDIRECT_URL'
     )
 
     AUTHENTICATION_BACKENDS = [
