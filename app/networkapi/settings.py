@@ -38,7 +38,7 @@ env = environ.Env(
     BUILD_THROTTLE_SECONDS=(int, 900),
     BUILD_DEBOUNCE_SECONDS=(int, 300),
     DJANGO_LOG_LEVEL=(str, 'INFO'),
-    USE_X_FORWARDED_HOST=(bool, False)
+    USE_X_FORWARDED_HOST=(bool, False),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
