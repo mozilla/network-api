@@ -37,7 +37,8 @@ env = environ.Env(
     BUILD_TRIGGER_URL=(str, ''),
     BUILD_THROTTLE_SECONDS=(int, 900),
     BUILD_DEBOUNCE_SECONDS=(int, 300),
-    DJANGO_LOG_LEVEL=(str, 'INFO')
+    DJANGO_LOG_LEVEL=(str, 'INFO'),
+    USE_X_FORWARDED_HOST=(bool, False),
 )
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -57,6 +58,7 @@ if env('FILEBROWSER_DEBUG') or DEBUG != env('FILEBROWSER_DEBUG'):
 ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
 ALLOWED_REDIRECT_HOSTS = ALLOWED_HOSTS
+USE_X_FORWARDED_HOST = env('USE_X_FORWARDED_HOST')
 
 SITE_ID = 1
 
