@@ -1,9 +1,49 @@
 import json
+
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User, Group, Permission
+from django.contrib.contenttypes.models import ContentType
+
+from pulseapi.entries.models import Entry
+from pulseapi.entries.test_models import EntryFactory
+
+from networkapi.utility.userpermissions import is_staff_address, assign_group_policy, add_user_to_main_site
+
+
+def setup_groups():
+    staff, created = Group.objects.get_or_create(name='staff')
+    content_type = ContentType.objects.get_for_model(Entry)
+
+    permission = Permission.objects.create(
+        codename='can_add_entry',
+        name='Can Add Entries',
+        content_type=content_type
+    )
+    staff.permissions.add(permission)
+    staff.save()
+
+    permission = Permission.objects.create(
+        codename='can_change_entry',
+        name='Can Change Entries',
+        content_type=content_type
+    )
+    staff.permissions.add(permission)
+    staff.save()
+
+    permission = Permission.objects.create(
+        codename='can_delete_entry',
+        name='Can Delete Entries',
+        content_type=content_type
+    )
+    staff.permissions.add(permission)
+    staff.save()
 
 
 def setup_entries(test):
+    if Entry.objects.all().count() > 0:
+        return
+
     test.entries = [EntryFactory() for i in range(2)]
     for entry in test.entries:
         entry.save()
@@ -17,6 +57,11 @@ def create_logged_in_user(test, username, email, password="password1234"):
     user = User.objects.create(username=username, email=email, password=password)
     user.save()
 
+    # make sure this user is in the staff group, too
+    if is_staff_address(email):
+        assign_group_policy(user, "staff")
+        add_user_to_main_site(user)
+
     # verify the user was saved
     users = User.objects.filter(username=username)
     test.assertEqual(len(users) == 1, True)
@@ -24,11 +69,6 @@ def create_logged_in_user(test, username, email, password="password1234"):
     # log this user in for further testing purposes
     test.client = Client()
     test.client.force_login(user);
-
-
-def setup_data(test):
-    # Set up with some curated data for all tests to use
-    postresponse = test.client.post('/entries/', data=test.generatePostPayload())
 
 
 def generate_default_payload(values):
@@ -53,14 +93,20 @@ def generate_payload(test, data={}, payload=False):
     return payload
 
 
+#def post_one_entry(test):
+#    # Set up with some curated data for all tests to use
+#    postresponse = test.client.post('/entries/', data=test.generatePostPayload())
+
+
 class PulseMemberTestCase(TestCase):
     """
     A test case wrapper for "plain users" without any staff or admin rights
     """
     def setUp(self):
-        # setup_entries(self)
+        setup_groups()
         user = create_logged_in_user(self, username="plain user", email="test@example.org")
-        # setup_data(self)
+        setup_entries(self)
+        #post_one_entry(self)
 
     def generatePostPayload(self, data={}):
         return generate_payload(self, data)
@@ -71,9 +117,10 @@ class PulseStaffTestCase(TestCase):
     A test case wrapper for "staff" users, due to having a mozilla login
     """
     def setUp(self):
-        # setup_entries(self)
+        setup_groups()
         user = create_logged_in_user(self, username="staff user", email="test@mozilla.org")
-        # setup_data(self)
+        setup_entries(self)
+        #post_one_entry(self)
 
     def generatePostPayload(self, data={}):
         return generate_payload(self, data)

@@ -46,7 +46,7 @@ class UserBookmark(models.Model):
         related_name='bookmarked_by'
     )
 
-    user = models.ForeignKey(
+    profile = models.ForeignKey(
         UserProfile,
         on_delete=models.CASCADE,
         related_name='bookmark_entries'

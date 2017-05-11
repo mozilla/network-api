@@ -20,5 +20,5 @@ class TestUserProfile(PulseStaffTestCase):
 
         # verify there are zero bookmarks associated
         profile = found[0]
-        bookmarks = profile.bookmarks.objects.all()
+        bookmarks = profile.bookmarks.all()
         self.assertEqual(len(bookmarks), 0)

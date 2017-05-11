@@ -20,14 +20,17 @@ class TestEntryView(PulseStaffTestCase):
         """
         Test posting an entry with minimum amount of content
         """
-        payload = self.generatePostPayload(data={'title':'title test_post_minimum_entry', 'tags':''})
+        payload = self.generatePostPayload(data={
+            'title':'title test_post_minimum_entry',
+            'content_url':'http://example.org/content/url'
+        })
         postresponse = self.client.post('/entries/', payload)
 
         self.assertEqual(postresponse.status_code, 200)
 
     def test_post_duplicate_title(self):
         """Make sure multiple entries can have the same title"""
-
+ 
         payload = {
             'title': 'title setUp1',
         }
@@ -35,7 +38,7 @@ class TestEntryView(PulseStaffTestCase):
         entriesJson = json.loads(str(self.client.get('/entries/').content, 'utf-8'))
         self.assertEqual(postresponse.status_code, 200)
         self.assertEqual(len(entriesJson['results']), 4)
-
+ 
     def test_post_empty_title(self):
         """Make sure entries require a title"""
         payload = {
@@ -204,12 +207,17 @@ class TestEntryView(PulseStaffTestCase):
         """
         Verify that anonymous users cannot bookmark entries.
         """
+        # get a legal entry and its associated id
+        entries = Entry.objects.all()
+        entry = entries[0]
+        id = entry.id
+
+        # ensure the user is logged out, then try to bookmark
         self.client.logout();
-        postresponse = self.client.put('/entries/1/bookmark')
+        postresponse = self.client.put('/entries/' + str(id) + '/bookmark')
         self.assertEqual(postresponse.status_code, 403)
 
         # verify bookmark count is zero
-        entry = Entry.objects.get(id=1)
         bookmarks = entry.bookmarked_by.count()
         self.assertEqual(bookmarks, 0)
 
@@ -217,16 +225,22 @@ class TestEntryView(PulseStaffTestCase):
         """
         Verify that authenticated users can (un)bookmark an entry.
         """
-        postresponse = self.client.put('/entries/1/bookmark')
+        # get a legal entry and its associated id
+        entries = Entry.objects.all()
+        entry = entries[0]
+        id = entry.id
+
+        put_url = '/entries/' + str(id) + '/bookmark'
+
+        postresponse = self.client.put(put_url)
         self.assertEqual(postresponse.status_code, 204)
 
         # verify bookmark count is now one
-        entry = Entry.objects.get(id=1)
         bookmarks = entry.bookmarked_by.count()
         self.assertEqual(bookmarks, 1)
 
         # put again, which should clear the bookmark flag for this user
-        postresponse = self.client.put('/entries/1/bookmark')
+        postresponse = self.client.put(put_url)
         self.assertEqual(postresponse.status_code, 204)
 
         # verify bookmark count is now zero
@@ -246,21 +260,23 @@ class TestEntryView(PulseStaffTestCase):
         bookmarkJson = json.loads(str(bookmarkResponse.content, 'utf-8'))
         self.assertEqual(len(bookmarkJson), 1)
 
+
 class TestMemberEntryView(PulseMemberTestCase):
-    def test_approval_requirement(self):
+     def test_approval_requirement(self):
         """
         Verify that entriest submitted by non-Mozilla emails aren't immediately visible
         """
+
         payload = self.generatePostPayload(data={'title':'title test_approval_requirement'})
         postresponse = self.client.post('/entries/', payload)
-
         self.assertEqual(postresponse.status_code, 200)
 
         responseobj = json.loads(str(postresponse.content,'utf-8'))
-        entryId = str(responseobj['id'])
+        id = str(responseobj['id'])
 
-        getresponse = self.client.get('/entries/'+ entryId, follow=True)
+        getresponse = self.client.get('/entries/'+ id, follow=True)
         getListresponse = json.loads(str(self.client.get('/entries/').content, 'utf-8'))
+        results = getListresponse['results']
 
-        self.assertEqual(len(getListresponse['results']), 2)
+        self.assertEqual(len(results), 2)
         self.assertEqual(getresponse.status_code, 404)

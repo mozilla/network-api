@@ -3,19 +3,23 @@ Views to get entries
 """
 import base64
 import django_filters
+
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import login_required
 
 from rest_framework import (filters, status)
-from rest_framework.decorators import detail_route, api_view
+from rest_framework.decorators import detail_route, api_view, permission_classes
 from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from pulseapi.entries.models import Entry
 from pulseapi.entries.serializers import EntrySerializer
-from pulseapi.userprofile.models import UserBookmark
+from pulseapi.userprofile.models import UserProfile, UserBookmark
 
 @api_view(['PUT'])
+@permission_classes((AllowAny,))
 def toggle_bookmark(request, entryid):
     """
     Toggle whether or not this user "bookmarked" the url-indicated entry.
@@ -34,8 +38,9 @@ def toggle_bookmark(request, entryid):
         except Entry.DoesNotExist:
             return Response("No such entry", status=status.HTTP_404_NOT_FOUND)
 
-        # find is there is already a {user,entry,(timestamp)} triple
-        bookmarks = entry.bookmarked_by.filter(user=user)
+        # find is there is already a {userprofile,entry,timestamp} triple
+        profile = UserProfile.objects.get(user=user)
+        bookmarks = entry.bookmarked_by.filter(profile=profile)
         exists = bookmarks.count() > 0
 
         # if there is a bookmark, remove it. Otherwise, make one.
@@ -43,7 +48,7 @@ def toggle_bookmark(request, entryid):
             for bookmark in bookmarks:
                 bookmark.delete()
         else:
-            bookmark = UserBookmark(entry=entry, user=user)
+            bookmark = UserBookmark(entry=entry, profile=profile)
             bookmark.save()
 
         return Response("Toggled bookmark.", status=status.HTTP_204_NO_CONTENT)
@@ -134,11 +139,10 @@ class EntryView(RetrieveAPIView):
 class BookmarkedEntries(ListAPIView):
 
     def get_queryset(self):
-        entries = set()
-        user = self.request.user.id
-        for bookmark in UserBookmark.objects.filter(user=user).select_related('entry'):
-            entries.add(bookmark.entry)
-        return entries
+        user = self.request.user
+        profile = UserProfile.objects.filter(user=user)
+        bookmarks = UserBookmark.objects.filter(profile=profile)
+        return Entry.objects.filter(bookmarked_by__in=bookmarks)
 
     serializer_class = EntrySerializer
 
@@ -187,36 +191,17 @@ class EntriesListView(ListCreateAPIView):
             queryset = Entry.objects.public()
         return queryset
 
+    # which permissions allow this access to this model
+    permission_classes = [ AllowAny ]
+
     # When people POST to this route, we want to do some
     # custom validation involving CSRF and nonce validation,
     # so we intercept the POST handling a little.
     @detail_route(methods=['post'])
-
     def post(self, request, *args, **kwargs):
-        def ismoz(email):
-            """
-            This function determines whether a particular email address is a
-            mozilla address or not. We strictly control mozilla.com and
-            mozillafoundation.org addresses, and so filtering on the email
-            domain section using exact string matching is acceptable.
-            """
-            if email is None:
-                return False
 
-            parts = email.split('@')
-            domain = parts[1]
-
-            if domain == 'mozilla.com':
-                return True
-
-            if domain == 'mozillafoundation.org':
-                return True
-
-            if domain == 'mozilla.org':
-                return True
-
-            return False
         validation_result = post_validate(request)
+
         if validation_result is True:
             # invalidate the nonce, so this form cannot be resubmitted with the current id
             request.session['nonce'] = False
@@ -244,9 +229,11 @@ class EntriesListView(ListCreateAPIView):
 
             serializer = EntrySerializer(data=request.data)
             if serializer.is_valid():
+                user = request.user
                 # ensure that the published_by is always the user doing the posting,
                 # and set 'featured' to false (see https://github.com/mozilla/network-pulse-api/issues/83)
-                savedEntry = serializer.save(published_by=request.user, featured=False, is_approved=ismoz(request.user.email))
+                is_approved = user.groups.filter(name="staff").exists()
+                savedEntry = serializer.save(published_by=user, featured=False, is_approved=is_approved)
                 return Response({'status': 'submitted', 'id': savedEntry.id})
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -81,7 +81,7 @@ class EntrySerializer(serializers.ModelSerializer):
             user = request.user
             if user.is_authenticated():
                 profile = UserProfile.objects.filter(user=user)
-                res = instance.bookmarked_by.filter(user=profile)
+                res = instance.bookmarked_by.filter(profile=profile)
                 return res.count() > 0
 
         return False
