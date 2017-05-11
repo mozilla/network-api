@@ -5,7 +5,12 @@
     <div id="sortable-object">
         <a href="{% url opts|admin_urlname:'do_sorting' object.model_type_id %}" class="admin_sorting_url">
             <img class="instance-image" src="{{ object.image.url }}">
-            <span>{{ object }}</span>
+            <div style="display: flex; justify-content: space-between; width: 100%; margin-right: 1em;">
+                <span>{{ object }}</span>
+                {% if object.featured %}
+                <div> Featured </div>
+                {% endif %}
+            </div>
         </a>
     </div>
 </form>
