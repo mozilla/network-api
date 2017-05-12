@@ -93,15 +93,24 @@ INSTALLED_APPS = list(filter(None, [
 
     'whitenoise.runserver_nostatic',
     'rest_framework',
+    'django_filters',
     'gunicorn',
     'corsheaders',
     'storages',
     'adminsortable',
 
+    # the network site
     'networkapi.people',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
+
+    # the network pulse
+    'pulseapi.creators',
+    'pulseapi.entries',
+    'pulseapi.issues',
+    'pulseapi.tags',
+    'pulseapi.userprofile',
 ]))
 
 MIDDLEWARE_CLASSES = [
@@ -147,6 +156,7 @@ if SOCIAL_SIGNIN:
         'social_core.pipeline.social_auth.social_user',
         'social_core.pipeline.user.get_username',
         'social_core.pipeline.user.create_user',
+        # custom permissions when a user logs on
         'networkapi.utility.userpermissions.set_user_permissions',
         'social_core.pipeline.social_auth.associate_user',
         'social_core.pipeline.social_auth.load_extra_data',
@@ -168,6 +178,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             app('templates'),
+            'pulseapi/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

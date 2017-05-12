@@ -2,6 +2,7 @@
 Django==1.10.6
 gunicorn==19.6.0
 djangorestframework==3.5.4
+django-filter==1.0.2
 
 # Mezzanine CMS
 Mezzanine==4.2.3

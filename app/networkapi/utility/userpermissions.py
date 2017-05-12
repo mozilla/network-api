@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from mezzanine.core.models import SitePermission
 
 
-def ismoz(email):
+def is_staff_address(email):
     """
     This function determines whether a particular email address is a
     mozilla address or not. We strictly control mozilla.com and
@@ -15,6 +15,9 @@ def ismoz(email):
 
     parts = email.split('@')
     domain = parts[1]
+
+    if domain == 'mozilla.org':
+        return True
 
     if domain == 'mozilla.com':
         return True
@@ -53,6 +56,7 @@ def assign_group_policy(user, name):
         user.groups.add(group)
         user.save()
     except:
+        print("group", name, "not found")
         pass
 
 
@@ -63,7 +67,7 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     known-to-be mozilla account.
     """
 
-    if user.email and ismoz(user.email) and user.is_staff is False:
+    if user.email and is_staff_address(user.email) and user.is_staff is False:
         user.is_staff = True
         user.save()
 
