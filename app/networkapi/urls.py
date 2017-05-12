@@ -26,9 +26,12 @@ urlpatterns = list(filter(None, [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^soc/', include('social_django.urls', namespace='social'))
     if settings.SOCIAL_SIGNIN else '',
+    # pulse api routing under the 'api' namespace for future use:
+    url(r'^api/', include('pulseapi.urls')),
     url(r'^api/people/', include('networkapi.people.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
     url(r'^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
+    # pulse api routing on the root to allow transitioning:
     url(r'^', include('pulseapi.urls')),
     url(r'^', include('mezzanine.urls')),
 ]))
