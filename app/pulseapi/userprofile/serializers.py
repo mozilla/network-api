@@ -1,10 +1,6 @@
 """Serialize the models"""
 from rest_framework import serializers
-
-from pulseapi.userprofile.models import (
-    UserProfile,
-    UserBookmark,
-)
+from pulseapi.userprofile.models import UserBookmark
 
 
 class UserBookmarkSerializer(serializers.ModelSerializer):
@@ -17,6 +13,7 @@ class UserBookmarkSerializer(serializers.ModelSerializer):
         Meta class. Again: because
         """
         model = UserBookmark
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """

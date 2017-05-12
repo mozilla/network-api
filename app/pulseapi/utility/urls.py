@@ -1,16 +1,18 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth import logout, get_user_model
 from django.template import Template, Context
 
 
 def set_random_value(request, propname):
     """
-    Set up a random value for the session state, used in authentication validation.
+    Set up a random value for the session state,
+    used in authentication validation.
     """
 
     request.session[propname] = get_user_model().objects.make_random_password()
+
 
 def login_redirect(request):
     """
@@ -82,8 +84,8 @@ def userstatus(request):
 
 # And then, finally, the url patterns
 urlpatterns = [
-    url(r'^login/',      login_redirect, name="A login proxy for off-site clients"),
-    url(r'^logout/',     force_logout,   name="A logou proxy for off-site clients"),
-    url(r'^nonce/',      nonce,          name="get a new nonce value"),
-    url(r'^userstatus/', userstatus,     name="get current user information"),
+    url(r'^login/', login_redirect, name="A login proxy for off-site clients"),
+    url(r'^logout/', force_logout, name="A logou proxy for off-site clients"),
+    url(r'^nonce/', nonce, name="get a new nonce value"),
+    url(r'^userstatus/', userstatus, name="get current user information"),
 ]

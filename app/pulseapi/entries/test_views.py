@@ -22,8 +22,8 @@ class TestEntryView(PulseStaffTestCase):
         """
 
         payload = self.generatePostPayload(data={
-            'title':'title test_post_minimum_entry',
-            'content_url':'http://example.org/content/url'
+            'title': 'title test_post_minimum_entry',
+            'content_url': 'http://example.org/content/url'
         })
         postresponse = self.client.post('/entries/', payload)
 
@@ -36,34 +36,48 @@ class TestEntryView(PulseStaffTestCase):
             'title': 'test_post_duplicate_title',
             'content_url': 'http://example.com/test1'
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
 
         payload = {
             'title': 'test_post_duplicate_title',
             'content_url': 'http://example.com/test2'
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
 
-        entriesJson = json.loads(str(self.client.get('/entries/').content, 'utf-8'))
+        entriesJson = json.loads(
+            str(self.client.get('/entries/').content, 'utf-8')
+        )
         self.assertEqual(postresponse.status_code, 200)
         self.assertEqual(len(entriesJson['results']), 4)
- 
+
     def test_post_empty_title(self):
         """Make sure entries require a title"""
 
         payload = {
-            'title':''
+            'title': ''
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         self.assertEqual(postresponse.status_code, 400)
 
     def test_post_content_url_empty(self):
         """Make sure entries require a content_url"""
 
         payload = {
-            'content_url':''
+            'content_url': ''
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         self.assertEqual(postresponse.status_code, 400)
 
     def test_post_full_entry(self):
@@ -83,7 +97,10 @@ class TestEntryView(PulseStaffTestCase):
             'issues': 'Decentralization',
             'creators': ['Pomax', 'Alan']
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         self.assertEqual(postresponse.status_code, 200)
 
     def test_featured_filter(self):
@@ -103,8 +120,11 @@ class TestEntryView(PulseStaffTestCase):
             'issues': 'Decentralization',
             'creators': ['Pomax', 'Alan']
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-        responseobj = json.loads(str(postresponse.content,'utf-8'))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
+        responseobj = json.loads(str(postresponse.content, 'utf-8'))
         entryId = responseobj['id']
         # this entry should not be featured automatically
         searchList = self.client.get('/entries/?featured=True')
@@ -125,23 +145,28 @@ class TestEntryView(PulseStaffTestCase):
         See if tags endpoint has proper results afterwards
         """
 
+        content_url = 'http://example.com/test_post_entry_with_mixed_tags_1'
         payload = {
             'title': 'title test_post_entry_with_mixed_tags2',
-            'content_url': 'http://example.com/test_post_entry_with_mixed_tags_1',
+            'content_url': content_url,
             'tags': ['test1', 'test2'],
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
+        content_url = 'http://example.com/test_post_entry_with_mixed_tags_2'
         payload = {
             'title': 'title test_post_entry_with_mixed_tags2',
-            'content_url': 'http://example.com/test_post_entry_with_mixed_tags_2',
+            'content_url': content_url,
             'tags': ['test2', 'test3'],
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         tagList = json.loads(str(self.client.get('/tags/').content, 'utf-8'))
-        self.assertEqual(tagList, ['test1','test2','test3'])
-
+        self.assertEqual(tagList, ['test1', 'test2', 'test3'])
 
     def test_post_entry_with_mixed_creators(self):
         """
@@ -152,12 +177,19 @@ class TestEntryView(PulseStaffTestCase):
         payload = {
             'title': 'title test_post_entry_with_mixed_tags2',
             'description': 'description test_post_entry_with_mixed_tags',
-            'creators': ['Pomax','Alan'],
+            'creators': ['Pomax', 'Alan'],
         }
-        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-        creatorList = json.loads(str(self.client.get('/creators/').content, 'utf-8'))
-        self.assertEqual(creatorList, ['Pomax','Alan'])
+        json.loads(
+            str(self.client.get('/nonce/').content, 'utf-8')
+        )
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
+        creatorList = json.loads(
+            str(self.client.get('/creators/').content, 'utf-8')
+        )
+        self.assertEqual(creatorList, ['Pomax', 'Alan'])
 
     def test_get_entries_list(self):
         """Get /entries endpoint"""
@@ -173,8 +205,10 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': 'http://example.com/setup',
             'description': 'test setup'
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         searchList = self.client.get('/entries/?search=setup')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
@@ -188,7 +222,10 @@ class TestEntryView(PulseStaffTestCase):
         page2Json = json.loads(str(page2.content, 'utf-8'))
         self.assertEqual(len(page1Json['results']), 1)
         self.assertEqual(len(page2Json['results']), 1)
-        self.assertNotEqual(page1Json['results'][0]['title'], page2Json['results'][0]['title'])
+        self.assertNotEqual(
+            page1Json['results'][0]['title'],
+            page2Json['results'][0]['title']
+        )
 
     def test_entries_search_by_tag(self):
         """Make sure filtering searches by tag works"""
@@ -198,13 +235,14 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': 'http://example.com/test_entries_search_by_tag',
             'tags': ['tag1']
         }
-        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-
+        json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         searchList = self.client.get('/entries/?tag=tag1')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
-
 
     def test_entries_issue(self):
         """test filtering entires by issue"""
@@ -214,21 +252,32 @@ class TestEntryView(PulseStaffTestCase):
             'description': 'description test_entries_issue',
             'issues': 'Decentralization',
         }
-        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        json.loads(
+            str(self.client.get('/nonce/').content, 'utf-8')
+        )
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         searchList = self.client.get('/entries/?issue=Decentralization')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
     def test_post_entry_new_issue(self):
-        """posting an entry with a new Issue should result in an error. Permission denied?"""
+        """
+        posting an entry with a new Issue should result
+        in an error. Permission denied?
+        """
 
         payload = {
             'title': 'title test_entries_issue',
             'description': 'description test_entries_issue',
             'issues': 'Privacy',
         }
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+        postresponse = self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
         self.assertEqual(postresponse.status_code, 400)
 
     def test_post_authentication_requirement(self):
@@ -258,7 +307,7 @@ class TestEntryView(PulseStaffTestCase):
         id = entry.id
 
         # ensure the user is logged out, then try to bookmark
-        self.client.logout();
+        self.client.logout()
         postresponse = self.client.put('/entries/' + str(id) + '/bookmark')
         self.assertEqual(postresponse.status_code, 403)
 
@@ -302,7 +351,7 @@ class TestEntryView(PulseStaffTestCase):
         entry = entries[0]
         id = entry.id
 
-        postresponse = self.client.put('/entries/' + str(id) + '/bookmark')
+        self.client.put('/entries/' + str(id) + '/bookmark')
 
         # verify bookmark count is now one
         bookmarkResponse = self.client.get('/entries/bookmarks/')
@@ -313,20 +362,25 @@ class TestEntryView(PulseStaffTestCase):
 
 
 class TestMemberEntryView(PulseMemberTestCase):
-     def test_approval_requirement(self):
+    def test_approval_requirement(self):
         """
-        Verify that entries submitted by non-Mozilla emails aren't immediately visible
+        Verify that entries submitted by non-Mozilla emails
+        aren't immediately visible
         """
 
-        payload = self.generatePostPayload(data={'title':'title test_approval_requirement'})
+        payload = self.generatePostPayload(
+            data={'title': 'title test_approval_requirement'}
+        )
         postresponse = self.client.post('/entries/', payload)
         self.assertEqual(postresponse.status_code, 200)
 
-        responseobj = json.loads(str(postresponse.content,'utf-8'))
+        responseobj = json.loads(str(postresponse.content, 'utf-8'))
         id = str(responseobj['id'])
 
-        getresponse = self.client.get('/entries/'+ id, follow=True)
-        getListresponse = json.loads(str(self.client.get('/entries/').content, 'utf-8'))
+        getresponse = self.client.get('/entries/' + id, follow=True)
+        getListresponse = json.loads(
+            str(self.client.get('/entries/').content, 'utf-8')
+        )
         results = getListresponse['results']
 
         self.assertEqual(len(results), 2)

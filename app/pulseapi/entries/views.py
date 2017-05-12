@@ -5,11 +5,14 @@ import base64
 import django_filters
 
 from django.core.files.base import ContentFile
-from django.contrib.auth.decorators import login_required
 
 from rest_framework import (filters, status)
-from rest_framework.decorators import detail_route, api_view, permission_classes
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.decorators import (
+    detail_route, api_view, permission_classes
+)
+from rest_framework.generics import (
+    ListCreateAPIView, RetrieveAPIView, ListAPIView
+)
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -17,6 +20,7 @@ from rest_framework.response import Response
 from pulseapi.entries.models import Entry
 from pulseapi.entries.serializers import EntrySerializer
 from pulseapi.userprofile.models import UserProfile, UserBookmark
+
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
@@ -52,11 +56,16 @@ def toggle_bookmark(request, entryid):
             bookmark.save()
 
         return Response("Toggled bookmark.", status=status.HTTP_204_NO_CONTENT)
-    return Response("Anonymous bookmarks cannot be saved.", status=status.HTTP_403_FORBIDDEN)
+    return Response(
+        "Anonymous bookmarks cannot be saved.",
+        status=status.HTTP_403_FORBIDDEN
+    )
+
 
 def post_validate(request):
     """
-    Security helper function to ensure that a post request is session, CSRF, and nonce protected
+    Security helper function to ensure that a post request is session,
+    CSRF, and nonce protected
     """
     user = request.user
     csrf_token = False
@@ -81,22 +90,27 @@ def post_validate(request):
     if not user.is_authenticated:
         return "Anonymous posting is not supported."
 
-    # ignore unexpected post attempts (i.e. missing the session-based unique form id)
+    # ignore unexpected post attempts (i.e. missing the
+    # session-based unique form id)
     if nonce != request.session['nonce']:
-        # invalidate the nonce entirely, so people can't retry until there's an id collision
+        # invalidate the nonce entirely, so people can't retry
+        # until there's an id collision
         request.session['nonce'] = False
         return "Forms cannot be auto-resubmitted (e.g. by reloading)."
 
     return True
 
+
 class EntriesPagination(PageNumberPagination):
     """
     Add support for pagination and custom page size
     """
-    # page size decided in https://github.com/mozilla/network-pulse-api/issues/39
+    # page size decided in
+    # https://github.com/mozilla/network-pulse-api/issues/39
     page_size = 48
     page_size_query_param = 'page_size'
     max_page_size = 1000
+
 
 class EntryCustomFilter(filters.FilterSet):
     """
@@ -124,7 +138,7 @@ class EntryCustomFilter(filters.FilterSet):
         Required Meta class
         """
         model = Entry
-        fields = ['tags', 'issues', 'featured',]
+        fields = ['tags', 'issues', 'featured']
 
 
 class EntryView(RetrieveAPIView):
@@ -146,6 +160,7 @@ class BookmarkedEntries(ListAPIView):
 
     serializer_class = EntrySerializer
 
+
 class EntriesListView(ListCreateAPIView):
     """
     A view that permits a GET to allow listing all the entries
@@ -156,13 +171,15 @@ class EntriesListView(ListCreateAPIView):
     #Query Parameters -
 
     - `?search=` - Search by title, description, creator, and tag.
-    - `?ids=` - Filter only for entries with specific ids. Argument must be a comma-separated list of integer ids.
+    - `?ids=` - Filter only for entries with specific ids. Argument
+                must be a comma-separated list of integer ids.
     - `?tag=` - Allows filtering entries by a specific tag
     - `?issue=` - Allows filtering entries by a specific issue
     - `?featured=True` (or False) - both capitalied. Boolean is set in admin UI
     - `?page=` - Page number, defaults to 1
     - `?page_size=` - Number of results on a page. Defaults to 48
-    - `?ordering=` - Property you'd like to order the results by. Prepend with `-` to reverse. e.g. `?ordering=-title`
+    - `?ordering=` - Property you'd like to order the results by. Prepend with
+                     `-` to reverse. e.g. `?ordering=-title`
     """
     pagination_class = EntriesPagination
     filter_backends = (
@@ -185,14 +202,14 @@ class EntriesListView(ListCreateAPIView):
     def get_queryset(self):
         ids = self.request.query_params.get('ids', None)
         if ids is not None:
-            ids = [ int(x) for x in ids.split(',') ]
+            ids = [int(x) for x in ids.split(',')]
             queryset = Entry.objects.filter(pk__in=ids, is_approved=True)
         else:
             queryset = Entry.objects.public()
         return queryset
 
     # which permissions allow this access to this model
-    permission_classes = [ AllowAny ]
+    permission_classes = [AllowAny]
 
     # When people POST to this route, we want to do some
     # custom validation involving CSRF and nonce validation,
@@ -203,16 +220,18 @@ class EntriesListView(ListCreateAPIView):
         validation_result = post_validate(request)
 
         if validation_result is True:
-            # invalidate the nonce, so this form cannot be resubmitted with the current id
+            # invalidate the nonce, so this form cannot be
+            # resubmitted with the current id
             request.session['nonce'] = False
 
             '''
-            If there is a thumbnail, and it was sent as part of an application/json payload,
-            then we need to unpack a thumbnail object payload and convert it to a Python
-            ContentFile payload instead. We use a try/catch because the optional nature
-            means we need to check using "if hasattr(request.data,'thumbnail'):" as we
-            as "if request.data['thumnail']" and these are pretty much mutually exclusive
-            patterns. A try/pass make far more sense.
+            If there is a thumbnail, and it was sent as part of an
+            application/json payload, then we need to unpack a thumbnail
+            object payload and convert it to a Python ContentFile payload
+            instead. We use a try/catch because the optional nature means
+            we need to check using "if hasattr(request.data,'thumbnail'):"
+            as we as "if request.data['thumnail']" and these are pretty
+            much mutually exclusive patterns. A try/pass make far more sense.
             '''
 
             try:
@@ -226,17 +245,27 @@ class EntriesListView(ListCreateAPIView):
             except:
                 pass
 
-
             serializer = EntrySerializer(data=request.data)
             if serializer.is_valid():
                 user = request.user
-                # ensure that the published_by is always the user doing the posting,
-                # and set 'featured' to false (see https://github.com/mozilla/network-pulse-api/issues/83)
+                # ensure that the published_by is always the user doing
+                # the posting, and set 'featured' to false (see
+                # https://github.com/mozilla/network-pulse-api/issues/83)
                 is_approved = user.groups.filter(name="staff").exists()
-                savedEntry = serializer.save(published_by=user, featured=False, is_approved=is_approved)
+                savedEntry = serializer.save(
+                    published_by=user,
+                    featured=False,
+                    is_approved=is_approved
+                )
                 return Response({'status': 'submitted', 'id': savedEntry.id})
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    serializer.errors,
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         else:
-            return Response("post validation failed", status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                "post validation failed",
+                status=status.HTTP_400_BAD_REQUEST
+            )

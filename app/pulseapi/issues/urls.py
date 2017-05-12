@@ -7,6 +7,6 @@ from pulseapi.issues.views import (
 
 
 urlpatterns = [
-    url('^$', IssueListView.as_view(), name='issue-list'),
-    url(r'^(?P<name>[\w\s\&]+)/', IssueDetailView.as_view(), name='issue-detail'),
+    url('^$', IssueListView.as_view()),
+    url(r'^(?P<name>[\w\s\&]+)/', IssueDetailView.as_view()),
 ]

@@ -2,6 +2,7 @@ from .models import UserProfile
 from django.dispatch import receiver
 from django.contrib.auth.signals import user_logged_in
 
+
 @receiver(user_logged_in, dispatch_uid="unique")
 def set_user_profile(request, user, **kwargs):
     """

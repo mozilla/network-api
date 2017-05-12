@@ -14,9 +14,14 @@ class TestCreators(PulseStaffTestCase):
             'title': 'title test_creator_filtering',
             'content_url': 'http://example.com/test_creator_filtering',
             'description': 'description test_creator_filtering',
-            'creators': ['Alice','Bob','Carol'],
+            'creators': ['Alice', 'Bob', 'Carol']
         }
-        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
-        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
-        creatorList = json.loads(str(self.client.get('/creators/?search=A').content, 'utf-8'))
+        json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
+        self.client.post(
+            '/entries/',
+            data=self.generatePostPayload(data=payload)
+        )
+        creatorList = json.loads(
+            str(self.client.get('/creators/?search=A').content, 'utf-8')
+        )
         self.assertEqual(creatorList, ['Alice'])

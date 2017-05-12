@@ -2,13 +2,17 @@ import json
 
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from pulseapi.entries.models import Entry
 from pulseapi.entries.test_models import EntryFactory
 
-from networkapi.utility.userpermissions import is_staff_address, assign_group_policy, add_user_to_main_site
+from networkapi.utility.userpermissions import (
+    is_staff_address,
+    assign_group_policy,
+    add_user_to_main_site,
+)
 
 
 def setup_groups():
@@ -49,12 +53,12 @@ def setup_entries(test):
         entry.save()
 
 
-def create_logged_in_user(test, username, email, password="password1234"):
-    test.username = username
+def create_logged_in_user(test, name, email, password="password1234"):
+    test.username = name
 
     # create use instance
-    User = get_user_model();
-    user = User.objects.create(username=username, email=email, password=password)
+    User = get_user_model()
+    user = User.objects.create(username=name, email=email, password=password)
     user.save()
 
     # make sure this user is in the staff group, too
@@ -63,12 +67,12 @@ def create_logged_in_user(test, username, email, password="password1234"):
         add_user_to_main_site(user)
 
     # verify the user was saved
-    users = User.objects.filter(username=username)
+    users = User.objects.filter(username=name)
     test.assertEqual(len(users) == 1, True)
 
     # log this user in for further testing purposes
     test.client = Client()
-    test.client.force_login(user);
+    test.client.force_login(user)
 
 
 def generate_default_payload(values):
@@ -93,20 +97,18 @@ def generate_payload(test, data={}, payload=False):
     return payload
 
 
-#def post_one_entry(test):
-#    # Set up with some curated data for all tests to use
-#    postresponse = test.client.post('/entries/', data=test.generatePostPayload())
-
-
 class PulseMemberTestCase(TestCase):
     """
     A test case wrapper for "plain users" without any staff or admin rights
     """
     def setUp(self):
         setup_groups()
-        user = create_logged_in_user(self, username="plain user", email="test@example.org")
+        create_logged_in_user(
+            self,
+            username="plain user",
+            email="test@example.org"
+        )
         setup_entries(self)
-        #post_one_entry(self)
 
     def generatePostPayload(self, data={}):
         return generate_payload(self, data)
@@ -118,9 +120,12 @@ class PulseStaffTestCase(TestCase):
     """
     def setUp(self):
         setup_groups()
-        user = create_logged_in_user(self, username="staff user", email="test@mozilla.org")
+        create_logged_in_user(
+            self,
+            username="staff user",
+            email="test@mozilla.org"
+        )
         setup_entries(self)
-        #post_one_entry(self)
 
     def generatePostPayload(self, data={}):
         return generate_payload(self, data)

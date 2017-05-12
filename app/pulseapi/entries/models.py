@@ -6,9 +6,9 @@ from django.db import models
 from pulseapi.tags.models import Tag
 from pulseapi.issues.models import Issue
 from pulseapi.creators.models import Creator
-from pulseapi.userprofile.models import UserProfile
 from django.utils import timezone
 from django.utils.html import format_html
+
 
 def entry_thumbnail_path(instance, filename):
     return 'images/entries/{timestamp}{ext}'.format(
@@ -67,10 +67,12 @@ class Entry(models.Model):
                 bucket=settings.AWS_LOCATION
             )
 
-        return format_html('<img src="{media_url}{src}" style="width:25%">'.format(
+        html = '<img src="{media_url}{src}" style="width:25%">'.format(
             media_url=media_url,
             src=self.thumbnail
-        ))
+        )
+
+        return format_html(html)
 
     thumbnail_image_tag.short_description = 'Thumbnail preview'
 
@@ -97,7 +99,7 @@ class Entry(models.Model):
         related_name='entries'
     )
     created = models.DateTimeField(
-        default = timezone.now
+        default=timezone.now
     )
     is_approved = models.BooleanField(
         default=False,

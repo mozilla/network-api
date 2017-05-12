@@ -1,9 +1,6 @@
-import json
-
-
 from .models import UserProfile
 from django.contrib.auth import get_user_model
-from pulseapi.tests import PulseStaffTestCase, PulseMemberTestCase
+from pulseapi.tests import PulseStaffTestCase
 
 
 class TestUserProfile(PulseStaffTestCase):

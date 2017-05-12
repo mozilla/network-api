@@ -1,7 +1,4 @@
 import json
-from django.test import TestCase
-from django.test import Client
-from pulseapi.entries.test_models import EntryFactory
 from pulseapi.tests import PulseStaffTestCase
 
 
@@ -14,12 +11,12 @@ class TestEntryView(PulseStaffTestCase):
     def test_tag_filtering(self):
         """Filter tags by first letters"""
         values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
-        postresponse = self.client.post('/entries/', data={
+        self.client.post('/entries/', data={
             'title': 'title test_tag_filtering',
             'description': 'description test_tag_filtering',
             'nonce': values['nonce'],
             'csrfmiddlewaretoken': values['csrf_token'],
-            'tags' : 'test tag',
+            'tags': 'test tag',
             'interest': 'interest field',
             'get_involved': 'get involved text field',
             'get_involved_url': 'http://example.com/getinvolved',

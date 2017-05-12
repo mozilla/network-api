@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 class UserProfile(models.Model):
     """
     This is the network-pulse-specific user profile,
@@ -33,6 +34,7 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name = "User profile"
+
 
 class UserBookmark(models.Model):
     """
