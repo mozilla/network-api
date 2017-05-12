@@ -105,7 +105,7 @@ class PulseMemberTestCase(TestCase):
         setup_groups()
         create_logged_in_user(
             self,
-            user="plain user",
+            name="plain user",
             email="test@example.org"
         )
         setup_entries(self)
@@ -122,7 +122,7 @@ class PulseStaffTestCase(TestCase):
         setup_groups()
         create_logged_in_user(
             self,
-            user="staff user",
+            name="staff user",
             email="test@mozilla.org"
         )
         setup_entries(self)
