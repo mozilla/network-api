@@ -20,6 +20,7 @@ class TestEntryView(PulseStaffTestCase):
         """
         Test posting an entry with minimum amount of content
         """
+
         payload = self.generatePostPayload(data={
             'title':'title test_post_minimum_entry',
             'content_url':'http://example.org/content/url'
@@ -30,17 +31,26 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_post_duplicate_title(self):
         """Make sure multiple entries can have the same title"""
- 
+
         payload = {
-            'title': 'title setUp1',
+            'title': 'test_post_duplicate_title',
+            'content_url': 'http://example.com/test1'
         }
         postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
+        payload = {
+            'title': 'test_post_duplicate_title',
+            'content_url': 'http://example.com/test2'
+        }
+        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
         entriesJson = json.loads(str(self.client.get('/entries/').content, 'utf-8'))
         self.assertEqual(postresponse.status_code, 200)
         self.assertEqual(len(entriesJson['results']), 4)
  
     def test_post_empty_title(self):
         """Make sure entries require a title"""
+
         payload = {
             'title':''
         }
@@ -49,6 +59,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_post_content_url_empty(self):
         """Make sure entries require a content_url"""
+
         payload = {
             'content_url':''
         }
@@ -57,6 +68,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_post_full_entry(self):
         """Entry with all content"""
+
         payload = {
             'title': 'test full entry',
             'description': 'description full entry',
@@ -76,6 +88,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_featured_filter(self):
         """Entry with all content"""
+
         payload = {
             'title': 'test full entry',
             'description': 'description full entry',
@@ -111,15 +124,23 @@ class TestEntryView(PulseStaffTestCase):
         Post entries with some existing tags, some new tags
         See if tags endpoint has proper results afterwards
         """
+
         payload = {
             'title': 'title test_post_entry_with_mixed_tags2',
-            'description': 'description test_post_entry_with_mixed_tags',
-            'tags': ['tag2', 'tag3'],
+            'content_url': 'http://example.com/test_post_entry_with_mixed_tags_1',
+            'tags': ['test1', 'test2'],
         }
-        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
         postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
+        payload = {
+            'title': 'title test_post_entry_with_mixed_tags2',
+            'content_url': 'http://example.com/test_post_entry_with_mixed_tags_2',
+            'tags': ['test2', 'test3'],
+        }
+        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
         tagList = json.loads(str(self.client.get('/tags/').content, 'utf-8'))
-        self.assertEqual(tagList, ['tag1','tag2','tag3'])
+        self.assertEqual(tagList, ['test1','test2','test3'])
 
 
     def test_post_entry_with_mixed_creators(self):
@@ -127,6 +148,7 @@ class TestEntryView(PulseStaffTestCase):
         Post entry with some existing creators, some new creators
         See if creators endpoint has proper results afterwards
         """
+
         payload = {
             'title': 'title test_post_entry_with_mixed_tags2',
             'description': 'description test_post_entry_with_mixed_tags',
@@ -139,17 +161,27 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_get_entries_list(self):
         """Get /entries endpoint"""
+
         entryList = self.client.get('/entries/')
         self.assertEqual(entryList.status_code, 200)
 
     def test_entries_search(self):
         """Make sure filtering searches works"""
+
+        payload = {
+            'title': 'test_entries_search',
+            'content_url': 'http://example.com/setup',
+            'description': 'test setup'
+        }
+        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
         searchList = self.client.get('/entries/?search=setup')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
     def test_entries_pagination(self):
         """Make sure pagination works"""
+
         page1 = self.client.get('/entries/?page=1&page_size=1')
         page2 = self.client.get('/entries/?page=2&page_size=1')
         page1Json = json.loads(str(page1.content, 'utf-8'))
@@ -158,8 +190,17 @@ class TestEntryView(PulseStaffTestCase):
         self.assertEqual(len(page2Json['results']), 1)
         self.assertNotEqual(page1Json['results'][0]['title'], page2Json['results'][0]['title'])
 
-    def test_entries_search(self):
+    def test_entries_search_by_tag(self):
         """Make sure filtering searches by tag works"""
+
+        payload = {
+            'title': 'title test_entries_issue',
+            'content_url': 'http://example.com/test_entries_search_by_tag',
+            'tags': ['tag1']
+        }
+        values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
+        postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
+
         searchList = self.client.get('/entries/?tag=tag1')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
@@ -167,6 +208,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_entries_issue(self):
         """test filtering entires by issue"""
+
         payload = {
             'title': 'title test_entries_issue',
             'description': 'description test_entries_issue',
@@ -180,6 +222,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_post_entry_new_issue(self):
         """posting an entry with a new Issue should result in an error. Permission denied?"""
+
         payload = {
             'title': 'title test_entries_issue',
             'description': 'description test_entries_issue',
@@ -190,6 +233,7 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_post_authentication_requirement(self):
         """Make sure you can't post without using the nonce"""
+
         postresponse = self.client.post('/entries/', data={
             'title': 'title this test should fail',
             'description': 'description this test should fail',
@@ -207,6 +251,7 @@ class TestEntryView(PulseStaffTestCase):
         """
         Verify that anonymous users cannot bookmark entries.
         """
+
         # get a legal entry and its associated id
         entries = Entry.objects.all()
         entry = entries[0]
@@ -225,6 +270,7 @@ class TestEntryView(PulseStaffTestCase):
         """
         Verify that authenticated users can (un)bookmark an entry.
         """
+
         # get a legal entry and its associated id
         entries = Entry.objects.all()
         entry = entries[0]
@@ -251,7 +297,12 @@ class TestEntryView(PulseStaffTestCase):
         """
         Verify that authenticated users can see a list of bookmarks.
         """
-        postresponse = self.client.put('/entries/1/bookmark')
+        # get a legal entry and its associated id
+        entries = Entry.objects.all()
+        entry = entries[0]
+        id = entry.id
+
+        postresponse = self.client.put('/entries/' + str(id) + '/bookmark')
 
         # verify bookmark count is now one
         bookmarkResponse = self.client.get('/entries/bookmarks/')
@@ -264,7 +315,7 @@ class TestEntryView(PulseStaffTestCase):
 class TestMemberEntryView(PulseMemberTestCase):
      def test_approval_requirement(self):
         """
-        Verify that entriest submitted by non-Mozilla emails aren't immediately visible
+        Verify that entries submitted by non-Mozilla emails aren't immediately visible
         """
 
         payload = self.generatePostPayload(data={'title':'title test_approval_requirement'})

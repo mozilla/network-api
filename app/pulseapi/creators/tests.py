@@ -1,11 +1,5 @@
 import json
-
-from django.test import TestCase
-from django.test import Client
 from pulseapi.tests import PulseStaffTestCase
-
-from pulseapi.userprofile.test_models import UserProfileFactory
-from pulseapi.entries.test_models import EntryFactory
 
 
 class TestCreators(PulseStaffTestCase):
@@ -18,10 +12,11 @@ class TestCreators(PulseStaffTestCase):
         """search creators, for autocomplete"""
         payload = {
             'title': 'title test_creator_filtering',
+            'content_url': 'http://example.com/test_creator_filtering',
             'description': 'description test_creator_filtering',
-            'creators': ['Pomax','Alan'],
+            'creators': ['Alice','Bob','Carol'],
         }
         values = json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
         postresponse = self.client.post('/entries/', data=self.generatePostPayload(data=payload))
         creatorList = json.loads(str(self.client.get('/creators/?search=A').content, 'utf-8'))
-        self.assertEqual(creatorList, ['Alan'])
+        self.assertEqual(creatorList, ['Alice'])
