@@ -50,6 +50,10 @@ If you ~~really mess things up~~ want to start fresh, delete your local database
 
 `docker-compose down --rmi local` and `docker-compose up`. You'll need to `migrate` and `createsuperuser` again, using the above instructions.
 
+## Deployment considerations
+
+If you're deploying this application behind a proxy or CDN (like CloudFront) be sure that the `X-Forwarded-Host` header is forwarded to the server, and that `USE_X_FORWARDED_HOST` is set to `True` in your server environment.
+
 ## Our deployment diagram
 
 [![](screenshot.184.png)](https://www.lucidchart.com/documents/edit/72261654-23d0-491c-b67e-c026abbafcd3)
