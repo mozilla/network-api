@@ -1,8 +1,0 @@
-<div id="addlist-primary">
-    {# This is going to break from a usability standpoint when we add more types of pages, but let's cross that bridge when we come to it #}
-    {# And by that I mean we'll maybe make this a select element or get rid of the changes to templates/pages/menus/admin.html #}
-
-    {% for page in page_branch %}
-    <a class="button" href="/admin/landingpage/landingpage/add/?parent={{ page.id }}">Add page</a>
-    {% endfor %}
-</div>
