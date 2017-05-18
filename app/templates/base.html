@@ -44,6 +44,11 @@
 <![endif]-->
 
 {% block extra_head %}{% endblock %}
+{% if user.is_staff %}
+    <script src="{{ STATIC_URL }}mezzanine/js/jquery-1.8.3.min.js">
+        jQuery.noConflict();
+    </script>
+{% endif %}
 </head>
 
 <body id="{% block body_id %}body{% endblock %}">
