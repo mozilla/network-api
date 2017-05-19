@@ -6,5 +6,4 @@ register = template.Library()
 
 @register.simple_tag(name='settings_value')
 def settings_value(key):
-    print(key)
     return settings.__getattr__(str(key))
