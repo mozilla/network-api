@@ -61,7 +61,7 @@
           <div class="col-md-6 col-lg-5 mb-5">{{ page.landingpage.content | safe }}</div>
           <div class="col-md-5 col-lg-5">
             <div class="row">
-              <div class="join-us half-width col" data-cta-header="{{ page.landingpage.signup.header }}" data-cta-description="{{ page.landingpage.signup.description | safe }}"></div>
+              <div class="join-us half-width col" data-cta-header="{{ page.landingpage.signup.header | escape }}" data-cta-description="{{ page.landingpage.signup.description | escape }}"></div>
             </div>
           </div>{% else %}
           <div class="col-12 col-md-8 mb-5">{{ page.landingpage.content | safe }}</div>{% endif %}
