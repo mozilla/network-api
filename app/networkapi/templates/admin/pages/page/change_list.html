@@ -14,7 +14,10 @@
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_UI_FILENAME %}"></script>
 {% endif %}
 <script src="{% static "mezzanine/js/admin/jquery.mjs.nestedSortable.js" %}"></script>
-<script src="{% static "mezzanine/js/admin/page_tree.js" %}"></script>
+
+{# NOTE: THIS IS AN OVERRIDE ON MEZZANINE/JS/ADMIN/PAGE_TREE.JS #}
+<script src="{% static "/js/admin/page_tree.js" %}"></script>
+
 {% endblock %}
 
 {%block content_title%}
@@ -24,15 +27,13 @@ Pages created here will not appear in the site navigation
 
 {% block content %}
 <div id="content-main">
-    {% if has_add_permission %}
-        {% page_menu "admin/includes/content_typed_change_list.html" %}
-    {% endif %}
 
     {% if cl.result_count == 0 %}
     <p class="paginator">0 {{ cl.opts.verbose_name_plural }}</p>
     {% else %}
     <div id="tree">{% page_menu "pages/menus/admin.html" %}</div>
     {% endif %}
+
 
 </div>
 {% endblock %}
