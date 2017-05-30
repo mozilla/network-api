@@ -17,7 +17,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from pulseapi.entries.models import Entry
+from pulseapi.entries.models import Entry, ModerationState
 from pulseapi.entries.serializers import EntrySerializer
 from pulseapi.userprofile.models import UserProfile, UserBookmark
 
@@ -200,10 +200,11 @@ class EntriesListView(ListCreateAPIView):
     # /entries/?ids=1,2,3,4,... only return those entires.
     # Otherwise, return all entries (with pagination)
     def get_queryset(self):
+        approved = ModerationState.objects.get(name='Approved')
         ids = self.request.query_params.get('ids', None)
         if ids is not None:
-            ids = [int(x) for x in ids.split(',')]
-            queryset = Entry.objects.filter(pk__in=ids, is_approved=True)
+            ids = [ int(x) for x in ids.split(',') ]
+            queryset = Entry.objects.filter(pk__in=ids, moderation_state=approved)
         else:
             queryset = Entry.objects.public()
         return queryset
@@ -248,14 +249,17 @@ class EntriesListView(ListCreateAPIView):
             serializer = EntrySerializer(data=request.data)
             if serializer.is_valid():
                 user = request.user
-                # ensure that the published_by is always the user doing
-                # the posting, and set 'featured' to false (see
-                # https://github.com/mozilla/network-pulse-api/issues/83)
-                is_approved = user.groups.filter(name="staff").exists()
+                # ensure that the published_by is always the user doing the posting,
+                # and set 'featured' to false (see https://github.com/mozilla/network-pulse-api/issues/83)
+                moderation_state = ModerationState.objects.get(name='Pending')
+
+                if (is_moz(request.user.email)):
+                    moderation_state = ModerationState.objects.get(name='Approved')
+
                 savedEntry = serializer.save(
                     published_by=user,
                     featured=False,
-                    is_approved=is_approved
+                    moderation_state=moderation_state
                 )
                 return Response({'status': 'submitted', 'id': savedEntry.id})
             else:
