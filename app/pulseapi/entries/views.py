@@ -21,6 +21,8 @@ from pulseapi.entries.models import Entry, ModerationState
 from pulseapi.entries.serializers import EntrySerializer
 from pulseapi.userprofile.models import UserProfile, UserBookmark
 
+from pulseapi.utility.is_moz import is_moz
+
 
 @api_view(['PUT'])
 @permission_classes((AllowAny,))
@@ -196,21 +198,39 @@ class EntriesListView(ListCreateAPIView):
     )
     serializer_class = EntrySerializer
 
+    # which permissions allow this access to this model
+    permission_classes = [AllowAny]
+
     # Custom queryset handling: if the route was called as
     # /entries/?ids=1,2,3,4,... only return those entires.
     # Otherwise, return all entries (with pagination)
     def get_queryset(self):
-        approved = ModerationState.objects.get(name='Approved')
-        ids = self.request.query_params.get('ids', None)
-        if ids is not None:
-            ids = [ int(x) for x in ids.split(',') ]
-            queryset = Entry.objects.filter(pk__in=ids, moderation_state=approved)
+        user = self.request.user
+        is_superuser = user.is_superuser
+        is_moderator = user.has_perm('entries.change_entry')
+
+        # This initially used user.get_all_permissions, which
+        # works but is somewhat inefficient. Also note there is
+        # another "get all permissions" function that can lead
+        # to problems: https://stackoverflow.com/questions/2081061
+
+        queryset = False
+
+        # superusers and moderators get to see everything
+        if is_superuser is True or is_moderator is True:
+            queryset = Entry.objects.all()
+
+        # everyone else only gets to see "the public set"
         else:
             queryset = Entry.objects.public()
-        return queryset
 
-    # which permissions allow this access to this model
-    permission_classes = [AllowAny]
+        ids = self.request.query_params.get('ids', None)
+
+        if ids is not None:
+            ids = [int(x) for x in ids.split(',')]
+            queryset = queryset.filter(pk__in=ids)
+
+        return queryset
 
     # When people POST to this route, we want to do some
     # custom validation involving CSRF and nonce validation,
@@ -249,12 +269,18 @@ class EntriesListView(ListCreateAPIView):
             serializer = EntrySerializer(data=request.data)
             if serializer.is_valid():
                 user = request.user
-                # ensure that the published_by is always the user doing the posting,
-                # and set 'featured' to false (see https://github.com/mozilla/network-pulse-api/issues/83)
-                moderation_state = ModerationState.objects.get(name='Pending')
+                # ensure that the published_by is always the user doing
+                # the posting, and set 'featured' to false.
+                #
+                # see https://github.com/mozilla/network-pulse-api/issues/83
+                moderation_state = ModerationState.objects.get(
+                    name='Pending'
+                )
 
                 if (is_moz(request.user.email)):
-                    moderation_state = ModerationState.objects.get(name='Approved')
+                    moderation_state = ModerationState.objects.get(
+                        name='Approved'
+                    )
 
                 savedEntry = serializer.save(
                     published_by=user,

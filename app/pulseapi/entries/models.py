@@ -17,7 +17,6 @@ def entry_thumbnail_path(instance, filename):
     )
 
 
-
 # Create your models here.
 class ModerationState(models.Model):
     name = models.CharField(max_length=100)
@@ -143,7 +142,9 @@ class Entry(models.Model):
     )
 
     def set_moderation_state(self, state_name):
-        (moderation_state, created) = ModerationState.objects.get_or_create(name=state_name)
+        (moderation_state, created) = ModerationState.objects.get_or_create(
+            name=state_name
+        )
         self.moderation_state = moderation_state
 
     def is_approved(self):
