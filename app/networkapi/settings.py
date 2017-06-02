@@ -270,7 +270,6 @@ ADMIN_MENU_ORDER = (
             'creators.Creator',
             'entries.Entry',
             'tags.Tag',
-            'userprofile.UserProfile',
             # 'fixed list' models
             'issues.Issue',
             'entries.ModerationState',
