@@ -265,6 +265,17 @@ ADMIN_MENU_ORDER = (
     ('Components', ('landingpage.Signup',)),
     ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
     ('Users', ('auth.User', 'auth.Group')),
+    ('Pulse API',
+        (
+            'creators.Creator',
+            'entries.Entry',
+            'tags.Tag',
+            'userprofile.UserProfile',
+            # 'fixed list' models
+            'issues.Issue',
+            'entries.ModerationState',
+        )
+    )
 )
 
 # Internationalization
