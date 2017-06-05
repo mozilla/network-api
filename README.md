@@ -6,6 +6,14 @@ This is the REST API server for the Mozilla Network Site.
 
 The only requirement to run this API is Docker and its dependencies (which you can [download here](https://www.docker.com/products/docker)). Make sure you have port 5000 open as the API is exposed on that port.
 
+## Pre-setup: a note about .env files
+
+Docker is a bit special and really, *really* wants to claim `.env` as its own file, i.e. the file that controls environment settings *for the Docker instances to bootstrap with*, not a list of variables that get exposed inside of the docker container to the application(s) running in it.
+
+Instead, runtime variables for applications inside the docker container need to be placed in the `env.default` file. This comes with a risk that we're still trying to figure out: in order for docker to give applications useful environment variables, they need to be placd in a file that *is under revision control*. It is **highly recommended** that you add `env.default` to the `.gitignore` file while you're doing any development work, so that you can't accidentally check it in, and if you do use `git add .`, the only change relevant to the `default.env` file is the inclusion of `.gitignore` instead, which is easily undone.
+
+This is not a permanent solution, but until we figure out a way to hand docker customized environment variable files, this is the best we can do.
+
 ## Setup
 
 Before you can run the site, you'll need to run the migrations and create a superuser. These commands are run within the container:
