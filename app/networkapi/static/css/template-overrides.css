@@ -18,7 +18,7 @@
 .google-login-button:active,
 .google-login-button:visited {
     width: 17em;
-    background: #afcfdc;
+    background: #a2d4e3;
     margin: auto;
     font-size: 1.5em;
     line-height: 1;
@@ -30,7 +30,7 @@
 }
 
 #admin-login-button {
-	color: #448eff;
+	color: #0095d1;
 	cursor: pointer;
 }
 
