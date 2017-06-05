@@ -2,7 +2,7 @@
 from rest_framework import serializers
 from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist
-from pulseapi.entries.models import Entry
+from pulseapi.entries.models import Entry, ModerationState
 from pulseapi.tags.models import Tag
 from pulseapi.issues.models import Issue
 from pulseapi.creators.models import Creator
@@ -26,6 +26,15 @@ class CreatableSlugRelatedField(serializers.SlugRelatedField):
             )
         except (TypeError, ValueError):
             self.fail('invalid')
+
+
+class ModerationStateSerializer(serializers.ModelSerializer):
+    class Meta:
+        """
+        Meta class. Because
+        """
+        model = ModerationState
+        exclude = ()
 
 
 class EntrySerializer(serializers.ModelSerializer):

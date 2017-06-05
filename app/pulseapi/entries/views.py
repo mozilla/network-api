@@ -18,7 +18,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from pulseapi.entries.models import Entry, ModerationState
-from pulseapi.entries.serializers import EntrySerializer
+from pulseapi.entries.serializers import (
+    EntrySerializer,
+    ModerationStateSerializer
+)
 from pulseapi.userprofile.models import UserProfile, UserBookmark
 
 from pulseapi.utility.is_moz import is_moz
@@ -161,6 +164,14 @@ class BookmarkedEntries(ListAPIView):
         return Entry.objects.filter(bookmarked_by__in=bookmarks)
 
     serializer_class = EntrySerializer
+
+
+class ModerationStateView(ListAPIView):
+    """
+    A view to retrieve all moderation states
+    """
+    queryset = ModerationState.objects.all()
+    serializer_class = ModerationStateSerializer
 
 
 class EntriesListView(ListCreateAPIView):
