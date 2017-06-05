@@ -9,6 +9,7 @@ faker = FakerFactory.create()
 pending = ModerationState.objects.get(name='Pending')
 approved = ModerationState.objects.get(name='Approved')
 
+
 class EntryFactory(factory.DjangoModelFactory):
 
     title = factory.LazyAttribute(

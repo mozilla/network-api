@@ -22,6 +22,8 @@ class TestCreators(PulseStaffTestCase):
             data=self.generatePostPayload(data=payload)
         )
         creatorList = json.loads(
-            str(self.client.get('/api/pulse/creators/?search=A').content, 'utf-8')
+            str(self.client.get(
+                '/api/pulse/creators/?search=A'
+            ).content, 'utf-8')
         )
         self.assertEqual(creatorList, ['Alice'])

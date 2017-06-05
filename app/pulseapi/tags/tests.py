@@ -10,7 +10,9 @@ class TestEntryView(PulseStaffTestCase):
 
     def test_tag_filtering(self):
         """Filter tags by first letters"""
-        values = json.loads(str(self.client.get('/api/pulse/nonce/').content, 'utf-8'))
+        values = json.loads(
+            str(self.client.get('/api/pulse/nonce/').content, 'utf-8')
+        )
         self.client.post('/api/pulse/entries/', data={
             'title': 'title test_tag_filtering',
             'description': 'description test_tag_filtering',

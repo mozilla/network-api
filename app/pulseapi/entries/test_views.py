@@ -165,7 +165,9 @@ class TestEntryView(PulseStaffTestCase):
             '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        tagList = json.loads(str(self.client.get('/api/pulse/tags/').content, 'utf-8'))
+        tagList = json.loads(
+            str(self.client.get('/api/pulse/tags/').content, 'utf-8')
+        )
         self.assertEqual(tagList, ['test1', 'test2', 'test3'])
 
     def test_post_entry_with_mixed_creators(self):
@@ -259,7 +261,8 @@ class TestEntryView(PulseStaffTestCase):
             '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        searchList = self.client.get('/api/pulse/entries/?issue=Decentralization')
+        url = '/api/pulse/entries/?issue=Decentralization'
+        searchList = self.client.get(url)
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
@@ -308,7 +311,8 @@ class TestEntryView(PulseStaffTestCase):
 
         # ensure the user is logged out, then try to bookmark
         self.client.logout()
-        postresponse = self.client.put('/api/pulse/entries/' + str(id) + '/bookmark')
+        url = '/api/pulse/entries/' + str(id) + '/bookmark'
+        postresponse = self.client.put(url)
         self.assertEqual(postresponse.status_code, 403)
 
         # verify bookmark count is zero
