@@ -67,6 +67,46 @@ def toggle_bookmark(request, entryid):
     )
 
 
+@api_view(['PUT'])
+@permission_classes((AllowAny,))
+def toggle_moderation(request, entryid, stateid):
+    """
+    Toggle whether or not this user "bookmarked" the url-indicated entry.
+    This is currently defined outside of the entry class, as functionality
+    that is technically independent of entries themselves. We might
+    change this in the future.
+    """
+    user = request.user
+
+    if user.has_perm('entries.change_entry'):
+        entry = None
+        moderation_state = None
+        status404 = status.HTTP_404_NOT_FOUND
+
+        # find the Entry in question
+        try:
+            entry = Entry.objects.get(id=entryid)
+        except Entry.DoesNotExist:
+            return Response("No such entry", status=status404)
+
+        # find the ModerationState in question
+        try:
+            moderation_state = ModerationState.objects.get(id=stateid)
+        except ModerationState.DoesNotExist:
+            return Response("No such moderation state", status=status404)
+
+        entry.moderation_state = moderation_state
+        entry.save();
+
+        status203 = status.HTTP_204_NO_CONTENT
+        return Response("Updated moderation state.", status=status203)
+
+    return Response(
+        "You do not have permission to change entry moderation states.",
+        status=status.HTTP_403_FORBIDDEN
+    )
+
+
 def post_validate(request):
     """
     Security helper function to ensure that a post request is session,
