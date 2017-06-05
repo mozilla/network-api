@@ -5,7 +5,7 @@ from pulseapi.tests import PulseStaffTestCase
 class TestCreators(PulseStaffTestCase):
     def test_get_creator_list(self):
         """Make sure we can get a list of creators"""
-        creatorList = self.client.get('/creators/')
+        creatorList = self.client.get('/api/pulse/creators/')
         self.assertEqual(creatorList.status_code, 200)
 
     def test_creator_filtering(self):
@@ -16,12 +16,12 @@ class TestCreators(PulseStaffTestCase):
             'description': 'description test_creator_filtering',
             'creators': ['Alice', 'Bob', 'Carol']
         }
-        json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
+        json.loads(str(self.client.get('/api/pulse/nonce/').content, 'utf-8'))
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         creatorList = json.loads(
-            str(self.client.get('/creators/?search=A').content, 'utf-8')
+            str(self.client.get('/api/pulse/creators/?search=A').content, 'utf-8')
         )
         self.assertEqual(creatorList, ['Alice'])

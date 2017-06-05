@@ -86,7 +86,7 @@ def generate_default_payload(values):
 
 
 def generate_payload(test, data={}, payload=False):
-    values = json.loads(str(test.client.get('/nonce/').content, 'utf-8'))
+    values = json.loads(str(test.client.get('/api/pulse/nonce/').content, 'utf-8'))
 
     if payload is False:
         payload = generate_default_payload(values)
