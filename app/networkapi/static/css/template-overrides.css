@@ -13,3 +13,33 @@
 .login #content-main {
 	margin-top: 0;
 }
+
+.google-login-button,
+.google-login-button:active,
+.google-login-button:visited {
+    width: 17em;
+    background: #afcfdc;
+    margin: auto;
+    font-size: 1.5em;
+    line-height: 1;
+    padding: 0.3em;
+    color: #555;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
+#admin-login-button {
+	color: #448eff;
+	cursor: pointer;
+}
+
+.admin-access h2 {
+  	text-align: center;
+  	margin-bottom: 2em;
+}
+
+.admin-access .submit-row input {
+	width: 100%;
+}
+
