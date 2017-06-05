@@ -29,7 +29,7 @@ def login_redirect(request):
 
     # Make sure to redirect to the post-login local proxy route
     login_url = login_url + '?next=' + reverse('proxy-post-login')
-    
+
     # Which can then forward the client to the original url
     original_url = request.GET.get('original_url', '/admin')
     login_url = login_url + + '?original_url=' + original_url

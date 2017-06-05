@@ -96,7 +96,7 @@ def toggle_moderation(request, entryid, stateid):
             return Response("No such moderation state", status=status404)
 
         entry.moderation_state = moderation_state
-        entry.save();
+        entry.save()
 
         status203 = status.HTTP_204_NO_CONTENT
         return Response("Updated moderation state.", status=status203)
