@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, get_user_model
-from django.template import Template, Context
 from django.urls import reverse
 
 
@@ -28,8 +27,12 @@ def login_redirect(request):
     # Get the real login URL from the social-auth system
     login_url = reverse("social:begin", args=["google-oauth2"])
 
+    # Make sure to redirect to the post-login local proxy route
+    login_url = login_url + '?next=' + reverse('proxy-post-login')
+    
+    # Which can then forward the client to the original url
     original_url = request.GET.get('original_url', '/admin')
-    login_url = login_url + '?next=' + reverse('proxy-post-login') + '?original_url=' + original_url
+    login_url = login_url + + '?original_url=' + original_url
 
     request.session['original_url'] = original_url
 
@@ -45,7 +48,6 @@ def post_login_redirect(request):
     was passed in prior to authentication has to match the
     url that is found when finalising login.
     """
-    user = request.user
     original_url = request.GET.get('original_url', '/admin')
     session_original_url = request.session['original_url']
 
