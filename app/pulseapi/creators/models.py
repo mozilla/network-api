@@ -4,7 +4,6 @@ or linked to a pulse user
 """
 from django.db import models
 from django.conf import settings
-from pulseapi.userprofile.models import UserProfile
 
 
 class CreatorQuerySet(models.query.QuerySet):
