@@ -29,9 +29,9 @@
 <form action="{{ app_path }}" method="post" id="login-form">
     {% if backends %}
     <div class="social-login">
-        <a class="google-login-button" href="{% url "social:begin" "google-oauth2" %}?next=/admin">Log in with Google</a>.
+        <a class="google-login-button" href="{% url "social:begin" "google-oauth2" %}?next=/admin">Log in with Google</a>
         <p>
-        Or log in as <span id="admin-login-button">Admin</span>
+        Or log in as <span class="admin-login-toggle">Admin</span>
         </p>
     </div>
     {% endif %}
@@ -82,6 +82,9 @@
                 <a href="{% url "password_reset" %}">{% trans "Forgot password?" %}</a>
             </p>
         </div>
+        <p>
+            Or log in with <span class="admin-login-toggle">Google</span>
+        </p>        
     </div>
 
     <script src="{% static "/js/admin/login-show-hide.js" %}"></script>
