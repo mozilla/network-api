@@ -31,7 +31,7 @@
     <div class="social-login">
         <a class="google-login-button" href="{% url "social:begin" "google-oauth2" %}?next=/admin">Log in with Google</a>
         <p>
-        Or log in as <span class="admin-login-toggle">Admin</span>
+        Or log in as <button type="button" class="admin-login admin-login-blue">Admin</button>
         </p>
     </div>
     {% endif %}
@@ -74,17 +74,17 @@
             </div>
         </div>
 
-        <div>
+        <div class="login-addenda">
             <div class="submit-row">
                 <label>&nbsp;</label><input type="submit" value="{% trans 'Log in' %}" />
             </div>
             <p id="forgot-password">
                 <a href="{% url "password_reset" %}">{% trans "Forgot password?" %}</a>
             </p>
+            <p class="return-to-google">
+                Or log in with <a class="admin-login-blue" href="{% url "social:begin" "google-oauth2" %}?next=/admin">Google</a>
+            </p>
         </div>
-        <p>
-            Or log in with <span class="admin-login-toggle">Google</span>
-        </p>        
     </div>
 
     <script src="{% static "/js/admin/login-show-hide.js" %}"></script>
