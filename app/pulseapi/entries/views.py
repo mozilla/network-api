@@ -269,11 +269,12 @@ class EntriesListView(ListCreateAPIView):
         # either a moderator or superuser, we return all
         # entries, filtered for the indicated moderation state.
         queryset = False
-        is_superuser = user.is_superuser
-        is_moderator = user.has_perm('entries.change_entry')
         modstate = self.request.query_params.get('moderationstate', None)
 
         if modstate is not None:
+            is_superuser = user.is_superuser
+            is_moderator = user.has_perm('entries.change_entry')
+
             if is_superuser is True or is_moderator is True:
                 mvalue = ModerationState.objects.get(name=modstate)
                 if mvalue is not None:
