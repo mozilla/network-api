@@ -233,6 +233,9 @@ class EntriesListView(ListCreateAPIView):
     - `?page_size=` - Number of results on a page. Defaults to 48
     - `?ordering=` - Property you'd like to order the results by. Prepend with
                      `-` to reverse. e.g. `?ordering=-title`
+    - `?moderationstate=` - Filter results to only show the indicated moderation
+                            state. This will only filter if the calling user has
+                            moderation permissions.
     """
     pagination_class = EntriesPagination
     filter_backends = (
@@ -257,24 +260,30 @@ class EntriesListView(ListCreateAPIView):
     # Otherwise, return all entries (with pagination)
     def get_queryset(self):
         user = self.request.user
+
+        # Get all entries: if this is a normal call without a
+        # specific moderation state, we return the set of
+        # public entries. However, if moderation state is
+        # explicitly requrested, and the requesting user has
+        # permissions to change entries by virtue of being
+        # either a moderator or superuser, we return all
+        # entries, filtered for the indicated moderation state.
+        queryset = False
         is_superuser = user.is_superuser
         is_moderator = user.has_perm('entries.change_entry')
+        modstate = self.request.query_params.get('moderationstate', None)
 
-        # This initially used user.get_all_permissions, which
-        # works but is somewhat inefficient. Also note there is
-        # another "get all permissions" function that can lead
-        # to problems: https://stackoverflow.com/questions/2081061
+        if modstate is not None:
+            if is_superuser is True or is_moderator is True:
+                mvalue = ModerationState.objects.get(name=modstate)
+                if mvalue is not None:
+                    queryset = Entry.objects.filter(moderation_state=mvalue)
 
-        queryset = False
-
-        # superusers and moderators get to see everything
-        if is_superuser is True or is_moderator is True:
-            queryset = Entry.objects.all()
-
-        # everyone else only gets to see "the public set"
-        else:
+        if queryset is False:
             queryset = Entry.objects.public()
 
+        # If the query was for a set of specific entries,
+        # filter the query set further.
         ids = self.request.query_params.get('ids', None)
 
         if ids is not None:
