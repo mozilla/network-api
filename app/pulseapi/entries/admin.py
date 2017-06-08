@@ -53,7 +53,7 @@ class EntryAdmin(admin.ModelAdmin):
     )
 
     ordering = (
-        'created',
+        '-created',
     )
 
     # this allows us to filter on moderation state in the admin
