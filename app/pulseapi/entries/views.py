@@ -71,10 +71,10 @@ def toggle_bookmark(request, entryid):
 @permission_classes((AllowAny,))
 def toggle_moderation(request, entryid, stateid):
     """
-    Toggle whether or not this user "bookmarked" the url-indicated entry.
-    This is currently defined outside of the entry class, as functionality
-    that is technically independent of entries themselves. We might
-    change this in the future.
+    Toggle the moderation state for a specific entry,
+    based on moderation state id values. These values
+    can be obtained via /api/pulse/entries/moderation-states
+    which returns id:name pairs for each available state.
     """
     user = request.user
 
