@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, get_user_model
-from django.template import Template, Context
+from django.urls import reverse
 
 
 def set_random_value(request, propname):
@@ -18,18 +18,45 @@ def login_redirect(request):
     """
     Specific login call for logging in through another front-end
     """
-    original_url = request.GET.get('original_url', False)
 
-    if original_url is False:
-        set_random_value(request, 'state')
-        original_url = request.session['state']
+    # make sure to clear the current auth for the user, if authed
+    user = request.user
+    if user.is_authenticated:
+        logout(request)
 
     # Get the real login URL from the social-auth system
-    login_path_template = Template('{% url "social:begin" "google-oauth2" %}')
-    login_path = login_path_template.render(Context({}))
-    login_url = login_path + '?next=' + original_url
+    login_url = reverse("social:begin", args=["google-oauth2"])
+
+    # Make sure to redirect to the post-login local proxy route
+    login_url = login_url + '?next=' + reverse('proxy-post-login')
+
+    # Which can then forward the client to the original url
+    original_url = request.GET.get('original_url', '/admin')
+    login_url = login_url + + '?original_url=' + original_url
+
+    request.session['original_url'] = original_url
 
     return redirect(login_url)
+
+
+def post_login_redirect(request):
+    """
+    This extra step is necessary because gauth doesn't like
+    doing external redirects. So we have a local proxy route
+    that can be called, with the caveat that the original url
+    gets cached in the session object and the original url that
+    was passed in prior to authentication has to match the
+    url that is found when finalising login.
+    """
+    original_url = request.GET.get('original_url', '/admin')
+    session_original_url = request.session['original_url']
+
+    request.session['original_url'] = False
+
+    if original_url == session_original_url:
+        return redirect(original_url)
+
+    return redirect('/admin')
 
 
 def force_logout(request):
@@ -84,8 +111,9 @@ def userstatus(request):
 
 # And then, finally, the url patterns
 urlpatterns = [
-    url(r'^login/', login_redirect, name="A login proxy for off-site clients"),
-    url(r'^logout/', force_logout, name="A logou proxy for off-site clients"),
+    url(r'^login/', login_redirect, name="proxy-login"),
+    url(r'^postlogin/', post_login_redirect, name="proxy-post-login"),
+    url(r'^logout/', force_logout, name="proxy-logout"),
     url(r'^nonce/', nonce, name="get a new nonce value"),
     url(r'^userstatus/', userstatus, name="get current user information"),
 ]

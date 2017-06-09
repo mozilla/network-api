@@ -25,7 +25,7 @@ class TestEntryView(PulseStaffTestCase):
             'title': 'title test_post_minimum_entry',
             'content_url': 'http://example.org/content/url'
         })
-        postresponse = self.client.post('/entries/', payload)
+        postresponse = self.client.post('/api/pulse/entries/', payload)
 
         self.assertEqual(postresponse.status_code, 200)
 
@@ -37,7 +37,7 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': 'http://example.com/test1'
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
 
@@ -46,12 +46,12 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': 'http://example.com/test2'
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
 
         entriesJson = json.loads(
-            str(self.client.get('/entries/').content, 'utf-8')
+            str(self.client.get('/api/pulse/entries/').content, 'utf-8')
         )
         self.assertEqual(postresponse.status_code, 200)
         self.assertEqual(len(entriesJson['results']), 4)
@@ -63,7 +63,7 @@ class TestEntryView(PulseStaffTestCase):
             'title': ''
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         self.assertEqual(postresponse.status_code, 400)
@@ -75,7 +75,7 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': ''
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         self.assertEqual(postresponse.status_code, 400)
@@ -98,7 +98,7 @@ class TestEntryView(PulseStaffTestCase):
             'creators': ['Pomax', 'Alan']
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         self.assertEqual(postresponse.status_code, 200)
@@ -121,13 +121,13 @@ class TestEntryView(PulseStaffTestCase):
             'creators': ['Pomax', 'Alan']
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         responseobj = json.loads(str(postresponse.content, 'utf-8'))
         entryId = responseobj['id']
         # this entry should not be featured automatically
-        searchList = self.client.get('/entries/?featured=True')
+        searchList = self.client.get('/api/pulse/entries/?featured=True')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 0)
         # toggle this entry's feature flag
@@ -135,7 +135,7 @@ class TestEntryView(PulseStaffTestCase):
         entry.featured = True
         entry.save()
         # This entry should now show up as featured
-        searchList = self.client.get('/entries/?featured=True')
+        searchList = self.client.get('/api/pulse/entries/?featured=True')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
@@ -152,7 +152,7 @@ class TestEntryView(PulseStaffTestCase):
             'tags': ['test1', 'test2'],
         }
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         content_url = 'http://example.com/test_post_entry_with_mixed_tags_2'
@@ -162,10 +162,12 @@ class TestEntryView(PulseStaffTestCase):
             'tags': ['test2', 'test3'],
         }
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        tagList = json.loads(str(self.client.get('/tags/').content, 'utf-8'))
+        tagList = json.loads(
+            str(self.client.get('/api/pulse/tags/').content, 'utf-8')
+        )
         self.assertEqual(tagList, ['test1', 'test2', 'test3'])
 
     def test_post_entry_with_mixed_creators(self):
@@ -180,21 +182,21 @@ class TestEntryView(PulseStaffTestCase):
             'creators': ['Pomax', 'Alan'],
         }
         json.loads(
-            str(self.client.get('/nonce/').content, 'utf-8')
+            str(self.client.get('/api/pulse/nonce/').content, 'utf-8')
         )
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         creatorList = json.loads(
-            str(self.client.get('/creators/').content, 'utf-8')
+            str(self.client.get('/api/pulse/creators/').content, 'utf-8')
         )
         self.assertEqual(creatorList, ['Pomax', 'Alan'])
 
     def test_get_entries_list(self):
         """Get /entries endpoint"""
 
-        entryList = self.client.get('/entries/')
+        entryList = self.client.get('/api/pulse/entries/')
         self.assertEqual(entryList.status_code, 200)
 
     def test_entries_search(self):
@@ -206,18 +208,18 @@ class TestEntryView(PulseStaffTestCase):
             'description': 'test setup'
         }
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        searchList = self.client.get('/entries/?search=setup')
+        searchList = self.client.get('/api/pulse/entries/?search=setup')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
     def test_entries_pagination(self):
         """Make sure pagination works"""
 
-        page1 = self.client.get('/entries/?page=1&page_size=1')
-        page2 = self.client.get('/entries/?page=2&page_size=1')
+        page1 = self.client.get('/api/pulse/entries/?page=1&page_size=1')
+        page2 = self.client.get('/api/pulse/entries/?page=2&page_size=1')
         page1Json = json.loads(str(page1.content, 'utf-8'))
         page2Json = json.loads(str(page2.content, 'utf-8'))
         self.assertEqual(len(page1Json['results']), 1)
@@ -235,12 +237,12 @@ class TestEntryView(PulseStaffTestCase):
             'content_url': 'http://example.com/test_entries_search_by_tag',
             'tags': ['tag1']
         }
-        json.loads(str(self.client.get('/nonce/').content, 'utf-8'))
+        json.loads(str(self.client.get('/api/pulse/nonce/').content, 'utf-8'))
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        searchList = self.client.get('/entries/?tag=tag1')
+        searchList = self.client.get('/api/pulse/entries/?tag=tag1')
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
@@ -253,13 +255,14 @@ class TestEntryView(PulseStaffTestCase):
             'issues': 'Decentralization',
         }
         json.loads(
-            str(self.client.get('/nonce/').content, 'utf-8')
+            str(self.client.get('/api/pulse/nonce/').content, 'utf-8')
         )
         self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
-        searchList = self.client.get('/entries/?issue=Decentralization')
+        url = '/api/pulse/entries/?issue=Decentralization'
+        searchList = self.client.get(url)
         entriesJson = json.loads(str(searchList.content, 'utf-8'))
         self.assertEqual(len(entriesJson['results']), 1)
 
@@ -275,7 +278,7 @@ class TestEntryView(PulseStaffTestCase):
             'issues': 'Privacy',
         }
         postresponse = self.client.post(
-            '/entries/',
+            '/api/pulse/entries/',
             data=self.generatePostPayload(data=payload)
         )
         self.assertEqual(postresponse.status_code, 400)
@@ -283,7 +286,7 @@ class TestEntryView(PulseStaffTestCase):
     def test_post_authentication_requirement(self):
         """Make sure you can't post without using the nonce"""
 
-        postresponse = self.client.post('/entries/', data={
+        postresponse = self.client.post('/api/pulse/entries/', data={
             'title': 'title this test should fail',
             'description': 'description this test should fail',
             'tags': ['tag2', 'tag3'],
@@ -308,7 +311,8 @@ class TestEntryView(PulseStaffTestCase):
 
         # ensure the user is logged out, then try to bookmark
         self.client.logout()
-        postresponse = self.client.put('/entries/' + str(id) + '/bookmark')
+        url = '/api/pulse/entries/' + str(id) + '/bookmark'
+        postresponse = self.client.put(url)
         self.assertEqual(postresponse.status_code, 403)
 
         # verify bookmark count is zero
@@ -325,7 +329,7 @@ class TestEntryView(PulseStaffTestCase):
         entry = entries[0]
         id = entry.id
 
-        put_url = '/entries/' + str(id) + '/bookmark'
+        put_url = '/api/pulse/entries/' + str(id) + '/bookmark'
 
         postresponse = self.client.put(put_url)
         self.assertEqual(postresponse.status_code, 204)
@@ -351,10 +355,10 @@ class TestEntryView(PulseStaffTestCase):
         entry = entries[0]
         id = entry.id
 
-        self.client.put('/entries/' + str(id) + '/bookmark')
+        self.client.put('/api/pulse/entries/' + str(id) + '/bookmark')
 
         # verify bookmark count is now one
-        bookmarkResponse = self.client.get('/entries/bookmarks/')
+        bookmarkResponse = self.client.get('/api/pulse/entries/bookmarks/')
         self.assertEqual(bookmarkResponse.status_code, 200)
 
         bookmarkJson = json.loads(str(bookmarkResponse.content, 'utf-8'))
@@ -371,15 +375,15 @@ class TestMemberEntryView(PulseMemberTestCase):
         payload = self.generatePostPayload(
             data={'title': 'title test_approval_requirement'}
         )
-        postresponse = self.client.post('/entries/', payload)
+        postresponse = self.client.post('/api/pulse/entries/', payload)
         self.assertEqual(postresponse.status_code, 200)
 
         responseobj = json.loads(str(postresponse.content, 'utf-8'))
         id = str(responseobj['id'])
 
-        getresponse = self.client.get('/entries/' + id, follow=True)
+        getresponse = self.client.get('/api/pulse/entries/' + id, follow=True)
         getListresponse = json.loads(
-            str(self.client.get('/entries/').content, 'utf-8')
+            str(self.client.get('/api/pulse/entries/').content, 'utf-8')
         )
         results = getListresponse['results']
 

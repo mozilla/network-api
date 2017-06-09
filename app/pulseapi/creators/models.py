@@ -3,7 +3,7 @@ The creator field for an entry. Can be empty, just a name,
 or linked to a pulse user
 """
 from django.db import models
-from pulseapi.userprofile.models import UserProfile
+from django.conf import settings
 
 
 class CreatorQuerySet(models.query.QuerySet):
@@ -28,7 +28,7 @@ class Creator(models.Model):
     """
     name = models.CharField(max_length=140)
     user = models.ForeignKey(
-        UserProfile,
+        settings.AUTH_USER_MODEL,
         related_name='as_creator',
         blank=True,
         null=True,

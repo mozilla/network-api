@@ -17,9 +17,14 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from pulseapi.entries.models import Entry
-from pulseapi.entries.serializers import EntrySerializer
+from pulseapi.entries.models import Entry, ModerationState
+from pulseapi.entries.serializers import (
+    EntrySerializer,
+    ModerationStateSerializer
+)
 from pulseapi.userprofile.models import UserProfile, UserBookmark
+
+from pulseapi.utility.is_moz import is_moz
 
 
 @api_view(['PUT'])
@@ -58,6 +63,46 @@ def toggle_bookmark(request, entryid):
         return Response("Toggled bookmark.", status=status.HTTP_204_NO_CONTENT)
     return Response(
         "Anonymous bookmarks cannot be saved.",
+        status=status.HTTP_403_FORBIDDEN
+    )
+
+
+@api_view(['PUT'])
+@permission_classes((AllowAny,))
+def toggle_moderation(request, entryid, stateid):
+    """
+    Toggle the moderation state for a specific entry,
+    based on moderation state id values. These values
+    can be obtained via /api/pulse/entries/moderation-states
+    which returns id:name pairs for each available state.
+    """
+    user = request.user
+
+    if user.has_perm('entries.change_entry'):
+        entry = None
+        moderation_state = None
+        status404 = status.HTTP_404_NOT_FOUND
+
+        # find the Entry in question
+        try:
+            entry = Entry.objects.get(id=entryid)
+        except Entry.DoesNotExist:
+            return Response("No such entry", status=status404)
+
+        # find the ModerationState in question
+        try:
+            moderation_state = ModerationState.objects.get(id=stateid)
+        except ModerationState.DoesNotExist:
+            return Response("No such moderation state", status=status404)
+
+        entry.moderation_state = moderation_state
+        entry.save()
+
+        status203 = status.HTTP_204_NO_CONTENT
+        return Response("Updated moderation state.", status=status203)
+
+    return Response(
+        "You do not have permission to change entry moderation states.",
         status=status.HTTP_403_FORBIDDEN
     )
 
@@ -161,6 +206,14 @@ class BookmarkedEntries(ListAPIView):
     serializer_class = EntrySerializer
 
 
+class ModerationStateView(ListAPIView):
+    """
+    A view to retrieve all moderation states
+    """
+    queryset = ModerationState.objects.all()
+    serializer_class = ModerationStateSerializer
+
+
 class EntriesListView(ListCreateAPIView):
     """
     A view that permits a GET to allow listing all the entries
@@ -180,6 +233,9 @@ class EntriesListView(ListCreateAPIView):
     - `?page_size=` - Number of results on a page. Defaults to 48
     - `?ordering=` - Property you'd like to order the results by. Prepend with
                      `-` to reverse. e.g. `?ordering=-title`
+    - `?moderationstate=` - Filter results to only show the given moderation
+                            state. This will only filter if the calling user
+                            has moderation permissions.
     """
     pagination_class = EntriesPagination
     filter_backends = (
@@ -196,20 +252,46 @@ class EntriesListView(ListCreateAPIView):
     )
     serializer_class = EntrySerializer
 
+    # which permissions allow this access to this model
+    permission_classes = [AllowAny]
+
     # Custom queryset handling: if the route was called as
     # /entries/?ids=1,2,3,4,... only return those entires.
     # Otherwise, return all entries (with pagination)
     def get_queryset(self):
+        user = self.request.user
+
+        # Get all entries: if this is a normal call without a
+        # specific moderation state, we return the set of
+        # public entries. However, if moderation state is
+        # explicitly requrested, and the requesting user has
+        # permissions to change entries by virtue of being
+        # either a moderator or superuser, we return all
+        # entries, filtered for the indicated moderation state.
+        queryset = False
+        modstate = self.request.query_params.get('moderationstate', None)
+
+        if modstate is not None:
+            is_superuser = user.is_superuser
+            is_moderator = user.has_perm('entries.change_entry')
+
+            if is_superuser is True or is_moderator is True:
+                mvalue = ModerationState.objects.get(name=modstate)
+                if mvalue is not None:
+                    queryset = Entry.objects.filter(moderation_state=mvalue)
+
+        if queryset is False:
+            queryset = Entry.objects.public()
+
+        # If the query was for a set of specific entries,
+        # filter the query set further.
         ids = self.request.query_params.get('ids', None)
+
         if ids is not None:
             ids = [int(x) for x in ids.split(',')]
-            queryset = Entry.objects.filter(pk__in=ids, is_approved=True)
-        else:
-            queryset = Entry.objects.public()
-        return queryset
+            queryset = queryset.filter(pk__in=ids)
 
-    # which permissions allow this access to this model
-    permission_classes = [AllowAny]
+        return queryset
 
     # When people POST to this route, we want to do some
     # custom validation involving CSRF and nonce validation,
@@ -249,13 +331,22 @@ class EntriesListView(ListCreateAPIView):
             if serializer.is_valid():
                 user = request.user
                 # ensure that the published_by is always the user doing
-                # the posting, and set 'featured' to false (see
-                # https://github.com/mozilla/network-pulse-api/issues/83)
-                is_approved = user.groups.filter(name="staff").exists()
+                # the posting, and set 'featured' to false.
+                #
+                # see https://github.com/mozilla/network-pulse-api/issues/83
+                moderation_state = ModerationState.objects.get(
+                    name='Pending'
+                )
+
+                if (is_moz(request.user.email)):
+                    moderation_state = ModerationState.objects.get(
+                        name='Approved'
+                    )
+
                 savedEntry = serializer.save(
                     published_by=user,
                     featured=False,
-                    is_approved=is_approved
+                    moderation_state=moderation_state
                 )
                 return Response({'status': 'submitted', 'id': savedEntry.id})
             else:

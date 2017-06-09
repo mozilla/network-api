@@ -1,10 +1,13 @@
 import factory
 from faker import Factory as FakerFactory
 from django.contrib.auth import get_user_model
-from pulseapi.entries.models import Entry
+from pulseapi.entries.models import Entry, ModerationState
 
 
 faker = FakerFactory.create()
+
+pending = ModerationState.objects.get(name='Pending')
+approved = ModerationState.objects.get(name='Approved')
 
 
 class EntryFactory(factory.DjangoModelFactory):
@@ -20,7 +23,8 @@ class EntryFactory(factory.DjangoModelFactory):
     published_by = factory.LazyAttribute(
         lambda o: get_user_model().objects.all()[0]
     )
-    is_approved = True
+
+    moderation_state = approved
 
     class Meta:
         model = Entry
