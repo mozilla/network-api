@@ -233,9 +233,9 @@ class EntriesListView(ListCreateAPIView):
     - `?page_size=` - Number of results on a page. Defaults to 48
     - `?ordering=` - Property you'd like to order the results by. Prepend with
                      `-` to reverse. e.g. `?ordering=-title`
-    - `?moderationstate=` - Filter results to only show the indicated moderation
-                            state. This will only filter if the calling user has
-                            moderation permissions.
+    - `?moderationstate=` - Filter results to only show the given moderation
+                            state. This will only filter if the calling user
+                            has moderation permissions.
     """
     pagination_class = EntriesPagination
     filter_backends = (
