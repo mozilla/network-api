@@ -2,22 +2,22 @@ from django.utils import timezone
 from django.db import models
 from django.db.models import Q
 from adminsortable.models import SortableMixin
-
+from mezzanine.core.fields import RichTextField
 from networkapi.utility.images import get_image_upload_path
 
 
-def get_features_image_upload_path(instance, filename):
+def get_highlights_image_upload_path(instance, filename):
     return get_image_upload_path(
-        app_name='features',
+        app_name='highlights',
         prop_name='name',
         instance=instance,
         current_filename=filename
     )
 
 
-class FeatureQuerySet(models.query.QuerySet):
+class HighlightQuerySet(models.query.QuerySet):
     """
-    A QuerySet for features that filters for published features.
+    A QuerySet for highlights that filters for published highlights.
     """
     def published(self):
         now = timezone.now()
@@ -27,40 +27,46 @@ class FeatureQuerySet(models.query.QuerySet):
         )
 
 
-class Feature(SortableMixin):
+class Highlight(models.Model):
     name = models.CharField(
         max_length=300,
-        help_text='Title of the feature',
+        help_text='Title of the higlight',
     )
     description = models.TextField(
         max_length=5000,
-        help_text='Description of the feature',
+        help_text='Description of the higlight',
     )
     link_label = models.CharField(
         max_length=300,
-        help_text='Text to show that links to this feature\'s '
+        help_text='Text to show that links to this higlight\'s '
                   'details page',
     )
     link_url = models.URLField(
         max_length=2048,
-        help_text='Link to this feature\'s details page',
+        help_text='Link to this higlight\'s details page',
     )
     image = models.FileField(
         max_length=2048,
-        help_text='Image representing this feature',
-        upload_to=get_features_image_upload_path,
+        help_text='Image representing this highlight',
+        upload_to=get_highlights_image_upload_path,
     )
     featured = models.BooleanField(
-        help_text='Do you want to feature this feature?',
+        help_text='Do you want to feature this highlight?',
         default=False,
     )
+    footer = RichTextField(
+        "footer",
+        help_text="Content to appear after description (view more projects "
+        "link or something similar)",
+        null=True,
+    )
     publish_after = models.DateTimeField(
-        help_text='Make this feature visible only '
+        help_text='Make this highlight visible only '
                   'after this date and time (UTC)',
         null=True,
     )
     expires = models.DateTimeField(
-        help_text='Hide this feature after this date and time (UTC)',
+        help_text='Hide this highlight after this date and time (UTC)',
         default=None,
         null=True,
         blank=True,
@@ -71,10 +77,10 @@ class Feature(SortableMixin):
         db_index=True,
     )
 
-    objects = FeatureQuerySet.as_manager()
+    objects = HighlightQuerySet.as_manager()
 
     class Meta:
-        verbose_name_plural = 'features'
+        verbose_name_plural = 'highlights'
         ordering = ('order',)
 
     def __str__(self):

@@ -100,6 +100,7 @@ INSTALLED_APPS = list(filter(None, [
     'storages',
     'adminsortable',
 
+    # the network site
     'networkapi.people',
     'networkapi.news',
     'networkapi.utility',
@@ -257,17 +258,6 @@ ADMIN_MENU_ORDER = (
     ('Components', ('landingpage.Signup',)),
     ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
     ('Users', ('auth.User', 'auth.Group')),
-    (
-        'Pulse API',
-        (
-            'creators.Creator',
-            'entries.Entry',
-            'tags.Tag',
-            # 'fixed list' models
-            'issues.Issue',
-            'entries.ModerationState',
-        )
-    )
 )
 
 # Internationalization

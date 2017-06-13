@@ -1,22 +1,22 @@
 from rest_framework import serializers
 
-from networkapi.features.models import Feature
+from networkapi.highlights.models import Highlight
 
 
-class FeatureSerializer(serializers.ModelSerializer):
+class HighlightSerializer(serializers.ModelSerializer):
     """
-    Serializes an Feature Model
+    Serializes an Highlight Model
     """
     link = serializers.SerializerMethodField()
 
-    def get_link(self, feature):
+    def get_link(self, highlight):
         return {
-            'label': feature.link_label,
-            'url': feature.link_url,
+            'label': highlight.link_label,
+            'url': highlight.link_url,
         }
 
     class Meta:
-        model = Feature
+        model = Highlight
         fields = (
             'name',
             'description',
