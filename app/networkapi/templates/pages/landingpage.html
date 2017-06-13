@@ -52,10 +52,13 @@
         </div>
       </div>
       <div class="container">
-        <div class="row py-5 justify-content-center">
+        <div class="row py-5 justify-content-center">{% if page.landingpage.signup %}
           <div class="col-lg-11">
             <h1 class="h1-white">{{ page.landingpage.header }}</h1>
-          </div>
+          </div>{% else %}
+          <div class="col-12 col-md-8 mb-5">
+            <h1 class="h1-white">{{ page.landingpage.header }}</h1>
+          </div>{% endif %}
         </div>
         <div class="row justify-content-around">{% if page.landingpage.signup %}
           <div class="cms col-md-6 col-lg-5 mb-5">{{ page.landingpage.content | safe }}</div>
