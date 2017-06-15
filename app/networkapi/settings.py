@@ -14,6 +14,7 @@ import environ
 
 app = environ.Path(__file__) - 1
 root = app - 1
+
 # We set defaults for values that aren't security related
 # to the least permissive setting. For security related values,
 # we rely on it being explicitly set (no default values) so that
@@ -99,18 +100,10 @@ INSTALLED_APPS = list(filter(None, [
     'storages',
     'adminsortable',
 
-    # the network site
     'networkapi.people',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
-
-    # the network pulse
-    'pulseapi.creators',
-    'pulseapi.entries',
-    'pulseapi.issues',
-    'pulseapi.tags',
-    'pulseapi.userprofile',
 ]))
 
 MIDDLEWARE_CLASSES = [
@@ -178,7 +171,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             app('templates'),
-            'pulseapi/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -29,8 +29,6 @@ urlpatterns = list(filter(None, [
     # network-api routes:
     url(r'^api/people/', include('networkapi.people.urls')),
     url(r'^api/news/', include('networkapi.news.urls')),
-    # network-pulse-api routes (on their own namespace)
-    url(r'^api/pulse/', include('pulseapi.urls')),
     url(r'^$', mezzanine.pages.views.page, {'slug': '/'}, name='home'),
     url(r'^', include('mezzanine.urls')),
 ]))
