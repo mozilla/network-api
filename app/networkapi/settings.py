@@ -255,7 +255,12 @@ ADMIN_REMOVAL = [
 ADMIN_MENU_ORDER = (
     ('Content', ('pages.Page',
                  ('Media Library', 'media-library'))),
-    ('Data', ('people.Person', 'news.News', 'people.InternetHealthIssue', 'highlights.Highlight')),
+    ('Data', (
+        'people.Person',
+        'news.News',
+        'people.InternetHealthIssue',
+        'highlights.Highlight',
+        )),
     ('Components', ('landingpage.Signup',)),
     ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
     ('Users', ('auth.User', 'auth.Group')),
