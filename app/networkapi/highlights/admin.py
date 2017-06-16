@@ -12,7 +12,4 @@ class HighlightAdmin(SortableAdmin):
         'shared/adminsortable_change_list_custom.html',
     )
 
-    class Media:
-        js = ('/static/highlights/js/admin.js',)
-
 admin.site.register(Highlight, HighlightAdmin)

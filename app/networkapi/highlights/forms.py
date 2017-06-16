@@ -22,7 +22,6 @@ class HighlightAdminForm(forms.ModelForm):
             'link_url',
             'image',
             'footer',
-            'featured',
             'publish_after',
             'expires',
         )

@@ -54,10 +54,7 @@ class Highlight(SortableMixin):
         max_length=2048,
         help_text='Image representing this highlight',
         upload_to=get_highlights_image_upload_path,
-    )
-    featured = models.BooleanField(
-        help_text='Do you want to feature this highlight?',
-        default=False,
+        blank=True,
     )
     footer = RichTextField(
         "footer",
