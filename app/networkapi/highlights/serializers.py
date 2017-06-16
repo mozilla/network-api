@@ -7,20 +7,15 @@ class HighlightSerializer(serializers.ModelSerializer):
     """
     Serializes an Highlight Model
     """
-    link = serializers.SerializerMethodField()
-
-    def get_link(self, highlight):
-        return {
-            'label': highlight.link_label,
-            'url': highlight.link_url,
-        }
 
     class Meta:
         model = Highlight
         fields = (
-            'name',
+            'id',
+            'title',
             'description',
-            'link',
-            'featured',
-            'image'
+            'link_url',
+            'link_label',
+            'image',
+            'footer',
         )

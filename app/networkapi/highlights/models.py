@@ -9,7 +9,7 @@ from networkapi.utility.images import get_image_upload_path
 def get_highlights_image_upload_path(instance, filename):
     return get_image_upload_path(
         app_name='highlights',
-        prop_name='name',
+        prop_name='title',
         instance=instance,
         current_filename=filename
     )
@@ -33,7 +33,7 @@ class Highlight(SortableMixin):
     projects, custom pages, etc
     Especially on the homepage under "Get Involved"
     """
-    name = models.CharField(
+    title = models.CharField(
         max_length=300,
         help_text='Title of the higlight',
     )
@@ -89,4 +89,4 @@ class Highlight(SortableMixin):
         ordering = ('order',)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.title)

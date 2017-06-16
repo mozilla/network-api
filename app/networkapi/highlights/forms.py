@@ -16,7 +16,7 @@ class HighlightAdminForm(forms.ModelForm):
     class Meta:
         model = Highlight
         fields = (
-            'name',
+            'title',
             'description',
             'link_label',
             'link_url',
