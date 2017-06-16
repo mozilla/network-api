@@ -27,7 +27,12 @@ class HighlightQuerySet(models.query.QuerySet):
         )
 
 
-class Highlight(models.Model):
+class Highlight(SortableMixin):
+    """
+    An data type to highlight things like pulse
+    projects, custom pages, etc
+    Especially on the homepage under "Get Involved"
+    """
     name = models.CharField(
         max_length=300,
         help_text='Title of the higlight',
