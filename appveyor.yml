@@ -38,23 +38,24 @@ init:
 
 install:
   - "%PYTHON%/Scripts/pip.exe install virtualenv"
-    "virtualenv networkapi"
-    "./networkapi/Scripts/activate"
-    "pip install -r requirements.txt"
+  - "virtualenv networkapi"
+  - "./networkapi/Scripts/activate"
+  - "pip install -r requirements.txt"
 
 services:
   - postgresql
 
 before_test:
   - "./networkapi/Scripts/activate"
-    SET PGUSER=postgres
-    SET PGPASSWORD=Password12!
-    PATH=C:\Program Files\PostgreSQL\9.6\bin\;%PATH%
-    createdb networkapi
-    python app/manage.py migrate
+  - SET PGUSER=postgres
+  - SET PGPASSWORD=Password12!
+  - PATH=C:\Program Files\PostgreSQL\9.6\bin\;%PATH%
+  - createdb networkapi
+  - python -c "import django; print(django.get_version())"
+  - python app/manage.py migrate
 
 test_script:
   - "./networkapi/Scripts/activate"
-    "flake8 . --config=./app/tox.ini"
-    "python app/manage.py test"
+  - "flake8 . --config=./app/tox.ini"
+  - "python app/manage.py test"
 
