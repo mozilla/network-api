@@ -10,15 +10,28 @@ clone_depth: 1
 
 build: false
 
-matrix:
+environment:
+  DEBUG: True
+  DJANGO_SECRET_KEY: secret
+  DATABASE_URL: postgres://postgres:5432@localhost:5432/networkapi
+  USE_S3: False
+  CORS_WHITELIST: "*"
+  XSS_PROTECTION: True
+  CONTENT_TYPE_NO_SNIFF: True
+  SET_HSTS: False
+  SSL_REDIRECT: False
+  X_FRAME_OPTIONS: DENY
+  ALLOWED_HOSTS: localhost
 
-  - PYTHON: "C:\\Python27"
-    PYTHON_VERSION: "2.7.13"
-    PYTHON_ARCH: "32"
+  matrix:
 
-  - PYTHON: "C:\\Python36"
-    PYTHON_VERSION: "3.6.1"
-    PYTHON_ARCH: "32"
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7.13"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.1"
+      PYTHON_ARCH: "32"
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %%PYTHON_ARCH"
@@ -33,15 +46,3 @@ test_script:
   - "flake8 . --config=./app/tox.ini"
   - "%PYTHON%/python.exe app/manage.py test"
 
-environment:
-  DEBUG: True
-  DJANGO_SECRET_KEY: secret
-  DATABASE_URL: postgres://postgres:5432@localhost:5432/networkapi
-  USE_S3: False
-  CORS_WHITELIST: "*"
-  XSS_PROTECTION: True
-  CONTENT_TYPE_NO_SNIFF: True
-  SET_HSTS: False
-  SSL_REDIRECT: False
-  X_FRAME_OPTIONS: DENY
-  ALLOWED_HOSTS: localhost
