@@ -39,7 +39,7 @@ environment:
   DJANGO_SECRET_KEY: secret
   DATABASE_URL: postgres://postgres:5432@localhost:5432/networkapi
   USE_S3: False
-  CORS_WHITELIST: *
+  CORS_WHITELIST: "*"
   XSS_PROTECTION: True
   CONTENT_TYPE_NO_SNIFF: True
   SET_HSTS: False
