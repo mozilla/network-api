@@ -1,10 +1,13 @@
 from django.test import TestCase
-import factory, datetime, json
+import factory
+import datetime
+import json
 from faker import Factory as FakerFactory
 from networkapi.highlights.models import Highlight
 
 
 faker = FakerFactory.create()
+
 
 class HighlightFactory(factory.DjangoModelFactory):
 
@@ -24,7 +27,6 @@ class HighlightFactory(factory.DjangoModelFactory):
         model = Highlight
 
 
-
 def setup_highlights(test):
     """
     Generate some highlights
@@ -33,6 +35,7 @@ def setup_highlights(test):
     test.highlights = [HighlightFactory() for i in range(2)]
     for highlight in test.highlights:
         highlight.save()
+
 
 class TestHighlightView(TestCase):
     """
