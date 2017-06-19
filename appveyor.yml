@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: {build}
 
 branches:
 
@@ -53,6 +53,7 @@ before_test:
   - python app/manage.py migrate
 
 test_script:
+  - "./networkapi/Scripts/activate"
   - "flake8 . --config=./app/tox.ini"
   - "python app/manage.py test"
 
