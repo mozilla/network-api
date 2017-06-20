@@ -100,10 +100,12 @@ INSTALLED_APPS = list(filter(None, [
     'storages',
     'adminsortable',
 
+    # the network site
     'networkapi.people',
     'networkapi.news',
     'networkapi.utility',
     'networkapi.landingpage',
+    'networkapi.highlights',
 ]))
 
 MIDDLEWARE_CLASSES = [
@@ -253,21 +255,15 @@ ADMIN_REMOVAL = [
 ADMIN_MENU_ORDER = (
     ('Content', ('pages.Page',
                  ('Media Library', 'media-library'))),
-    ('Data', ('people.Person', 'news.News', 'people.InternetHealthIssue',)),
+    ('Data', (
+        'people.Person',
+        'news.News',
+        'people.InternetHealthIssue',
+        'highlights.Highlight',
+        )),
     ('Components', ('landingpage.Signup',)),
     ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
     ('Users', ('auth.User', 'auth.Group')),
-    (
-        'Pulse API',
-        (
-            'creators.Creator',
-            'entries.Entry',
-            'tags.Tag',
-            # 'fixed list' models
-            'issues.Issue',
-            'entries.ModerationState',
-        )
-    )
 )
 
 # Internationalization
