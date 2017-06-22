@@ -1,5 +1,4 @@
 from django.utils import timezone
-from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from adminsortable.models import SortableMixin
@@ -32,19 +31,6 @@ class PeopleQuerySet(models.query.QuerySet):
     """
     def published(self):
         now = timezone.now()
-
-        if settings.DEBUG is True:
-            tz = timezone.get_current_timezone()
-            print("django thinks the current timezone is:", tz)
-            print("django thinks 'now' is:", now)
-            try:
-                pomax = self.filter(name="Pomax")
-                print(
-                    "entry 'Pomax'.publish_after is set to:",
-                    pomax.publish_after
-                )
-            except:
-                pass
 
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
