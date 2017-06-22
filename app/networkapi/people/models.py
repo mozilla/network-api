@@ -31,6 +31,13 @@ class PeopleQuerySet(models.query.QuerySet):
     """
     def published(self):
         now = timezone.now()
+        
+        # See https://docs.djangoproject.com/en/1.11/
+        #     ... _modules/django/db/models/fields/#DateTimeField
+        #
+        # Specifically, in _check_fix_default_value(self)
+        if not timezone.is_naive(now):
+            now = timezone.make_naive(now, timezone.utc)
 
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
