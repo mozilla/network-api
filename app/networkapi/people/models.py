@@ -34,7 +34,9 @@ class PeopleQuerySet(models.query.QuerySet):
 
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
-            publish_after__lt=now
+            # See https://docs.djangoproject.com/en/1.11
+            #     .../ref/models/querysets/#date
+            publish_after__date__lt=now
         )
 
 
