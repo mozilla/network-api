@@ -38,7 +38,7 @@ class PeopleQuerySet(models.query.QuerySet):
         # from the Django source for DatTimeField, so at least
         # it has a documented origin.
         if not timezone.is_naive(now):
-            now = timezone.make_naive(now, timezone.utc)        
+            now = timezone.make_naive(now, timezone.utc)
 
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
