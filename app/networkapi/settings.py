@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 '''
 
+import os
 import environ
+import dj_database_url
 
 app = environ.Path(__file__) - 1
 root = app - 1
@@ -20,27 +22,34 @@ root = app - 1
 # we rely on it being explicitly set (no default values) so that
 # we error out first.
 env = environ.Env(
-    DEBUG=(bool, False),
-    FILEBROWSER_DEBUG=(bool, False),
-    USE_S3=(bool, True),
     ALLOWED_HOSTS=(list, []),
-    CORS_WHITELIST=(tuple, ()),
-    CORS_REGEX_WHITELIST=(tuple, ()),
-    XSS_PROTECTION=bool,
-    CONTENT_TYPE_NO_SNIFF=bool,
-    SET_HSTS=bool,
-    SSL_REDIRECT=bool,
-    AWS_LOCATION=(str, ''),
-    FILEBROWSER_DIRECTORY=(str, ''),
     ASSET_DOMAIN=(str, ''),
+    AWS_LOCATION=(str, ''),
+    BUILD_DEBOUNCE_SECONDS=(int, 300),
+    BUILD_THROTTLE_SECONDS=(int, 900),
+    BUILD_TRIGGER_URL=(str, ''),
+    CONTENT_TYPE_NO_SNIFF=bool,
+    CORS_REGEX_WHITELIST=(tuple, ()),
+    CORS_WHITELIST=(tuple, ()),
+    DATABASE_URL=(str, None),
+    DEBUG=(bool, False),
+    DJANGO_LOG_LEVEL=(str, 'INFO'),
+    FILEBROWSER_DEBUG=(bool, False),
+    FILEBROWSER_DIRECTORY=(str, ''),
+    SET_HSTS=bool,
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY=(str, None),
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET=(str, None),
-    BUILD_TRIGGER_URL=(str, ''),
-    BUILD_THROTTLE_SECONDS=(int, 900),
-    BUILD_DEBOUNCE_SECONDS=(int, 300),
-    DJANGO_LOG_LEVEL=(str, 'INFO'),
+    SSL_REDIRECT=bool,
+    USE_S3=(bool, True),
     USE_X_FORWARDED_HOST=(bool, False),
+    XSS_PROTECTION=bool,
 )
+
+# Read in the environment
+if os.path.exists('.env') is True:
+    environ.Env.read_env('.env')
+else:
+    environ.Env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = root()
@@ -212,8 +221,16 @@ WSGI_APPLICATION = 'networkapi.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db('DATABASE_URL'),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+
+DATABASE_URL = env('DATABASE_URL')
+
+if DATABASE_URL is not None:
+    DATABASES['default'].update(dj_database_url.config())
 
 DATABASES['default']['ATOMIC_REQUESTS'] = True
 

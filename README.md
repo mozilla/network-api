@@ -4,59 +4,56 @@ This is the REST API server for the Mozilla Network Site.
 
 ## Requirements
 
-The only requirement to run this API is Docker and its dependencies (which you can [download here](https://www.docker.com/products/docker)). Make sure you have port 5000 open as the API is exposed on that port.
+- `python3`, `pip`, optionally `virtualenv`
 
-## Pre-setup: a note about .env files
+## Installation
 
-Docker is a bit special and really, *really* wants to claim `.env` as its own file, i.e. the file that controls environment settings *for the Docker instances to bootstrap with*, not a list of variables that get exposed inside of the docker container to the application(s) running in it.
+Create a virtual environment using either `virtualenv` or `python3`'s virtual enviroment invokation. For the purposes of this README.md it is assumed you called this virtual enviroment `venv`.
 
-Instead, runtime variables for applications inside the docker container need to be placed in the `env.default` file. This comes with a risk that we're still trying to figure out: in order for docker to give applications useful environment variables, they need to be placd in a file that *is under revision control*. It is **highly recommended** that you add `env.default` to the `.gitignore` file while you're doing any development work, so that you can't accidentally check it in, and if you do use `git add .`, the only change relevant to the `default.env` file is the inclusion of `.gitignore` instead, which is easily undone.
+Activate the virtual enviroment:
 
-This is not a permanent solution, but until we figure out a way to hand docker customized environment variable files, this is the best we can do.
+- Unix/Linux/OSX: `source venv/bin/activate`
+- Windows: `venv\Scripts\Activate`
+
+(for both, the virtual enviroment can be deactivated by running the corresponding "deactivate" command)
+
+Install all dependencies into the virtual environment:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Setup
 
-Before you can run the site, you'll need to run the migrations and create a superuser. These commands are run within the container:
+Before you can run the site, you'll need to run the migrations and create a superuser:
 
 ```bash
-docker-compose run --rm web sh -c "python manage.py migrate"
-docker-compose run --rm web sh -c "python manage.py createsuperuser"
+python app/manage.py migrate
+python app/manage.py createsuperuser
 ```
 
-To build and run the API, simply run:
-```bash
-docker-compose up
+You can now run the server using:
+
 ```
+python app/manage.py runserver
+```
+
 You should now be able to access the API on `localhost:5000`.
 
 To log in to the admin UI, visit:
-http://localhost:5000/admin
+http://localhost:8000/admin
 
-Any changes you make in the `app` directory will automatically be reflected in the docker container.
-
-**Note:** If you change anything involved the build (for e.g. change the requirements), you will need to run `docker-compose up --build` so that it will re-build your container with the changes.
-
-As this is a Python/Django project, we also support additional commands that might be of use. To run a command, simply run:
-```bash
-docker-compose run --rm web sh -c "<command>"
-```
-where, `<command>` (don't forget about the surrounding quotes) should be replaced by any one of the following:
+As this is a Python/Django project, we also support additional commands that might be of use. Please consult the following table for some common commands you might want to use:
 
 | No. | Command | Description |
 | --- | ------- | ----------- |
 | 1. | flake8 . | Run Flake8 linting on the code.  |
-| 2. | python manage.py test | Run the tests defined for this project. |
-| 3. | python manage.py makemigrations | Create migration files for all Django model changes detected. |
-| 4. | python manage.py migrate | Apply migrations to the database. |
-| 5. | python manage.py shell | Open up a Python interactive shell. |
-| 6. | python manage.py createsuperuser | Create a super user for the Django administrative interface. |
-| 7. | python manage.py collectstatic | Create a folder containing all the static content that needs to be served for use by the API and the admin interface. |
-
-## Reset dev environment
-
-If you ~~really mess things up~~ want to start fresh, delete your local database within docker and try again.
-
-`docker-compose down --rmi local` and `docker-compose up`. You'll need to `migrate` and `createsuperuser` again, using the above instructions.
+| 2. | python app/manage.py test | Run the tests defined for this project. |
+| 3. | python app/manage.py makemigrations | Create migration files for all Django model changes detected. |
+| 4. | python app/manage.py migrate | Apply migrations to the database. |
+| 5. | python app/manage.py shell | Open up a Python interactive shell. |
+| 6. | python app/manage.py createsuperuser | Create a super user for the Django administrative interface. |
+| 7. | python app/manage.py collectstatic | Create a folder containing all the static content that needs to be served for use by the API and the admin interface. |
 
 ## Deployment considerations
 
