@@ -1,6 +1,5 @@
 from django.utils import timezone
 from django.conf import settings
-from django.apps.AppConfig import get_model
 from django.db import models
 from django.db.models import Q
 from adminsortable.models import SortableMixin
