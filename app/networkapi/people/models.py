@@ -37,8 +37,11 @@ class PeopleQuerySet(models.query.QuerySet):
             tz = timezone.get_current_timezone()
             print("django thinks the current timezone is:", tz)
             print("django thinks 'now' is:", now)
-            #last = self.last()
-            #print("last People entry publish_after is set to:", last.publish_after)
+            # last = self.last()
+            # print(
+            #     "last People entry publish_after is set to:",
+            #     last.publish_after
+            # )
 
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
