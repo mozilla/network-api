@@ -32,14 +32,6 @@ class PeopleQuerySet(models.query.QuerySet):
     def published(self):
         now = timezone.now()
 
-        # Based on the source for DateTimeField, apparently
-        # we need naive datetime values, which is... well,
-        # rather insane, really. Still, the follow code comes
-        # from the Django source for DatTimeField, so at least
-        # it has a documented origin.
-        if not timezone.is_naive(now):
-            now = timezone.make_naive(now, timezone.utc)
-
         return self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
             publish_after__lt=now
