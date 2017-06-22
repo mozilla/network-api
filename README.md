@@ -25,9 +25,10 @@ pip install -r requirements.txt
 
 ## Setup
 
-Before you can run the site, you'll need to run the migrations and create a superuser:
+Before you can run the site for local developement, you'll need to set up an `.env` file, run the initial database bootstrapping, and create a superuser:
 
 ```bash
+cp env.default .env
 python app/manage.py migrate
 python app/manage.py createsuperuser
 ```
