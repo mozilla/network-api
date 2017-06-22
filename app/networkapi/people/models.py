@@ -39,10 +39,9 @@ class PeopleQuerySet(models.query.QuerySet):
             print("django thinks the current timezone is:", tz)
             print("django thinks 'now' is:", now)
             try:
-                People = get_model('People')
-                pomax = People.objects.get(name="Pomax")
+                pomax = self.filter(name="Pomax")
                 print(
-                    "last People entry publish_after is set to:",
+                    "entry 'Pomax'.publish_after is set to:",
                     pomax.publish_after
                 )
             except:
