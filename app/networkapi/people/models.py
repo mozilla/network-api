@@ -31,7 +31,7 @@ class PeopleQuerySet(models.query.QuerySet):
     """
     def published(self):
         now = timezone.now()
-        
+
         # See https://docs.djangoproject.com/en/1.11/
         #     ... _modules/django/db/models/fields/#DateTimeField
         #
