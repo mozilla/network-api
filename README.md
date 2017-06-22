@@ -47,7 +47,7 @@ As this is a Python/Django project, we also support additional commands that mig
 
 | No. | Command | Description |
 | --- | ------- | ----------- |
-| 1. | flake8 . --config=./app/tox.ini | Run Flake8 linting on the code.  |
+| 1. | flake8 app --config=./app/tox.ini | Run Flake8 linting on the code.  |
 | 2. | python app/manage.py test | Run the tests defined for this project. |
 | 3. | python app/manage.py makemigrations | Create migration files for all Django model changes detected. |
 | 4. | python app/manage.py migrate | Apply migrations to the database. |
