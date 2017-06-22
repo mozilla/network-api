@@ -8,14 +8,14 @@ This is the REST API server for the Mozilla Network Site.
 
 ## Installation
 
-Create a virtual environment using either `virtualenv` or `python3`'s virtual enviroment invokation. For the purposes of this README.md it is assumed you called this virtual enviroment `venv`.
+Create a virtual environment using either `virtualenv` or `python3`'s virtual environment invocation. For the purposes of this README.md it is assumed you called this virtual environment `venv`.
 
-Activate the virtual enviroment:
+Activate the virtual environment:
 
 - Unix/Linux/OSX: `source venv/bin/activate`
 - Windows: `venv\Scripts\Activate`
 
-(for both, the virtual enviroment can be deactivated by running the corresponding "deactivate" command)
+(for both, the virtual environment can be deactivated by running the corresponding "deactivate" command)
 
 Install all dependencies into the virtual environment:
 
@@ -40,14 +40,13 @@ python app/manage.py runserver
 
 You should now be able to access the API on `localhost:5000`.
 
-To log in to the admin UI, visit:
-http://localhost:8000/admin
+To log in to the admin UI, visit: http://localhost:8000/admin
 
 As this is a Python/Django project, we also support additional commands that might be of use. Please consult the following table for some common commands you might want to use:
 
 | No. | Command | Description |
 | --- | ------- | ----------- |
-| 1. | flake8 . | Run Flake8 linting on the code.  |
+| 1. | flake8 . --config=./app/tox.ini | Run Flake8 linting on the code.  |
 | 2. | python app/manage.py test | Run the tests defined for this project. |
 | 3. | python app/manage.py makemigrations | Create migration files for all Django model changes detected. |
 | 4. | python app/manage.py migrate | Apply migrations to the database. |
