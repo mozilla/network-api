@@ -41,7 +41,9 @@ class PeopleQuerySet(models.query.QuerySet):
         # see https://docs.djangoproject.com/en/1.11/ref/models/expressions
         db = queryset.db
         compiler = queryset.query.get_compiler(using=db)
-        print( compiler.as_sql() )
+        sql = compiler.as_sql()
+        print ("template tuple:\n", sql)
+        print ("template result:\n", sql[0] % sql[1])
 
         return queryset
 
