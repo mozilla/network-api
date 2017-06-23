@@ -10,15 +10,6 @@ class PeopleListView(ListAPIView):
     in the database
     """
     queryset = Person.objects.published()
-
-    # What is actually going on at the DB level?
-    # see https://docs.djangoproject.com/en/1.11/ref/models/expressions
-    db = queryset.db
-    compiler = queryset.query.get_compiler(using=db)
-    sql = compiler.as_sql()
-    print("template tuple:\n", sql)
-    print("template result:\n", sql[0] % sql[1])
-
     serializer_class = PersonSerializer
 
 
