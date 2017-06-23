@@ -38,11 +38,10 @@ class PeopleQuerySet(models.query.QuerySet):
         )
 
         # What is actually going on at the DB level?
+        # see https://docs.djangoproject.com/en/1.11/ref/models/expressions
         db = queryset.db
         compiler = queryset.query.get_compiler(using=db)
-        # see https://docs.djangoproject.com/en/1.11/ref/models/expressions
-        sql, params = compiler.as_sql()
-        print(sql)
+        print( compiler.as_sql() )
 
         return queryset
 
