@@ -32,15 +32,18 @@ class PeopleQuerySet(models.query.QuerySet):
     def published(self):
         now = timezone.now()
 
-        query_set = self.filter(
+        queryset = self.filter(
             Q(expires__gt=now) | Q(expires__isnull=True),
             publish_after__lt=now
         )
 
         # What is actually going on at the DB level?
-        print(query_set.query)
+        db = queryset.db
+        compiler = queryset.query.get_compiler(using=db)
+        sql = compiler.as_sql()
+        print(sql)
 
-        return query_set
+        return queryset
 
 
 class InternetHealthIssue(models.Model):
