@@ -42,8 +42,8 @@ class PeopleQuerySet(models.query.QuerySet):
         db = queryset.db
         compiler = queryset.query.get_compiler(using=db)
         sql = compiler.as_sql()
-        print ("template tuple:\n", sql)
-        print ("template result:\n", sql[0] % sql[1])
+        print("template tuple:\n", sql)
+        print("template result:\n", sql[0] % sql[1])
 
         return queryset
 
