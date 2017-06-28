@@ -78,11 +78,12 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 SOCIAL_SIGNIN = SOCIAL_AUTH_GOOGLE_OAUTH2_KEY is not None and \
                     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET is not None
 
-# Application definition
+USE_S3 = env('USE_S3')
 
+# Application definition
 INSTALLED_APPS = list(filter(None, [
 
-    'filebrowser_s3',
+    'filebrowser_s3' if USE_S3 else None,
     'social_django' if SOCIAL_SIGNIN else None,
 
     'django.contrib.admin',
@@ -320,8 +321,6 @@ REST_FRAMEWORK = {
 
 
 # Storage for user generated files
-USE_S3 = env('USE_S3')
-
 if USE_S3:
     # Use S3 to store user files if the corresponding environment var is set
     DEFAULT_FILE_STORAGE = 'filebrowser_s3.storage.S3MediaStorage'
