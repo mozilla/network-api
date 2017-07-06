@@ -1,6 +1,6 @@
 {% load pages_tags i18n staticfiles %}
 
-<link rel="stylesheet" href="{% static "/css/content_typed_change_list.css" %}">
+<link rel="stylesheet" href="{% static "css/content_typed_change_list.css" %}">
 
 <ol>
     {% for page in page_branch %}
@@ -9,7 +9,7 @@
         <div class="{% cycle 'row1' 'row2' %}">
 
             {% set_page_permissions page %}
-            
+
             {% if page.perms.change %}
 
                 {% if page.is_primary %}
