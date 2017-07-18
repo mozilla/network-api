@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
-from django.views.generic.base import RedirectView
 
 import mezzanine
 from mezzanine.conf import settings
@@ -36,7 +35,8 @@ urlpatterns = list(filter(None, [
 ]))
 
 
-handler404 = RedirectView.as_view(url='/errors/404')
+# handler404 = RedirectView.as_view(url='/errors/404')
+handler404 = 'mezzanine.core.views.page_not_found'
 handler500 = 'mezzanine.core.views.server_error'
 
 if settings.USE_S3 is not True:
