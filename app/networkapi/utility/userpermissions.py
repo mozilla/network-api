@@ -3,7 +3,7 @@ from django.contrib.auth.models import Group
 from mezzanine.core.models import SitePermission
 
 
-def is_staff_address(email):
+def is_mozilla_address(email):
     """
     This function determines whether a particular email address is a
     mozilla address or not. We strictly control mozilla.com and
@@ -63,14 +63,10 @@ def assign_group_policy(user, name):
 def set_user_permissions(backend, user, response, *args, **kwargs):
     """
     This is a social-auth pipeline function for automatically
-    setting is_superuser permissions when a user logs in from a
-    known-to-be mozilla account.
+    setting permissions when a user logs in. Any code here triggers
+    at the end of the authentication pipeline.
     """
 
-    if user.email and is_staff_address(user.email) and user.is_staff is False:
-        user.is_staff = True
-        user.save()
-
-        add_user_to_main_site(user)
-
-        assign_group_policy(user, "staff")
+    #
+    # ...Code Goes Here...
+    #
