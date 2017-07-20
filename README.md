@@ -19,6 +19,16 @@ This is the REST API server for the Mozilla Network Site.
 
 Create a virtual environment using either `virtualenv` or `python3`'s virtual environment invocation. For the purposes of this README.md it is assumed you called this virtual environment `venv`.
 
+### Important note for systems with python *and* python3
+
+In order to make sure your virtual environment will be using python 3.x you will have to explicitly tell the system it should use point to `python3` whenever it invokes python:
+
+```
+$ virtualenv -p python3 venv
+```
+
+## Bootstrap the virtual enviroment
+
 Activate the virtual environment:
 
 - Unix/Linux/OSX: `source venv/bin/activate`
