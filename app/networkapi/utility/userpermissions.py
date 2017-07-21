@@ -67,6 +67,8 @@ def set_user_permissions(backend, user, response, *args, **kwargs):
     at the end of the authentication pipeline.
     """
 
-    #
-    # ...Code Goes Here...
-    #
+    # One thing that always needs to happen is to add the
+    # user to this site, so that their permissions (if we
+    # assign them any) will kick in.
+
+    add_user_to_main_site(user)
