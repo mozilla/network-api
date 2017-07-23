@@ -5,6 +5,7 @@ from django.db.models import Q
 from networkapi.utility.images import get_image_upload_path
 from filebrowser_safe.fields import FileBrowseField
 
+
 def get_news_glyph_upload_path(instance, filename):
     return get_image_upload_path(
         app_name='news',
