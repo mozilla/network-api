@@ -17,9 +17,10 @@ def get_news_glyph_upload_path(instance, filename):
 def get_thumbnail_upload_path(instance, filename):
     return get_image_upload_path(
         app_name='news',
-        prop_name='thumbnail',
+        prop_name='headline',
         instance=instance,
-        current_filename=filename
+        current_filename=filename,
+        suffix='_thumbnail'
     )
 
 
