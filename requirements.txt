@@ -20,7 +20,7 @@ psycopg2==2.7.1
 django-environ==0.4.1
 
 # Static Files
-whitenoise==3.3.0
+whitenoise==4.0b2
 
 # User Uploaded Files
 django-storages==1.5.2
@@ -43,4 +43,3 @@ requests==2.13.0
 flake8==2.5.4
 factory_boy==2.8.1
 fake-factory==0.5.7
-
