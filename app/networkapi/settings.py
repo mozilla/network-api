@@ -116,6 +116,7 @@ INSTALLED_APPS = list(filter(None, [
     'networkapi.utility',
     'networkapi.landingpage',
     'networkapi.highlights',
+    'networkapi.milestones',
 ]))
 
 MIDDLEWARE_CLASSES = [
@@ -278,6 +279,7 @@ ADMIN_MENU_ORDER = (
         'news.News',
         'people.InternetHealthIssue',
         'highlights.Highlight',
+        'milestones.Milestone'
         )),
     ('Components', ('landingpage.Signup',)),
     ('Site', ('sites.Site', 'redirects.Redirect', 'conf.Setting')),
