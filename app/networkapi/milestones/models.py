@@ -13,20 +13,6 @@ def get_milestone_photo_upload_path(instance, filename):
     )
 
 
-class MilestoneLink(models.Model):
-    label = models.CharField(
-        max_length=300,
-        help_text='Text to describe the milestone link'
-    )
-    url = models.URLField(
-        max_length=500,
-        help_text='URL link to the milestone',
-    )
-
-    def __str__(self):
-        return str(self.label)
-
-
 class MilestoneQuerySet(models.query.QuerySet):
     """
     A QuerySet that filters for upcoming milestones
@@ -58,10 +44,13 @@ class Milestone(models.Model):
         help_text='Briefly describe what the milestone '
                   'is all about',
     )
-    link = models.OneToOneField(
-        'MilestoneLink',
-        null=True,
-        on_delete=models.CASCADE
+    link_url = models.URLField(
+        max_length=500,
+        help_text='URL link to the milestone',
+    )
+    link_label = models.CharField(
+        max_length=300,
+        help_text='Text to describe the milestone link'
     )
 
     objects = MilestoneQuerySet.as_manager()

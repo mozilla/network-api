@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from networkapi.milestones.models import Milestone, MilestoneLink
+from networkapi.milestones.models import Milestone
 
 
 admin.site.register(Milestone)
-admin.site.register(MilestoneLink)

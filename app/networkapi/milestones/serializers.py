@@ -1,31 +1,18 @@
 from rest_framework import serializers
 
-from networkapi.milestones.models import Milestone, MilestoneLink
-
-
-class MilestoneLinkSerializer(serializers.ModelSerializer):
-    """
-    Serializes a MilestoneLink object
-    """
-    class Meta:
-        model = MilestoneLink
-        fields = (
-            'label',
-            'url'
-        )
+from networkapi.milestones.models import Milestone
 
 
 class MilestoneSerializer(serializers.ModelSerializer):
     """
     Serializes a Milestone object
     """
-    link = MilestoneLinkSerializer()
-
     class Meta:
         model = Milestone
         fields = (
             'id',
-            'link',
+            'link_label',
+            'link_url',
             'headline',
             'photo',
             'start_date',
