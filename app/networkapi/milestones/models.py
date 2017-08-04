@@ -1,4 +1,3 @@
-from django.utils import timezone
 from django.db import models
 
 from networkapi.utility.images import get_image_upload_path
@@ -11,17 +10,6 @@ def get_milestone_photo_upload_path(instance, filename):
         instance=instance,
         current_filename=filename
     )
-
-
-class MilestoneQuerySet(models.query.QuerySet):
-    """
-    A QuerySet that filters for upcoming milestones
-    """
-    def upcoming(self):
-        now = timezone.now()
-        return self.filter(
-            end_date__gte=now,
-        )
 
 
 class Milestone(models.Model):
@@ -52,8 +40,6 @@ class Milestone(models.Model):
         max_length=300,
         help_text='Text to describe the milestone link'
     )
-
-    objects = MilestoneQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = 'milestones'
