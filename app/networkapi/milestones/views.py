@@ -10,7 +10,7 @@ class MilestoneListView(ListAPIView):
     in the database
     """
     def get_queryset(self):
-        return Milestone.objects.upcoming()
+        return Milestone.objects.all()
 
     serializer_class = MilestoneSerializer
     pagination_class = None
@@ -21,6 +21,6 @@ class MilestoneView(RetrieveAPIView):
     A view that permits a GET request for a Milestone in the database
     """
     def get_queryset(self):
-        return Milestone.objects.upcoming()
+        return Milestone.objects.all()
 
     serializer_class = MilestoneSerializer
