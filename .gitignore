@@ -99,3 +99,6 @@ app/media/
 
 # SQLite3 databases for local development
 **/*.sqlite3
+
+# Compiled Frontend
+app/networkapi/frontend/*
