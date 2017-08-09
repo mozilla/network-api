@@ -393,6 +393,11 @@ LOGGING = {
             'handlers': ['console'],
             'level': DJANGO_LOG_LEVEL,
             'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': DJANGO_LOG_LEVEL,
+            'propagate': True
         }
     },
 }
